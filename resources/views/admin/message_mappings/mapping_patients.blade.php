@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-xs-2 form-group">
                 {!! Form::label('Patient Name SMS', 'Patient Name SMS'.'*', ['class' => 'control-label']) !!}
-                {!! Form::text('patient_name', $patient_name, ['class' => 'form-control', 'id' => 'patient_name']) !!}
+                {!! Form::text('patient_name_sms', $patient_name, ['class' => 'form-control', 'id' => 'patient_name_sms']) !!}
             </div>
             <div class="col-xs-2 form-group">
                 {!! Form::label('From Date', 'From Date'.'*', ['class' => 'control-label']) !!}

@@ -10,8 +10,10 @@ $(document).ready(function () {
         retrieve: true,
         dom: 'lBfrtip<"actions">',
         columnDefs: [],
-        "iDisplayLength": 10,
-        "aaSorting": [],
+        iDisplayLength: 10,
+        aaSorting: [],
+        stateSave: true,
+        stateDuration: 60 * 5,
         buttons: [
             {
                 extend: 'copy',
@@ -53,6 +55,18 @@ $(document).ready(function () {
                 text: window.colvisButtonTrans,
                 exportOptions: {
                     columns: ':visible'
+                }
+            },
+            {
+                text: 'Reload',
+                action: function ( e, dt, node, config ) {
+                    // Reset Column filtering
+                    $('.datatable thead input').val('').change();
+                    // Redraw table (and reset main search filter)
+                    $(".datatable").DataTable().search("").draw();
+                    dt.state.clear();
+                    //dt.ajax.reload();
+                    window.location.reload();
                 }
             },
         ]
@@ -198,6 +212,14 @@ function processAjaxTables(objTable) {
         objTable = $('.ajaxTable');
     }
 
+    // Setup - add a text input to each footer cell
+    $(objTable).find('thead th').each( function () {
+        var title = $(this).text().trim();
+        if(title && title != 'Action') {
+            $(this).html('<input type="text" placeholder="Search '+title+'" />');
+        }
+    } );
+
     $(objTable).each(function () {
         window.dtDefaultOptions.processing = true;
         window.dtDefaultOptions.serverSide = true;
@@ -217,7 +239,35 @@ function processAjaxTables(objTable) {
         if (typeof window.route_mass_crud_entries_destroy != 'undefined') {
             $(this).siblings('.actions').html('<a href="' + window.route_mass_crud_entries_destroy + '" class="btn btn-xs btn-danger js-delete-selected" style="margin-top:0.755em;margin-left: 20px;">'+window.deleteButtonTrans+'</a>');
         }
+        // Restore state
+        var state = table.state.loaded();
+        if ( state ) {
+        table.columns().eq( 0 ).each( function ( colIdx ) {
+            var colSearch = state.columns[colIdx].search;
+
+            if ( colSearch.search ) {
+            $( 'input', table.column( colIdx ).header() ).val( colSearch.search );
+            }
+        } );
+
+        table.draw();
+        }
+        // Apply the search
+        table.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+                table
+                    .column( colIdx )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
     });
+
+    $(objTable).find('tbody').on('dblclick', 'tr', function () {
+        var data = table.row( this ).data();
+        $(this).find('a.btn.btn-xs.btn-info')[0].click();
+    } );
+
     return table;
 }
 

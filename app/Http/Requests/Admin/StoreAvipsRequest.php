@@ -23,13 +23,13 @@ class StoreAvipsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            /*'name' => 'required',
             'account_no' => 'required',
             'ifsc_code' => 'min:11|max:11',
             'pan_number' => 'min:10|max:10',
             'pin_code' => 'min:6|max:6|nullable|numeric',
             'message_mappings.*.message' => 'required',
-            'message_mappings.*.source' => 'required',
+            'message_mappings.*.source' => 'required',*/
         ];
     }
 }

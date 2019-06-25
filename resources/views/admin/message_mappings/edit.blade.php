@@ -114,7 +114,7 @@
     {!! Form::submit(trans('quickadmin.qa_update'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
     <div id="ajaxPatient">
-        @include('admin.message_mappings.mapping_patients    ')
+        @include('admin.message_mappings.mapping_patients')
     </div>
     <div id="ajaxAvips">
         @include('admin.message_mappings.mapping_avips')
@@ -148,10 +148,11 @@
                 $('.ajaxTablePatient').DataTable().clear().destroy();
             }
             ajaxUrl = '{!! route('admin.patient_registrations.search') !!}';
-            ajaxUrl = ajaxUrl + '?patient_name=' + $('#patient_name').val();
+            ajaxUrl = ajaxUrl + '?patient_name=' + $('#patient_name_sms').val();
             ajaxUrl = ajaxUrl + '&from_date=' + $('#from_date').val();
             ajaxUrl = ajaxUrl + '&to_date=' + $('#to_date').val();
             window.dtDefaultOptions.ajax = ajaxUrl;
+            window.dtDefaultOptions.stateSave = false;
             window.dtDefaultOptions.columns = [
                 {data: 'uhid', name: 'uhid'},
                 {data: 'patient_name', name: 'patient_name'},
@@ -169,7 +170,6 @@
             window.dtDefaultOptions.searching = false;
             window.dtDefaultOptions.order = [[ 9, "desc" ]];
             window.dtDefaultOptions.select = {style: 'single'};
-            window.dtDefaultOptions.events = [{'select':function () {alert("Hi")}},{'deselect':function () {alert("Bye")}}]
             //$.fn.dataTable.ext.errMode = 'throw';
             $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
                 console.log(message, helpPage);
@@ -197,10 +197,11 @@
                 $('.ajaxTableAvips').DataTable().clear().destroy();
             }
             ajaxUrl = '{!! route('admin.avips.search') !!}';
-            ajaxUrl = ajaxUrl + '?avip_name=' + $('#avip_name').val();
+            ajaxUrl = ajaxUrl + '?avip_name=' + $('#avip_name_sms').val();
             ajaxUrl = ajaxUrl + '&from_date=' + $('#from_date').val();
             ajaxUrl = ajaxUrl + '&to_date=' + $('#to_date').val();
             window.dtDefaultOptions.ajax = ajaxUrl;
+            window.dtDefaultOptions.stateSave = false;
             window.dtDefaultOptions.columns = [
                 {data: 'name', name: 'name'},
                 {data: 'address_1', name: 'address_1'},
@@ -232,18 +233,18 @@
             $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
                 console.log(message, helpPage);
             };
-            table = processAjaxTables($('.ajaxTableAvips'));
-            table.on( 'select', function ( e, dt, type, indexes ) {
+            tableAvips = processAjaxTables($('.ajaxTableAvips'));
+            tableAvips.on( 'select', function ( e, dt, type, indexes ) {
                 if ( type === 'row' ) {
-                    var data = table.rows( indexes ).data().pluck( 'id' );
-                    var avip = table.rows( indexes ).data().pluck( 'name' );
+                    var data = tableAvips.rows( indexes ).data().pluck( 'id' );
+                    var avip = tableAvips.rows( indexes ).data().pluck( 'name' );
                     $("#avip_id").val(data[0]);
                     $("#select2-avip_id-container").text(avip[0]);
                 }
             } );
-            table.on( 'deselect', function ( e, dt, type, indexes ) {
+            tableAvips.on( 'deselect', function ( e, dt, type, indexes ) {
                 if ( type === 'row' ) {
-                    var data = table.rows( indexes ).data().pluck( 'id' );
+                    var data = tableAvips.rows( indexes ).data().pluck( 'id' );
                     $("#avip_id").val(null).trigger('change');
                 }
             } );

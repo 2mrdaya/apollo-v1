@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-xs-8 form-group">
                 {!! Form::label('AVIP Name SMS', 'AVIP Name SMS'.'*', ['class' => 'control-label']) !!}
-                {!! Form::text('avip_name', $avip_name, ['class' => 'form-control', 'id' => 'avip_name']) !!}
+                {!! Form::text('avip_name_sms', $avip_name, ['class' => 'form-control', 'id' => 'avip_name_sms']) !!}
             </div>
             <!--<div class="col-xs-2 form-group">
                 {!! Form::label('From Date', 'From Date'.'*', ['class' => 'control-label']) !!}
