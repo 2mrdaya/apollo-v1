@@ -90,6 +90,7 @@ return [
     'date_format_admission' => 'd/m/y H:i',
     'date_format_intimation' => 'm/d/Y h:iA',
     'date_format_registration' => 'm/d/y h:i A',
+    'date_format_bill_date' => 'd-m-Y h:i:s A',
 
     /*
     |--------------------------------------------------------------------------

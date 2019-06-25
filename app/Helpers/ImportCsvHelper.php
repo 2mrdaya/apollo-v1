@@ -98,6 +98,11 @@ class ImportCsvHelper {
         return $row;
     }
 
+    public static function IpProcess($row) {
+        $row['bill_date'] = Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s');
+        return $row;
+    }
+
     public static function FindNames($module, $message) {
         $process = new Process(['python', '../app/Python/FindString.py', $module, $message]);
         $process->run();

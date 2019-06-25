@@ -23,10 +23,10 @@ class UpdateMessageMappingsRequest extends FormRequest
     public function rules()
     {
         return [
-            
+
             'message' => 'required',
             'source' => 'required',
-            'intimation_date_time' => 'required|date_format:'.config('app.date_format').' H:i:s|unique:message_mappings,intimation_date_time,'.$this->route('message_mapping'),
+            /*'intimation_date_time' => 'required|date_format:'.config('app.date_format').' H:i:s|unique:message_mappings,intimation_date_time,'.$this->route('message_mapping'),*/
         ];
     }
 }

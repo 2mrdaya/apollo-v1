@@ -137,8 +137,8 @@ class PatientRegistrationsController extends Controller
             if (request('from_date') && request('to_date')) {
                 //$query->whereBetweeen('patient_registrations.registration_date', [request('from_date'), request('to_date')]);
                 $query->where(function ($query) {
-                    $query->whereDate('patient_registrations.registration_date', '>=', request('from_date'))
-                          ->WhereDate('patient_registrations.registration_date', '<=', request('to_date'));
+                    $query->where('patient_registrations.registration_date', '>=', request('from_date'))
+                          ->Where('patient_registrations.registration_date', '<=', request('to_date'));
                 });
             }
 
@@ -146,7 +146,7 @@ class PatientRegistrationsController extends Controller
             ini_set('xdebug.var_display_max_children', '256');
             ini_set('xdebug.var_display_max_data', '1024');
 
-            //var_dump($query->toSql());die;
+            //var_dump(request('from_date'),$query->toSql());die;
 
             $query = $query->get();
             //var_dump($query);
@@ -161,10 +161,8 @@ class PatientRegistrationsController extends Controller
                 });
             }
 
-            //var_dump($match_percent);//die;
-
             $table = Datatables::of($query);
-            //var_dump($query);
+            //var_dump($query);die();
             $table->setRowAttr([
                 'data-entry-id' => '{{$id}}',
             ]);
@@ -289,7 +287,7 @@ class PatientRegistrationsController extends Controller
         $patient_registration = PatientRegistration::findOrFail($id);
         $patient_registration->update($request->all());
 
-        $messageMappings           = $patient_registration->message_mappings;
+        $messageMappings = $patient_registration->message_mappings;
         $currentMessageMappingData = [];
         foreach ($request->input('message_mappings', []) as $index => $data) {
             if (is_integer($index)) {

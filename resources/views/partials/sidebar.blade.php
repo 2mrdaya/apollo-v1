@@ -131,6 +131,14 @@
                 </a>
             </li>@endcan
             
+            @can('ppn_payment_access')
+            <li>
+                <a href="{{ route('admin.ppn_payments.index') }}">
+                    <i class="fa fa-gears"></i>
+                    <span>@lang('quickadmin.ppn-payments.title')</span>
+                </a>
+            </li>@endcan
+            
 
             
 
