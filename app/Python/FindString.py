@@ -1,165 +1,90 @@
 import sys
 import re
 
-def find_patient(x):
-    x = x.lower()
-    x = re.sub('\.', ' ', x)
-    x = re.sub('\-', ' ', x)
-    x = re.sub('b\/o', ' ', x)
-    x = re.sub('master', ' ', x)
-    x = re.sub('mast', ' ', x)
-    x = re.sub('mrs', '', x)
-    x = re.sub('mr', '', x)
-    x = re.sub('ms', '', x)
-    x = re.sub('patient ref', 'ref', x)
-    x = re.sub('afg', '', x)
-    x = re.sub(' +', ' ', x)
+import sys
+import re
+import pandas as pd
 
-    fsname = midname = lsname = ''
-    name_idx = x.lower().find('name ')
-    pt_idx = x.lower().find('pt ')
-    pt_idx1 = x.lower().find('pt ', pt_idx+1)
-    pt_idx2 = x.lower().find('pt.', pt_idx+1)
-    pat_idx = x.lower().find('patient ')
+def replace_strings(x):
+    x = re.sub('\.', ' ', x,flags=re.IGNORECASE)
+    x = re.sub('\:', ' ', x,flags=re.IGNORECASE)
+    x = re.sub('\,', ' ', x,flags=re.IGNORECASE)
+    x = re.sub('\-', ' ', x,flags=re.IGNORECASE)
+    x = re.sub('b\/o', '', x,flags=re.IGNORECASE)
+    x = re.sub('bo', '', x,flags=re.IGNORECASE)
+    x = re.sub('baby of', '', x,flags=re.IGNORECASE)
+    x = re.sub('master', '', x,flags=re.IGNORECASE)
+    x = re.sub('mast', '', x,flags=re.IGNORECASE)
+    x = re.sub('mrs', '', x,flags=re.IGNORECASE)
+    x = re.sub('mr', '', x,flags=re.IGNORECASE)
+    x = re.sub('ms', '', x,flags=re.IGNORECASE)
+    x = re.sub('dr', '', x,flags=re.IGNORECASE)
+    x = re.sub('patient ref', 'ref', x,flags=re.IGNORECASE)
+    x = re.sub('afg', '', x,flags=re.IGNORECASE)
+    x = re.sub(' +', ' ', x,flags=re.IGNORECASE)
+    x = re.sub('to dr', '', x,flags=re.IGNORECASE)
+    x = re.sub('under dr', '', x,flags=re.IGNORECASE)
+    x = re.sub('in a\/c of', 'by', x,flags=re.IGNORECASE)
+    return x
 
-    if pt_idx1 > 0:
-        pt_idx = pt_idx1
+def find(x, search_values):
+    try:
+        x = replace_strings(x)
 
-    if pt_idx2 > 0:
-        pt_idx = pt_idx2
-
-    if name_idx >= 0 :
-        fsname_end = x.lower().find(' ', name_idx + 5)
-        fsname = x[name_idx + 5:fsname_end]
-        midname_end = x.lower().find(' ', fsname_end + 1)
-        midname = x[fsname_end + 1:midname_end]
-        lsname_end = x.lower().find(' ', midname_end + 1)
-        lsname = x[midname_end + 1:lsname_end]
-        #print(fsname,midname,lsname)
-    elif pat_idx >= 0 :
-        fsname_end = x.lower().find(' ', pat_idx + 8)
-        fsname = x[pat_idx + 8:fsname_end]
-        midname_end = x.lower().find(' ', fsname_end + 1)
-        midname = x[fsname_end + 1:midname_end]
-        lsname_end = x.lower().find(' ', midname_end + 1)
-        lsname = x[midname_end + 1:lsname_end]
-        #print(fsname,midname,lsname)
-    elif pt_idx >= 0 :
-        fsname_end = x.lower().find(' ', pt_idx + 3)
-        fsname = x[pt_idx + 3:fsname_end]
-        midname_end = x.lower().find(' ', fsname_end + 1)
-        midname = x[fsname_end + 1:midname_end]
-        lsname_end = x.lower().find(' ', midname_end + 1)
-        lsname = x[midname_end + 1:lsname_end]
-        #print(fsname,midname,lsname)
-
-    if len(re.findall('\d+',fsname)) :
         fsname = midname = lsname = ''
 
-    if len(re.findall('\d+',midname)) :
-        midname = lsname = ''
+        for search_value in search_values:
+            if x.lower().find(search_value) >= 0:
+                pt_idx = x.lower().find(search_value)
+                searched_value = search_value
+                #print(searched_value)
+        x = x[pt_idx + len(searched_value) : 500]
+        #print(x)
+        #print(len(x.split()))
 
-    if len(re.findall('\d+',lsname)) :
-        lsname = ''
+        if len(x.split()) > 0:
+            fsname = x.split()[0]
 
-    if fsname.find('ref') >= 0 or fsname == ',':
-        fsname = midname
-        midname = lsname
-        lsname = ''
+        if len(x.split()) > 1:
+            midname = x.split()[1]
 
-    if midname.find('ref') >= 0 or midname == ',' or midname == 'and' or midname == 'to' or midname == 'age' or midname == 'will' or midname == 'is' or midname == 'for' or midname == 'from':
-        midname = ''
-        lsname = ''
+        if len(x.split()) > 2:
+            lsname = x.split()[2]
 
-    if lsname.find('ref') >= 0 or lsname == ',' or lsname == 'and' or lsname == 'to' or lsname == 'age' or lsname == 'will' or lsname == 'is' or lsname == 'for' or lsname == 'from':
-        lsname = ''
+        #print("Hi")
 
+        if len(re.findall('\d+',fsname)) :
+            fsname = midname = lsname = ''
+
+        if len(re.findall('\d+',midname)) :
+            midname = lsname = ''
+
+        if len(re.findall('\d+',lsname)) :
+            lsname = ''
+
+        if fsname.find('ref') >= 0 or fsname == ',':
+            fsname = midname
+            midname = lsname
+            lsname = ''
+
+        if midname.find('ref') >= 0 or midname == ',' or midname == 'and' or midname == 'to' or midname == 'age' or midname == 'will' or midname == 'is' or midname == 'for' or midname == 'from':
+            midname = ''
+            lsname = ''
+
+        if lsname.find('ref') >= 0 or lsname == ',' or lsname == 'and' or lsname == 'to' or lsname == 'age' or lsname == 'will' or lsname == 'is' or lsname == 'for' or lsname == 'from':
+            lsname = ''
+    except:
+        return ''
     return (fsname + ' ' + midname + ' ' + lsname).strip()
+
+
+def find_patient(x):
+    search_values = ['patient ', 'pt ', 'pt pt', 'ptpt', 'pt patient', 'pt referring', 'referring patient', 'pt sending', 'sending patient', 'name ', 'name is']
+    return find(x,search_values)
 
 def find_avip(x):
-    x = x.lower()
-    x = re.sub('\.', ' ', x)
-    x = re.sub('\-', ' ', x)
-    x = re.sub('b\/o', ' ', x)
-    x = re.sub('master', ' ', x)
-    x = re.sub('mast', ' ', x)
-    x = re.sub('mrs', '', x)
-    x = re.sub('mr', '', x)
-    x = re.sub('ms', '', x)
-    x = re.sub('patient ref', 'ref', x)
-    x = re.sub('afg', '', x)
-    x = re.sub(' +', ' ', x)
-    x = re.sub('to dr', '', x)
-    x = re.sub('under dr', '', x)
-    x = re.sub('in a\/c of', 'by', x)
-
-    fsname = midname = lsname =""
-
-    name_idx = x.lower().find('by ')
-    if name_idx >= 0 and x.lower().find('dr', name_idx + 3) >= 0:
-        name_idx = x.lower().find('dr', name_idx + 3)
-    elif x.lower().find('dr', x.lower().find('to dr ') + 5) >= 0 :
-        name_idx = x.lower().find('to dr ')
-        if x.lower().find('dr', name_idx + 5) >= 0:
-            name_idx = x.lower().find('dr', name_idx + 5)
-
-    by_idx = x.lower().find('by ')
-    from_idx = x.lower().find('from ')
-    reg_idx = x.lower().find('regards')
-    dr_idx = x.lower().find('dr')
-
-    #print(name_idx, by_idx, from_idx, reg_idx, dr_idx)
-
-    if name_idx >= 0 :
-        name = x[name_idx + 3:].split(' ')
-        fsname = name[0]
-        if len(name) > 1 :
-            midname = name[1]
-        if len(name) > 2 :
-            lsname = name[2]
-        #print(fsname,midname,lsname)
-    elif by_idx >= 0 :
-        name = x[by_idx + 3:].split(' ')
-        fsname = name[0]
-        if len(name) > 1 :
-            midname = name[1]
-        if len(name) > 2 :
-            lsname = name[2]
-    elif from_idx >= 0 :
-        name = x[from_idx + 5:].split(' ')
-        fsname = name[0]
-        if len(name) > 1 :
-            midname = name[1]
-        if len(name) > 2 :
-            lsname = name[2]
-    elif reg_idx >= 0 :
-        name = x[reg_idx + 9:].split(' ')
-        fsname = name[0]
-        if len(name) > 1 :
-            midname = name[1]
-        if len(name) > 2 :
-            lsname = name[2]
-    elif dr_idx >= 0 :
-        name = x[dr_idx + 3:].split(' ')
-        fsname = name[0]
-        if len(name) > 1 :
-            midname = name[1]
-        if len(name) > 2 :
-            lsname = name[2]
-
-    if fsname == ',':
-        fsname = midname
-        midname = lsname
-        lsname = ''
-
-    if midname == ',' or midname == 'and' or midname == 'to' or midname == 'age' or midname == 'will' or midname == 'is' or midname == 'for' or midname == 'from':
-        midname = ''
-        lsname = ''
-
-    if lsname == ',' or lsname == 'and' or lsname == 'to' or lsname == 'age' or lsname == 'will' or lsname == 'is' or lsname == 'for' or lsname == 'from':
-        lsname = ''
-
-    return (fsname + ' ' + midname + ' ' + lsname).strip()
+    search_values = ['from', 'regard', 'regards', 'dr', 'by', 'by dr', 'by dr ' , 'hfc']
+    return find(x,search_values)
 
 if __name__ == "__main__":
     #print(sys.argv)
