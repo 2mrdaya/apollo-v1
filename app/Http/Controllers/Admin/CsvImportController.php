@@ -101,8 +101,6 @@ class CsvImportController extends Controller
             $model::insert($insert_item);
         }
 
-
-
         $rows = count($insert);
         $table = str_plural($modelName);
         //die($table);

@@ -62,39 +62,6 @@
                         @endif
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        @can('message_mapping_delete')
-                            @if ( request('show_deleted') != 1 )<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>@endif
-                        @endcan
-
-                        <th>@lang('quickadmin.message-mapping.fields.channel')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.message')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.source')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.patient-name')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.referrer-name')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.intimation-date-time')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.uhid')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.patient-name')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.registration-date')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.city')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.address')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.mobile')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.email-id')</th>
-                        <th>@lang('quickadmin.patient-registration.fields.operator-name')</th>
-                        <th>@lang('quickadmin.message-mapping.fields.avip')</th>
-                        <th>@lang('quickadmin.avip.fields.address-1')</th>
-                        <th>@lang('quickadmin.avip.fields.address-2')</th>
-                        <th>@lang('quickadmin.avip.fields.pan-number')</th>
-                        <th>@lang('quickadmin.avip.fields.oracle-code')</th>
-                        <th>@lang('quickadmin.avip.fields.state')</th>
-                        @if( request('show_deleted') == 1 )
-                        <th>&nbsp;</th>
-                        @else
-                        <th>&nbsp;</th>
-                        @endif
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </div>
