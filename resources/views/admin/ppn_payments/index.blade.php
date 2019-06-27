@@ -63,6 +63,7 @@
                         <th>@lang('quickadmin.avip.fields.state')</th>
                         <th>@lang('quickadmin.avip.fields.pin-code')</th>
                         <th>Message</th>
+                        <th>Message Time</th>
                     </tr>
                 </thead>
             </table>
@@ -72,7 +73,7 @@
 
 @section('javascript')
     <script>
-                $(document).ready(function () {
+        $(document).ready(function () {
             window.dtDefaultOptions.ajax = '{!! route('admin.ppn_payments.index') !!}?show_deleted={{ request('show_deleted') }}';
             window.dtDefaultOptions.columns = [{data: 'month', name: 'month'},
                 {data: 'uhid', name: 'uhid'},
@@ -114,7 +115,8 @@
                 {data: 'rate_details', name: 'rate_details'},
                 {data: 'avips.state', name: 'state'},
                 {data: 'pin_code', name: 'pin_code'},
-                {data: 'message', name: 'message'}
+                {data: 'message', name: 'message'},
+                {data: 'intimation_date_time', name: 'intimation_date_time'}
             ];
             processAjaxTables();
         });
