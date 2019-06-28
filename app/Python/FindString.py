@@ -1,10 +1,6 @@
 import sys
 import re
 
-import sys
-import re
-import pandas as pd
-
 def replace_strings(x):
     x = re.sub('\.', ' ', x,flags=re.IGNORECASE)
     x = re.sub('\:', ' ', x,flags=re.IGNORECASE)
