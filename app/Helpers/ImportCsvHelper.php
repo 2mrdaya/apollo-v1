@@ -23,9 +23,9 @@ class ImportCsvHelper {
     public static function MessageMappingSmsProcess($row) {
         $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_sms'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
         $row['patient_name'] = SELF::FindNames('find_patient', $row["message"]);
-        $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
+        $row['patient_name'] = trim(preg_replace('/\s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
-        $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['referrer_name'] = trim(preg_replace('/\s+/',' ', $row['referrer_name']));
         $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
@@ -34,9 +34,9 @@ class ImportCsvHelper {
     public static function MessageMappingWhatsAppProcess($row) {
         //$row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_sms'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
         $row['patient_name'] = SELF::FindNames('find_patient', $row["message"]);
-        $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
+        $row['patient_name'] = trim(preg_replace('/\s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
-        $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['referrer_name'] = trim(preg_replace('/\s+/',' ', $row['referrer_name']));
         $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
@@ -45,9 +45,9 @@ class ImportCsvHelper {
     public static function MessageMappingEmailProcess($row) {
         $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_sms'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
         $row['patient_name'] = SELF::FindNames('find_patient', $row["message"]);
-        $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
+        $row['patient_name'] = trim(preg_replace('/\s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
-        $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['referrer_name'] = trim(preg_replace('/\s+/',' ', $row['referrer_name']));
         $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
@@ -56,9 +56,9 @@ class ImportCsvHelper {
     public static function MessageMappingOtherProcess($row) {
         $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_sms'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
         $row['patient_name'] = SELF::FindNames('find_patient', $row["message"]);
-        $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
+        $row['patient_name'] = trim(preg_replace('/\s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
-        $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['referrer_name'] = trim(preg_replace('/\s+/',' ', $row['referrer_name']));
         $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
