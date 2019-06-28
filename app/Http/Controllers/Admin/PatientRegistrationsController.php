@@ -157,7 +157,7 @@ class PatientRegistrationsController extends Controller
                     //var_dump(ucwords($patient->patient_name), ucwords(request('patient_name')));
                     similar_text(strtoupper($patient->patient_name),strtoupper(request('patient_name')),$percent);
                     $match_percent[$patient->id] = $percent;
-                    return $percent >= 50;//$patient->patient_name == 'Rajesh Kumar';
+                    return $percent >= 10;//$patient->patient_name == 'Rajesh Kumar';
                 });
             }
 
