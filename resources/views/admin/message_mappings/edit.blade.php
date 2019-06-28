@@ -228,7 +228,6 @@
             window.dtDefaultOptions.searching = false;
             window.dtDefaultOptions.order = [[ 18, "desc" ]];
             window.dtDefaultOptions.select = {style: 'single'};
-            window.dtDefaultOptions.events = [{'select':function () {alert("Hi")}},{'deselect':function () {alert("Bye")}}]
             //$.fn.dataTable.ext.errMode = 'throw';
             $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
                 console.log(message, helpPage);

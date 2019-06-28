@@ -63,7 +63,11 @@
                         <th>@lang('quickadmin.avip.fields.state')</th>
                         <th>@lang('quickadmin.avip.fields.pin-code')</th>
                         <th>Message</th>
+                        <th>Channel</th>
+                        <th>Source</th>
                         <th>Message Time</th>
+                        <th>Registration Time</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
             </table>
@@ -116,7 +120,11 @@
                 {data: 'avips.state', name: 'state'},
                 {data: 'pin_code', name: 'pin_code'},
                 {data: 'message', name: 'message'},
-                {data: 'intimation_date_time', name: 'intimation_date_time'}
+                {data: 'channel', name: 'channel'},
+                {data: 'source', name: 'source'},
+                {data: 'intimation_date_time', name: 'intimation_date_time'},
+                {data: 'registration_date', name: 'registration_date'},
+                {data: 'status', name: 'status'}
             ];
             processAjaxTables();
         });
