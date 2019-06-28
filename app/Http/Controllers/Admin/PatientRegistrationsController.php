@@ -293,7 +293,7 @@ class PatientRegistrationsController extends Controller
             if (is_integer($index)) {
                 $patient_registration->message_mappings()->create($data);
             } else {
-                $id                          = explode('-', $index)[1];
+                $id = explode('-', $index)[1];
                 $currentMessageMappingData[$id] = $data;
             }
         }

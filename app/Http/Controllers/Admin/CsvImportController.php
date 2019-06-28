@@ -103,8 +103,12 @@ class CsvImportController extends Controller
 
         $rows = count($insert);
         $table = str_plural($modelName);
-        //die($table);
         File::delete($path);
+
+        $handlerMethod = $modelName.$module.'PostProcess';
+        if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
+            $deleted_rows = ImportCsvHelper::$handlerMethod();
+        }
 
         $redirect = $request->input('redirect', false);
         return redirect()->to($redirect)->with('message', trans('quickadmin.qa_imported_rows_to_table', ['rows' => $rows, 'table' => $table]));

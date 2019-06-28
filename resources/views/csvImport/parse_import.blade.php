@@ -42,7 +42,7 @@
                                             <option value=''>Please select</option>
                                             @foreach ($fillables as $k => $fillable)
                                                 <option value="{{ $fillable }}"
-                                                        @if (strtolower($header) === strtolower($fillable)) selected @endif>{{ $fillable  }}</option>
+                                                        @if (strtolower(preg_replace("/[^a-zA-Z]+/", "", $header)) === strtolower(preg_replace("/[^a-zA-Z]+/", "", $fillable))) selected @endif>{{ $fillable  }}</option>
                                             @endforeach
                                         </select>
                                     </td>

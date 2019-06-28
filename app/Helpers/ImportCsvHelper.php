@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -25,6 +26,7 @@ class ImportCsvHelper {
         $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
         $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
     }
@@ -35,6 +37,7 @@ class ImportCsvHelper {
         $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
         $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
     }
@@ -45,6 +48,7 @@ class ImportCsvHelper {
         $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
         $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
     }
@@ -55,6 +59,7 @@ class ImportCsvHelper {
         $row['patient_name'] = trim(preg_replace('/s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
         $row['referrer_name'] = trim(preg_replace('/s+/',' ', $row['referrer_name']));
+        $row['message'] = substr(trim($row['message']),0,500);
         //var_dump($row);die();
         return $row;
     }
@@ -110,6 +115,26 @@ class ImportCsvHelper {
     public static function IpProcess($row) {
         $row['bill_date'] = Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s');
         return $row;
+    }
+
+    public static function MessageMappingSmsPostProcess() {
+        $query = DB::select(DB::raw(
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
+        ));
+        $query = DB::select(DB::raw(
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
+        ));
+        return $query;
+    }
+
+    public static function MessageMappingWhatsAppPostProcess() {
+        $query = DB::select(DB::raw(
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
+        ));
+        $query = DB::select(DB::raw(
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
+        ));
+        return $query;
     }
 
     public static function FindNames($module, $message) {
