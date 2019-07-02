@@ -68,6 +68,7 @@
                         <th>Message Time</th>
                         <th>Registration Time</th>
                         <th>Status</th>
+                        <th>On Total Bill</th>
                     </tr>
                 </thead>
             </table>
@@ -124,7 +125,16 @@
                 {data: 'source', name: 'source'},
                 {data: 'intimation_date_time', name: 'intimation_date_time'},
                 {data: 'registration_date', name: 'registration_date'},
-                {data: 'status', name: 'status'}
+                {data: 'status', name: 'status'},
+                {data: 'on_total_Bill', name: 'on_total_Bill',
+                    render : function (data) {
+                        htmlObj = '<select name="on_total_Bill" id ="on_total_Bill">';
+                        htmlObj = htmlObj + '<option>Yes</option>';
+                        htmlObj = htmlObj + '<option>No</option>';
+                        htmlObj = htmlObj + '</select>';
+                        return htmlObj;
+                    }
+                }
             ];
             processAjaxTables();
         });

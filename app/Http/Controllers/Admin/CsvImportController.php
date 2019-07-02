@@ -17,21 +17,27 @@ class CsvImportController extends Controller
     public function parse(Request $request) {
 
         $file = $request->file('csv_file');
+
         $request->validate([
-            'csv_file' => 'mimes:csv,txt',
+            'csv_file' => 'mimes:csv,txt,xlsx',
         ]);
 
+        $ext = $file->getClientOriginalExtension();
+
         $path = $file->path();
+
         $hasHeader = $request->input('header', false) ? true : false;
 
+        $fileName = str_random(10).'.'.$ext;
 
-        $fileName = str_random(10) . '.csv';
         $file->storeAs('csv_import', $fileName);
 
         $modelName = $request->input('model', false);
+
         $fullModelName = "App\\" . $modelName;
 
         $module = $request->input('module', false);
+
         $handlerMethod = $modelName.$module.'Parse';
 
         if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {

@@ -59,20 +59,22 @@ class PpnPaymentsController extends Controller
             $table->addColumn('status', '&nbsp;');
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
+            $table->addColumn('on_total_Bill', '&nbsp;');
 
             $table->editColumn('status', function ($row) {
-                //die($row->registration_date.$row->intimation_date_time);
                 if ($row->registration_date < $row->intimation_date_time)
                     return 'LATE INTIMATION';
                 else
                     return 'OK';
             });
+
             $table->editColumn('actions', function ($row) use ($template) {
                 $gateKey  = 'ppn_payment_';
                 $routeKey = 'admin.ppn_payments';
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
             });
+
 
             $table->rawColumns(['actions','massDelete']);
 

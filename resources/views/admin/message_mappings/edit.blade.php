@@ -147,6 +147,7 @@
             if ($.fn.DataTable.isDataTable('.ajaxTablePatient')) {
                 $('.ajaxTablePatient').DataTable().clear().destroy();
             }
+            $('.ajaxTablePatient tbody').empty();
             ajaxUrl = '{!! route('admin.patient_registrations.search') !!}';
             ajaxUrl = ajaxUrl + '?patient_name=' + $('#patient_name_sms').val();
             ajaxUrl = ajaxUrl + '&from_date=' + $('#from_date').val();
@@ -166,7 +167,7 @@
                 {data: 'match_score', name: 'match_score'}
             ];
             window.dtDefaultOptions.buttons = [];
-            window.dtDefaultOptions.paging = false;
+            window.dtDefaultOptions.paging = true;
             window.dtDefaultOptions.searching = false;
             window.dtDefaultOptions.order = [[ 9, "desc" ]];
             window.dtDefaultOptions.select = {style: 'single'};
@@ -224,7 +225,7 @@
                 {data: 'match_score', name: 'match_score'}
             ];
             window.dtDefaultOptions.buttons = [];
-            window.dtDefaultOptions.paging = false;
+            window.dtDefaultOptions.paging = true;
             window.dtDefaultOptions.searching = false;
             window.dtDefaultOptions.order = [[ 18, "desc" ]];
             window.dtDefaultOptions.select = {style: 'single'};

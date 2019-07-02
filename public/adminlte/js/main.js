@@ -214,10 +214,11 @@ function processAjaxTables(objTable) {
     }
 
     // Setup - add a text input to each footer cell
+    $(objTable).find('thead th input').remove();
     $(objTable).find('thead th').each( function () {
         var title = $(this).text().trim();
         if(title && title != 'Action') {
-            $(this).html('<input type="text" placeholder="Search '+title+'" />');
+            $(this).html($(this).html() + '<input type="text" placeholder="Search '+title+'" />');
         }
     } );
 
