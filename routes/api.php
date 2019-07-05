@@ -22,4 +22,6 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
         Route::resource('referral_data_finals', 'ReferralDataFinalsController', ['except' => ['create', 'edit']]);
 
+        Route::resource('ppn_payments', 'PpnPaymentsController', ['except' => ['create', 'edit']]);
+
 });

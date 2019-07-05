@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $user = \Auth::user();
 
-
+        
         // Auth gates for: User management
         Gate::define('user_management_access', function ($user) {
             return in_array($user->role_id, [1]);
@@ -231,9 +231,18 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('ppn_payment_access', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
-        /*Gate::define('ppn_payment_view', function ($user) {
+        Gate::define('ppn_payment_create', function ($user) {
             return in_array($user->role_id, [1, 2]);
-        });*/
+        });
+        Gate::define('ppn_payment_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('ppn_payment_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('ppn_payment_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
 
     }
 }
