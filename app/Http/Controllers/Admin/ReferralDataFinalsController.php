@@ -57,6 +57,8 @@ class ReferralDataFinalsController extends Controller
             ]);
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
+            $table->addColumn('patient_match', '&nbsp;');
+            $table->addColumn('avip_match', '&nbsp;');
             $table->editColumn('actions', function ($row) use ($template) {
                 $gateKey  = 'referral_data_final_';
                 $routeKey = 'admin.referral_data_finals';
@@ -114,6 +116,17 @@ class ReferralDataFinalsController extends Controller
             });
 
             $table->rawColumns(['actions','massDelete','approve']);
+
+            $table->editColumn('patient_match', function ($row) {
+                similar_text(strtoupper($row->patient_name),strtoupper($row->pateint_name_msg),$percent);
+                return round($percent,0);
+            });
+
+            $table->editColumn('avip_match', function ($row) {
+                similar_text(strtoupper($row->dr_name_aic),strtoupper($row->avip_name_msg),$percent);
+                return round($percent,0);
+            });
+
             //var_dump($table->make(true));die;
             return $table->make(true);
         }
@@ -473,6 +486,11 @@ class ReferralDataFinalsController extends Controller
             if(count($query)>1) {
                 array_push($errors, 'MultipleRecordsMsg');
             }
+        }
+
+        //check message table
+        if($row->message == null && trim($row->message)=='') {
+            array_push($errors, 'MessageNotFound');
         }
 
         $status = 'Ok';

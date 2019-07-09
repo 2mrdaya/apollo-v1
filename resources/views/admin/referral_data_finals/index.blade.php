@@ -105,6 +105,8 @@
                         <th>@lang('quickadmin.avip.fields.rate-details')</th>
                         <th>@lang('quickadmin.avip.fields.state')</th>
                         <th>@lang('quickadmin.avip.fields.pin-code')</th>
+                        <th>Patient_Match</th>
+                        <th>Avip_Match</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -198,8 +200,9 @@
                 {data: 'rate_details', name: 'rate_details'},
                 {data: 'state', name: 'state'},
                 {data: 'pin_code', name: 'pin_code'},
-
-                {data: 'actions', name: 'actions', searchable: false, sortable: false}
+                {data: 'actions', name: 'actions', searchable: false, sortable: false},
+                {data: 'patient_match', name: 'patient_match'},
+                {data: 'avip_match', name: 'avip_match'}
             ];
             processAjaxTables();
         });
