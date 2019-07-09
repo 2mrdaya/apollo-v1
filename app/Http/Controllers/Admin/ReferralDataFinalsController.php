@@ -38,7 +38,7 @@ class ReferralDataFinalsController extends Controller
             }
 
             $query = DB::select(DB::raw("SELECT referral_data_finals.id as row_id,
-                referral_data_finals.*,
+                referral_data_finals.*, referral_data_finals.uhid as referral_uhid,
                 ip.*,
                 patient.*, patient.patient_name as patient_name_org,
                 message.*,

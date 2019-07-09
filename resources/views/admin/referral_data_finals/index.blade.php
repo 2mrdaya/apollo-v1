@@ -135,7 +135,7 @@
                 {data: 'doi_as_per_whats_app', name: 'doi_as_per_whats_app'},
                 {data: 'doi_as_per_sw', name: 'doi_as_per_sw'},
                 {data: 'area', name: 'area'},
-                {data: 'uhid', name: 'uhid'},
+                {data: 'referral_uhid', name: 'uhid'},
                 {data: 'ip_no', name: 'ip_no'},
                 {data: 'dr_name_aic', name: 'dr_name_aic'},
                 {data: 'fee_percent', name: 'fee_percent'},
