@@ -24,10 +24,8 @@ class UpdateReferralDataFinalsRequest extends FormRequest
     {
         return [
             
-            'date_time_of_reg' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
-            'admission_time' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
-            'date_of_discharged' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
-            'msg_date_time' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
+            'doi_as_per_whats_app' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
+            'doi_as_per_sw' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
         ];
     }
 }

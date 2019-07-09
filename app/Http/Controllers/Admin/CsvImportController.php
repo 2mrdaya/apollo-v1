@@ -18,9 +18,9 @@ class CsvImportController extends Controller
 
         $file = $request->file('csv_file');
 
-        $request->validate([
+        /*$request->validate([
             'csv_file' => 'mimes:csv,txt,xlsx',
-        ]);
+        ]);*/
 
         $ext = $file->getClientOriginalExtension();
 

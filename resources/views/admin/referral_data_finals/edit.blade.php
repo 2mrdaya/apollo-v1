@@ -2,7 +2,7 @@
 
 @section('content')
     <h3 class="page-title">@lang('quickadmin.referral-data-final.title')</h3>
-    
+
     {!! Form::model($referral_data_final, ['method' => 'PUT', 'route' => ['admin.referral_data_finals.update', $referral_data_final->id]]) !!}
 
     <div class="panel panel-default">
@@ -25,24 +25,36 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('date_time_of_int', trans('quickadmin.referral-data-final.fields.date-time-of-int').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('date_time_of_int', old('date_time_of_int'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('msg_desc', trans('quickadmin.referral-data-final.fields.msg-desc').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('msg_desc', old('msg_desc'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('date_time_of_int'))
+                    @if($errors->has('msg_desc'))
                         <p class="help-block">
-                            {{ $errors->first('date_time_of_int') }}
+                            {{ $errors->first('msg_desc') }}
                         </p>
                     @endif
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('executive', trans('quickadmin.referral-data-final.fields.executive').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('executive', old('executive'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('doi_as_per_whats_app', trans('quickadmin.referral-data-final.fields.doi-as-per-whats-app').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('doi_as_per_whats_app', old('doi_as_per_whats_app'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('executive'))
+                    @if($errors->has('doi_as_per_whats_app'))
                         <p class="help-block">
-                            {{ $errors->first('executive') }}
+                            {{ $errors->first('doi_as_per_whats_app') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('doi_as_per_sw', trans('quickadmin.referral-data-final.fields.doi-as-per-sw').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('doi_as_per_sw', old('doi_as_per_sw'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('doi_as_per_sw'))
+                        <p class="help-block">
+                            {{ $errors->first('doi_as_per_sw') }}
                         </p>
                     @endif
                 </div>
@@ -61,36 +73,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('patient_name', trans('quickadmin.referral-data-final.fields.patient-name').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('patient_name', old('patient_name'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('patient_name'))
-                        <p class="help-block">
-                            {{ $errors->first('patient_name') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
                     {!! Form::label('uhid', trans('quickadmin.referral-data-final.fields.uhid').'', ['class' => 'control-label']) !!}
                     {!! Form::text('uhid', old('uhid'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('uhid'))
                         <p class="help-block">
                             {{ $errors->first('uhid') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('date_time_of_reg', trans('quickadmin.referral-data-final.fields.date-time-of-reg').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('date_time_of_reg', old('date_time_of_reg'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('date_time_of_reg'))
-                        <p class="help-block">
-                            {{ $errors->first('date_time_of_reg') }}
                         </p>
                     @endif
                 </div>
@@ -109,96 +97,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('bill_no', trans('quickadmin.referral-data-final.fields.bill-no').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('bill_no', old('bill_no'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('bill_no'))
-                        <p class="help-block">
-                            {{ $errors->first('bill_no') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('admission_time', trans('quickadmin.referral-data-final.fields.admission-time').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('admission_time', old('admission_time'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('admission_time'))
-                        <p class="help-block">
-                            {{ $errors->first('admission_time') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('date_of_discharged', trans('quickadmin.referral-data-final.fields.date-of-discharged').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('date_of_discharged', old('date_of_discharged'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('date_of_discharged'))
-                        <p class="help-block">
-                            {{ $errors->first('date_of_discharged') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('procedure_name', trans('quickadmin.referral-data-final.fields.procedure-name').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('procedure_name', old('procedure_name'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('procedure_name'))
-                        <p class="help-block">
-                            {{ $errors->first('procedure_name') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
                     {!! Form::label('dr_name_aic', trans('quickadmin.referral-data-final.fields.dr-name-aic').'', ['class' => 'control-label']) !!}
                     {!! Form::text('dr_name_aic', old('dr_name_aic'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('dr_name_aic'))
                         <p class="help-block">
                             {{ $errors->first('dr_name_aic') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('total_bill_amount', trans('quickadmin.referral-data-final.fields.total-bill-amount').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('total_bill_amount', old('total_bill_amount'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('total_bill_amount'))
-                        <p class="help-block">
-                            {{ $errors->first('total_bill_amount') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('net_amount', trans('quickadmin.referral-data-final.fields.net-amount').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('net_amount', old('net_amount'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('net_amount'))
-                        <p class="help-block">
-                            {{ $errors->first('net_amount') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('aic_fee', trans('quickadmin.referral-data-final.fields.aic-fee').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('aic_fee', old('aic_fee'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('aic_fee'))
-                        <p class="help-block">
-                            {{ $errors->first('aic_fee') }}
                         </p>
                     @endif
                 </div>
@@ -217,24 +121,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('treating_consultant', trans('quickadmin.referral-data-final.fields.treating-consultant').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('treating_consultant', old('treating_consultant'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('aic_fee', trans('quickadmin.referral-data-final.fields.aic-fee').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('aic_fee', old('aic_fee'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('treating_consultant'))
+                    @if($errors->has('aic_fee'))
                         <p class="help-block">
-                            {{ $errors->first('treating_consultant') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('department', trans('quickadmin.referral-data-final.fields.department').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('department', old('department'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('department'))
-                        <p class="help-block">
-                            {{ $errors->first('department') }}
+                            {{ $errors->first('aic_fee') }}
                         </p>
                     @endif
                 </div>
@@ -253,6 +145,30 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
+                    {!! Form::label('pateint_name_msg', trans('quickadmin.referral-data-final.fields.pateint-name-msg').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('pateint_name_msg', old('pateint_name_msg'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('pateint_name_msg'))
+                        <p class="help-block">
+                            {{ $errors->first('pateint_name_msg') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('avip_name_msg', trans('quickadmin.referral-data-final.fields.avip-name-msg').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('avip_name_msg', old('avip_name_msg'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('avip_name_msg'))
+                        <p class="help-block">
+                            {{ $errors->first('avip_name_msg') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
                     {!! Form::label('remarks', trans('quickadmin.referral-data-final.fields.remarks').'', ['class' => 'control-label']) !!}
                     {!! Form::text('remarks', old('remarks'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
@@ -265,53 +181,78 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('message', trans('quickadmin.referral-data-final.fields.message').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('message', old('message'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('approve', trans('quickadmin.referral-data-final.fields.approve').'', ['class' => 'control-label']) !!}
+                    {!! Form::hidden('approve', 0) !!}
+                    {!! Form::checkbox('approve', 1, old('approve', old('approve')), []) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('message'))
+                    @if($errors->has('approve'))
                         <p class="help-block">
-                            {{ $errors->first('message') }}
+                            {{ $errors->first('approve') }}
                         </p>
                     @endif
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('msg_date_time', trans('quickadmin.referral-data-final.fields.msg-date-time').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('msg_date_time', old('msg_date_time'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
+                    {!! Form::label('status', trans('quickadmin.referral-data-final.fields.status').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('status', $enum_status, old('status'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('msg_date_time'))
+                    @if($errors->has('status'))
                         <p class="help-block">
-                            {{ $errors->first('msg_date_time') }}
+                            {{ $errors->first('status') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            {{--<div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('ip_id', trans('quickadmin.referral-data-final.fields.ip').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('ip_id', $ips, old('ip_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('ip_id'))
+                        <p class="help-block">
+                            {{ $errors->first('ip_id') }}
                         </p>
                     @endif
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('consumable', trans('quickadmin.referral-data-final.fields.consumable').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('consumable', old('consumable'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('message_id', trans('quickadmin.referral-data-final.fields.message').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('message_id', $messages, old('message_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('consumable'))
+                    @if($errors->has('message_id'))
                         <p class="help-block">
-                            {{ $errors->first('consumable') }}
+                            {{ $errors->first('message_id') }}
                         </p>
                     @endif
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('ward_pharmacy', trans('quickadmin.referral-data-final.fields.ward-pharmacy').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('ward_pharmacy', old('ward_pharmacy'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('patient_id', trans('quickadmin.referral-data-final.fields.patient').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('patient_id', $patients, old('patient_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('ward_pharmacy'))
+                    @if($errors->has('patient_id'))
                         <p class="help-block">
-                            {{ $errors->first('ward_pharmacy') }}
+                            {{ $errors->first('patient_id') }}
                         </p>
                     @endif
                 </div>
             </div>
-            
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('avip_id', trans('quickadmin.referral-data-final.fields.avip').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('avip_id', $avips, old('avip_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('avip_id'))
+                        <p class="help-block">
+                            {{ $errors->first('avip_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>--}}
+
         </div>
     </div>
 
@@ -329,14 +270,14 @@
             moment.updateLocale('{{ App::getLocale() }}', {
                 week: { dow: 1 } // Monday is the first day of the week
             });
-            
+
             $('.datetime').datetimepicker({
                 format: "{{ config('app.datetime_format_moment') }}",
                 locale: "{{ App::getLocale() }}",
                 sideBySide: true,
             });
-            
+
         });
     </script>
-            
+
 @stop

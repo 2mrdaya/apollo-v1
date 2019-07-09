@@ -10,36 +10,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App
  * @property string $month
- * @property string $date_time_of_int
- * @property string $executive
+ * @property string $msg_desc
+ * @property string $doi_as_per_whats_app
+ * @property string $doi_as_per_sw
  * @property string $area
- * @property string $patient_name
  * @property string $uhid
- * @property string $date_time_of_reg
  * @property string $ip_no
- * @property string $bill_no
- * @property string $admission_time
- * @property string $date_of_discharged
- * @property string $procedure_name
  * @property string $dr_name_aic
- * @property decimal $total_bill_amount
- * @property decimal $net_amount
- * @property decimal $aic_fee
  * @property decimal $fee_percent
- * @property string $treating_consultant
- * @property string $department
+ * @property decimal $aic_fee
  * @property string $pan_no
+ * @property string $pateint_name_msg
+ * @property string $avip_name_msg
  * @property string $remarks
+ * @property tinyInteger $approve
+ * @property enum $status
+ * @property string $ip
  * @property string $message
- * @property string $msg_date_time
- * @property decimal $consumable
- * @property decimal $ward_pharmacy
+ * @property string $patient
+ * @property string $avip
 */
 class ReferralDataFinal extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['month', 'date_time_of_int', 'executive', 'area', 'patient_name', 'uhid', 'date_time_of_reg', 'ip_no', 'bill_no', 'admission_time', 'date_of_discharged', 'procedure_name', 'dr_name_aic', 'total_bill_amount', 'net_amount', 'aic_fee', 'fee_percent', 'treating_consultant', 'department', 'pan_no', 'remarks', 'message', 'msg_date_time', 'consumable', 'ward_pharmacy'];
+    protected $fillable = ['month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'ip_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'pan_no', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
     protected $hidden = [];
 
 
@@ -50,16 +45,18 @@ class ReferralDataFinal extends Model
         ReferralDataFinal::observe(new \App\Observers\UserActionsObserver);
     }
 
+    public static $enum_status = ["Ok" => "Ok", "LateIntimation" => "LateIntimation", "Reject" => "Reject", "CarryForward" => "CarryForward", "RepeatAdmission" => "RepeatAdmission", "Other" => "Other"];
+
     /**
      * Set attribute to date format
      * @param $input
      */
-    public function setDateTimeOfRegAttribute($input)
+    public function setDoiAsPerWhatsAppAttribute($input)
     {
         if ($input != null && $input != '') {
-            $this->attributes['date_time_of_reg'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
+            $this->attributes['doi_as_per_whats_app'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
         } else {
-            $this->attributes['date_time_of_reg'] = null;
+            $this->attributes['doi_as_per_whats_app'] = null;
         }
     }
 
@@ -69,7 +66,7 @@ class ReferralDataFinal extends Model
      *
      * @return string
      */
-    public function getDateTimeOfRegAttribute($input)
+    public function getDoiAsPerWhatsAppAttribute($input)
     {
         $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format') . ' H:i:s');
 
@@ -84,12 +81,12 @@ class ReferralDataFinal extends Model
      * Set attribute to date format
      * @param $input
      */
-    public function setAdmissionTimeAttribute($input)
+    public function setDoiAsPerSwAttribute($input)
     {
         if ($input != null && $input != '') {
-            $this->attributes['admission_time'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
+            $this->attributes['doi_as_per_sw'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
         } else {
-            $this->attributes['admission_time'] = null;
+            $this->attributes['doi_as_per_sw'] = null;
         }
     }
 
@@ -99,7 +96,7 @@ class ReferralDataFinal extends Model
      *
      * @return string
      */
-    public function getAdmissionTimeAttribute($input)
+    public function getDoiAsPerSwAttribute($input)
     {
         $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format') . ' H:i:s');
 
@@ -108,63 +105,6 @@ class ReferralDataFinal extends Model
         } else {
             return '';
         }
-    }
-
-    /**
-     * Set attribute to date format
-     * @param $input
-     */
-    public function setDateOfDischargedAttribute($input)
-    {
-        if ($input != null && $input != '') {
-            $this->attributes['date_of_discharged'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
-        } else {
-            $this->attributes['date_of_discharged'] = null;
-        }
-    }
-
-    /**
-     * Get attribute from date format
-     * @param $input
-     *
-     * @return string
-     */
-    public function getDateOfDischargedAttribute($input)
-    {
-        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format') . ' H:i:s');
-
-        if ($input != $zeroDate && $input != null) {
-            return Carbon::createFromFormat('Y-m-d H:i:s', $input)->format(config('app.date_format') . ' H:i:s');
-        } else {
-            return '';
-        }
-    }
-
-    /**
-     * Set attribute to money format
-     * @param $input
-     */
-    public function setTotalBillAmountAttribute($input)
-    {
-        $this->attributes['total_bill_amount'] = $input ? $input : null;
-    }
-
-    /**
-     * Set attribute to money format
-     * @param $input
-     */
-    public function setNetAmountAttribute($input)
-    {
-        $this->attributes['net_amount'] = $input ? $input : null;
-    }
-
-    /**
-     * Set attribute to money format
-     * @param $input
-     */
-    public function setAicFeeAttribute($input)
-    {
-        $this->attributes['aic_fee'] = $input ? $input : null;
     }
 
     /**
@@ -177,50 +117,73 @@ class ReferralDataFinal extends Model
     }
 
     /**
-     * Set attribute to date format
-     * @param $input
-     */
-    public function setMsgDateTimeAttribute($input)
-    {
-        if ($input != null && $input != '') {
-            $this->attributes['msg_date_time'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
-        } else {
-            $this->attributes['msg_date_time'] = null;
-        }
-    }
-
-    /**
-     * Get attribute from date format
-     * @param $input
-     *
-     * @return string
-     */
-    public function getMsgDateTimeAttribute($input)
-    {
-        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format') . ' H:i:s');
-
-        if ($input != $zeroDate && $input != null) {
-            return Carbon::createFromFormat('Y-m-d H:i:s', $input)->format(config('app.date_format') . ' H:i:s');
-        } else {
-            return '';
-        }
-    }
-
-    /**
      * Set attribute to money format
      * @param $input
      */
-    public function setConsumableAttribute($input)
+    public function setAicFeeAttribute($input)
     {
-        $this->attributes['consumable'] = $input ? $input : null;
+        $this->attributes['aic_fee'] = $input ? $input : null;
     }
 
     /**
-     * Set attribute to money format
+     * Set to null if empty
      * @param $input
      */
-    public function setWardPharmacyAttribute($input)
+    public function setIpIdAttribute($input)
     {
-        $this->attributes['ward_pharmacy'] = $input ? $input : null;
+        $this->attributes['ip_id'] = $input ? $input : null;
     }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setMessageIdAttribute($input)
+    {
+        $this->attributes['message_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setPatientIdAttribute($input)
+    {
+        $this->attributes['patient_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setAvipIdAttribute($input)
+    {
+        $this->attributes['avip_id'] = $input ? $input : null;
+    }
+
+    public function ip()
+    {
+        return $this->belongsTo(Ip::class, 'ip_id')->withTrashed();
+    }
+
+    public function message()
+    {
+        return $this->belongsTo(MessageMapping::class, 'message_id')->withTrashed();
+    }
+
+    public function msg_desc()
+    {
+        return $this->belongsTo(MessageMapping::class, 'message', 'msg_desc')->withTrashed();
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo(PatientRegistration::class, 'patient_id')->withTrashed();
+    }
+
+    public function avip()
+    {
+        return $this->belongsTo(Avip::class, 'avip_id')->withTrashed();
+    }
+
 }

@@ -213,11 +213,11 @@ function processAjaxTables(objTable) {
         objTable = $('.ajaxTable');
     }
 
-    // Setup - add a text input to each footer cell
-    $(objTable).find('thead th input').remove();
+    // Setup - add a text input to each header cell
+    $(objTable).find('thead th input [type=text]').remove();
     $(objTable).find('thead th').each( function () {
         var title = $(this).text().trim();
-        if(title && title != 'Action') {
+        if(title != 'Action') {
             $(this).html($(this).html() + '<input type="text" placeholder="Search '+title+'" />');
         }
     } );
@@ -248,7 +248,7 @@ function processAjaxTables(objTable) {
             var colSearch = state.columns[colIdx].search;
 
             if ( colSearch.search ) {
-            $( 'input', table.column( colIdx ).header() ).val( colSearch.search );
+                $( 'input', table.column( colIdx ).header() ).val( colSearch.search );
             }
         } );
 

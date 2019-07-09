@@ -81,6 +81,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('ppn_payments_restore/{id}', ['uses' => 'Admin\PpnPaymentsController@restore', 'as' => 'ppn_payments.restore']);
     Route::delete('ppn_payments_perma_del/{id}', ['uses' => 'Admin\PpnPaymentsController@perma_del', 'as' => 'ppn_payments.perma_del']);
 
+    Route::get('referral_data_finals_process_month/{month}', ['uses' => 'Admin\ReferralDataFinalsController@processMonth', 'as' => 'referral_data_finals_process_month']);
+    Route::get('referral_data_finals_process_one/{id}', ['uses' => 'Admin\ReferralDataFinalsController@processOne', 'as' => 'referral_data_finals_process_one']);
+
     Route::post('csv_parse', 'Admin\CsvImportController@parse')->name('csv_parse');
     Route::post('csv_process', 'Admin\CsvImportController@process')->name('csv_process');
 

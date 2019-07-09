@@ -65,42 +65,11 @@ class ImportCsvHelper {
     }
 
     public static function ReferralDataFinalProcess($row) {
-        try {
-            //$row['date_time_of_int'] = $row['date_time_of_int'] ? Carbon::createFromFormat(config('app.date_format_intimation'), str_replace(';',':',$row['date_time_of_int']))->format('Y-m-d H:i:s') : null;
-        } catch (\Exception $e) {
-            var_dump($row);die;
-            $row['remarks'] = 'Tempered Date Formate ' + $row['date_time_of_int'];
-            $row['date_time_of_int'] = null;
-        }
-
-        try {
-            //$row['date_time_of_reg'] = $row['date_time_of_reg'] ? Carbon::createFromFormat(config('app.date_format_registration'), str_replace(';',':',$row['date_time_of_reg']))->format('Y-m-d H:i:s') : null;
-        } catch (\Exception $e) {
-            $row['remarks'] = 'Tempered Date Formate ' + $row['date_time_of_reg'];
-            $row['date_time_of_reg'] = null;
-        }
-
-        try {
-            //$row['admission_time'] = $row['admission_time'] ? Carbon::createFromFormat(config('app.date_format_admission'), str_replace(';',':',$row['admission_time']))->format('Y-m-d H:i:s') : null;
-        } catch (\Exception $e) {
-            $row['remarks'] = 'Tempered Date Formate ' + $row['admission_time'];
-            $row['admission_time'] = null;
-        }
-
-        try {
-            //$row['date_of_discharged'] = $row['date_of_discharged'] ? Carbon::createFromFormat(config('app.date_format_admission'), str_replace(';',':',$row['date_of_discharged']))->format('Y-m-d H:i:s') : null;
-        } catch (\Exception $e) {
-            $row['remarks'] = 'Tempered Date Formate ' + $row['date_of_discharged'];
-            $row['date_of_discharged'] = null;
-        }
-
-        try {
-            //$row['msg_date_time'] = $row['msg_date_time'] ? Carbon::createFromFormat(config('app.date_format_sms'), str_replace(';',':',$row['msg_date_time']))->format('Y-m-d H:i:s') : null;
-        } catch (\Exception $e) {
-            $row['remarks'] = 'Tempered Date Formate ' + $row['msg_date_time'];
-            $row['msg_date_time'] = null;
-        }
-
+        $row['doi_as_per_whats_app'] = trim($row['doi_as_per_whats_app']);
+        $row['doi_as_per_sw'] = trim($row['doi_as_per_sw']);
+        $row['doi_as_per_whats_app'] = $row['doi_as_per_whats_app'] ? Carbon::createFromFormat(config('app.doi_as_per_whats_app'), str_replace(';',':',$row['doi_as_per_whats_app']))->format('Y-m-d H:i:s') : null;
+        $row['doi_as_per_sw'] = $row['doi_as_per_sw'] ? Carbon::createFromFormat(config('app.doi_as_per_sw'), str_replace(';',':',$row['doi_as_per_sw']))->format('Y-m-d H:i:s') : null;
+        $row['msg_desc'] = substr(trim($row['msg_desc']),0,500);
         $row['fee_percent'] = $row['fee_percent'] ? str_replace('%','',$row['fee_percent']) : 0;
 
         return $row;

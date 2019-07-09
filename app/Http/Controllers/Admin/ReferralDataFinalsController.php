@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
 use App\ReferralDataFinal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -24,46 +25,31 @@ class ReferralDataFinalsController extends Controller
         }
 
 
-        
+
         if (request()->ajax()) {
-            $query = ReferralDataFinal::query();
             $template = 'actionsTemplate';
             if(request('show_deleted') == 1) {
-                
+
         if (! Gate::allows('referral_data_final_delete')) {
             return abort(401);
         }
-                $query->onlyTrashed();
+
                 $template = 'restoreTemplate';
             }
-            $query->select([
-                'referral_data_finals.id',
-                'referral_data_finals.month',
-                'referral_data_finals.date_time_of_int',
-                'referral_data_finals.executive',
-                'referral_data_finals.area',
-                'referral_data_finals.patient_name',
-                'referral_data_finals.uhid',
-                'referral_data_finals.date_time_of_reg',
-                'referral_data_finals.ip_no',
-                'referral_data_finals.bill_no',
-                'referral_data_finals.admission_time',
-                'referral_data_finals.date_of_discharged',
-                'referral_data_finals.procedure_name',
-                'referral_data_finals.dr_name_aic',
-                'referral_data_finals.total_bill_amount',
-                'referral_data_finals.net_amount',
-                'referral_data_finals.aic_fee',
-                'referral_data_finals.fee_percent',
-                'referral_data_finals.treating_consultant',
-                'referral_data_finals.department',
-                'referral_data_finals.pan_no',
-                'referral_data_finals.remarks',
-                'referral_data_finals.message',
-                'referral_data_finals.msg_date_time',
-                'referral_data_finals.consumable',
-                'referral_data_finals.ward_pharmacy',
-            ]);
+
+            $query = DB::select(DB::raw("SELECT referral_data_finals.id as row_id,
+                referral_data_finals.*,
+                ip.*,
+                patient.*,
+                message.*,
+                avip.*
+                FROM referral_data_finals
+                left join ips as ip on ip.ip_no = referral_data_finals.ip_no
+                left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid and CHAR_LENGTH(patient.uhid)>=10
+                left join message_mappings as message on message.message = referral_data_finals.msg_desc
+                left join avips as avip on avip.pan_number = referral_data_finals.pan_no and CHAR_LENGTH(avip.pan_number)>=10"
+            ));
+
             $table = Datatables::of($query);
 
             $table->setRowAttr([
@@ -75,86 +61,60 @@ class ReferralDataFinalsController extends Controller
                 $gateKey  = 'referral_data_final_';
                 $routeKey = 'admin.referral_data_finals';
 
-                return view($template, compact('row', 'gateKey', 'routeKey'));
+                return view('actionsTemplate1', compact('row', 'gateKey', 'routeKey'));
             });
             $table->editColumn('month', function ($row) {
                 return $row->month ? $row->month : '';
             });
-            $table->editColumn('date_time_of_int', function ($row) {
-                return $row->date_time_of_int ? $row->date_time_of_int : '';
+            $table->editColumn('msg_desc', function ($row) {
+                return $row->msg_desc ? $row->msg_desc : '';
             });
-            $table->editColumn('executive', function ($row) {
-                return $row->executive ? $row->executive : '';
+            $table->editColumn('doi_as_per_whats_app', function ($row) {
+                return $row->doi_as_per_whats_app ? $row->doi_as_per_whats_app : '';
+            });
+            $table->editColumn('doi_as_per_sw', function ($row) {
+                return $row->doi_as_per_sw ? $row->doi_as_per_sw : '';
             });
             $table->editColumn('area', function ($row) {
                 return $row->area ? $row->area : '';
             });
-            $table->editColumn('patient_name', function ($row) {
-                return $row->patient_name ? $row->patient_name : '';
-            });
             $table->editColumn('uhid', function ($row) {
                 return $row->uhid ? $row->uhid : '';
-            });
-            $table->editColumn('date_time_of_reg', function ($row) {
-                return $row->date_time_of_reg ? $row->date_time_of_reg : '';
             });
             $table->editColumn('ip_no', function ($row) {
                 return $row->ip_no ? $row->ip_no : '';
             });
-            $table->editColumn('bill_no', function ($row) {
-                return $row->bill_no ? $row->bill_no : '';
-            });
-            $table->editColumn('admission_time', function ($row) {
-                return $row->admission_time ? $row->admission_time : '';
-            });
-            $table->editColumn('date_of_discharged', function ($row) {
-                return $row->date_of_discharged ? $row->date_of_discharged : '';
-            });
-            $table->editColumn('procedure_name', function ($row) {
-                return $row->procedure_name ? $row->procedure_name : '';
-            });
             $table->editColumn('dr_name_aic', function ($row) {
                 return $row->dr_name_aic ? $row->dr_name_aic : '';
-            });
-            $table->editColumn('total_bill_amount', function ($row) {
-                return $row->total_bill_amount ? $row->total_bill_amount : '';
-            });
-            $table->editColumn('net_amount', function ($row) {
-                return $row->net_amount ? $row->net_amount : '';
-            });
-            $table->editColumn('aic_fee', function ($row) {
-                return $row->aic_fee ? $row->aic_fee : '';
             });
             $table->editColumn('fee_percent', function ($row) {
                 return $row->fee_percent ? $row->fee_percent : '';
             });
-            $table->editColumn('treating_consultant', function ($row) {
-                return $row->treating_consultant ? $row->treating_consultant : '';
-            });
-            $table->editColumn('department', function ($row) {
-                return $row->department ? $row->department : '';
+            $table->editColumn('aic_fee', function ($row) {
+                return $row->aic_fee ? $row->aic_fee : '';
             });
             $table->editColumn('pan_no', function ($row) {
                 return $row->pan_no ? $row->pan_no : '';
             });
+            $table->editColumn('pateint_name_msg', function ($row) {
+                //return \Form::text('pateint_name_msg', $row->pateint_name_msg ? $row->pateint_name_msg : '');
+                return $row->pateint_name_msg ? $row->pateint_name_msg : '';
+            });
+            $table->editColumn('avip_name_msg', function ($row) {
+                return $row->avip_name_msg ? $row->avip_name_msg : '';
+            });
             $table->editColumn('remarks', function ($row) {
                 return $row->remarks ? $row->remarks : '';
             });
-            $table->editColumn('message', function ($row) {
-                return $row->message ? $row->message : '';
+            $table->editColumn('approve', function ($row) {
+                return \Form::checkbox("approve", 0, $row->approve == 1);
             });
-            $table->editColumn('msg_date_time', function ($row) {
-                return $row->msg_date_time ? $row->msg_date_time : '';
-            });
-            $table->editColumn('consumable', function ($row) {
-                return $row->consumable ? $row->consumable : '';
-            });
-            $table->editColumn('ward_pharmacy', function ($row) {
-                return $row->ward_pharmacy ? $row->ward_pharmacy : '';
+            $table->editColumn('status', function ($row) {
+                return $row->status ? $row->status : '';
             });
 
-            $table->rawColumns(['actions','massDelete']);
-
+            $table->rawColumns(['actions','massDelete','approve']);
+            //var_dump($table->make(true));die;
             return $table->make(true);
         }
 
@@ -171,7 +131,14 @@ class ReferralDataFinalsController extends Controller
         if (! Gate::allows('referral_data_final_create')) {
             return abort(401);
         }
-        return view('admin.referral_data_finals.create');
+
+        $ips = \App\Ip::get()->pluck('ip_no', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $messages = \App\MessageMapping::get()->pluck('source', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $patients = \App\PatientRegistration::get()->pluck('uhid', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $avips = \App\Avip::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $enum_status = ReferralDataFinal::$enum_status;
+
+        return view('admin.referral_data_finals.create', compact('enum_status', 'ips', 'messages', 'patients', 'avips'));
     }
 
     /**
@@ -204,9 +171,16 @@ class ReferralDataFinalsController extends Controller
         if (! Gate::allows('referral_data_final_edit')) {
             return abort(401);
         }
+
+        //$ips = \App\Ip::get()->pluck('ip_no', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        //$messages = \App\MessageMapping::get()->pluck('source', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        //$patients = \App\PatientRegistration::get()->pluck('uhid', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        //$avips = \App\Avip::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $enum_status = ReferralDataFinal::$enum_status;
+
         $referral_data_final = ReferralDataFinal::findOrFail($id);
 
-        return view('admin.referral_data_finals.edit', compact('referral_data_final'));
+        return view('admin.referral_data_finals.edit', compact('referral_data_final', 'enum_status'));//, 'ips', 'messages', 'patients', 'avips'));
     }
 
     /**
@@ -317,4 +291,202 @@ class ReferralDataFinalsController extends Controller
 
         return redirect()->route('admin.referral_data_finals.index');
     }
+
+    /**
+     * Process ReferralDataFinal Single.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function processOne($id)
+    {
+        $query = DB::select(DB::raw("SELECT
+            referral_data_finals.id as referral_id, referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
+            referral_data_finals.dr_name_aic, referral_data_finals.uhid,
+            ip.id as ip_id, ip.ip_no,
+            patient.id as patient_id, patient.uhid, patient.registration_date, patient.patient_name,
+            message.id as message_id, message.message, message.channel, message.intimation_date_time,
+            message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
+            avip.id as avip_id, avip.name as name_avip
+            FROM referral_data_finals
+            left join ips as ip on ip.ip_no = referral_data_finals.ip_no
+            left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
+            left join message_mappings as message on message.message = referral_data_finals.msg_desc
+            left join avips as avip on avip.pan_number = referral_data_finals.pan_no
+            where referral_data_finals.id=".$id
+        ));
+
+        foreach ($query as $row) {
+            $this->process($row);
+        }
+        echo "Done Successfully!";
+        return redirect()->route('admin.referral_data_finals.index');
+    }
+
+    /**
+     * Process ReferralDataFinal Month.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function processMonth($month)
+    {
+        $query = DB::select(DB::raw("SELECT
+            referral_data_finals.id as referral_id, referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
+            referral_data_finals.dr_name_aic, referral_data_finals.uhid,
+            ip.id as ip_id, ip.ip_no,
+            patient.id as patient_id, patient.uhid, patient.registration_date, patient.patient_name,
+            message.id as message_id, message.message, message.channel, message.intimation_date_time,
+            message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
+            avip.id as avip_id, avip.name as name_avip
+            FROM referral_data_finals
+            left join ips as ip on ip.ip_no = referral_data_finals.ip_no
+            left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
+            left join message_mappings as message on message.message = referral_data_finals.msg_desc
+            left join avips as avip on avip.pan_number = referral_data_finals.pan_no
+            where referral_data_finals.month='".$month."'"
+        ));
+
+        foreach ($query as $row) {
+            $this->process($row);
+        }
+        echo "Done Successfully!";
+        return redirect()->route('admin.referral_data_finals.index');
+    }
+
+    /**
+     * Process ReferralDataFinal Month.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function process($row)
+    {
+        //var_dump($row);die;
+
+        $errors = [];
+
+        //find message by uhid
+        $query = DB::select(DB::raw("SELECT
+            message.id, message.message, message.channel, message.intimation_date_time,
+            message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
+            LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
+            FROM message_mappings as message
+            join patient_registrations as patient on patient.id = message.uhid_id
+            where patient.uhid='".$row->uhid."' order by intimation_date_time ASC limit 1"
+        ));
+
+        foreach ($query as $row_msg) {
+            //check message in mapping table
+            if($row->message && trim($row->message) != trim($row_msg->message)){
+                array_push($errors, 'MsgInMappingNotMaching');
+            }
+            else {
+                $row->message_id = $row_msg->id;
+                $row->message = $row_msg->message;
+                $row->registration_date = $row_msg->intimation_date_time;
+                $row->patient_name_msg = $row_msg->patient_name_msg;
+                $row->referrer_name_msg = $row_msg->referrer_name_msg;
+            }
+            break;
+        }
+
+        //match name if message not matched
+        if ($row->message == null && $row->patient_name != '' && $row->patient_name != null) {
+            $query = DB::select(DB::raw("SELECT
+                message.id, message.message, message.channel, message.intimation_date_time,
+                message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
+                LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
+                FROM message_mappings as message
+                where SOUNDEX(message.patient_name)=SOUNDEX('".$row->patient_name."') order by distance ASC limit 1"
+            ));
+
+            foreach ($query as $row_msg) {
+                $row->message_id = $row_msg->id;
+                $row->message = $row_msg->message;
+                $row->registration_date = $row_msg->intimation_date_time;
+                $row->patient_name_msg = $row_msg->patient_name_msg;
+                $row->referrer_name_msg = $row_msg->referrer_name_msg;
+                break;
+            }
+        }
+
+        //check patient available
+        if($row->registration_date == null) {
+            array_push($errors, 'PatientNotAvailable');
+        }
+
+        //check registration date is priop than message intimation
+        if($row->registration_date && $row->registration_date <= $row->intimation_date_time) {
+            array_push($errors, 'LateIntimation');
+        }
+
+        //check registration date is priop than message intimation
+        if($row->ip_no == null) {
+            array_push($errors, 'NotInIp');
+        }
+
+        //check match percentage
+        similar_text(strtoupper($row->patient_name),strtoupper($row->patient_name_msg),$percent);
+        if($row->patient_name && $row->patient_name_msg && $percent < 70) {
+            array_push($errors, 'MatchPercent<70');
+        }
+
+        //check avip table
+        if($row->name_avip == null && trim($row->name_avip)=='') {
+            array_push($errors, 'AvipNotAvailable');
+        }
+
+        $row->message = str_replace("'","''",$row->message);
+        $row->patient_name_msg = str_replace("'","''",$row->patient_name_msg);
+        $row->referrer_name_msg = str_replace("'","''",$row->referrer_name_msg);
+        //update referral_data_finals table
+        $query = DB::select(DB::raw("UPDATE referral_data_finals set
+            msg_desc = '".$row->message."' ,
+            pateint_name_msg = '".$row->patient_name_msg."' ,
+            avip_name_msg = '".$row->referrer_name_msg."'
+            where id=".$row->referral_id
+        ));
+
+         //check duplicate uhids
+         if($row->uhid != null && trim($row->uhid) != '') {
+            $query = DB::select(DB::raw("SELECT
+                uhid
+                FROM referral_data_finals
+                where uhid='".$row->uhid."'"
+            ));
+
+            if(count($query)>1) {
+                array_push($errors, 'MultipleRecords');
+            }
+         }
+
+        //check duplicate uhids
+        if($row->message != null && trim($row->message) != '') {
+            $query = DB::select(DB::raw("SELECT
+                uhid
+                FROM referral_data_finals
+                left join message_mappings as message on trim(message.message) = trim(referral_data_finals.msg_desc)
+                where trim(msg_desc)='".trim($row->message)."'"
+            ));
+
+            if(count($query)>1) {
+                array_push($errors, 'MultipleRecordsMsg');
+            }
+        }
+
+        $status = 'Ok';
+        if(count($errors)>0) {
+            $status = 'Other';
+        }
+
+        //update referral_data_finals table
+        $query = DB::select(DB::raw("UPDATE referral_data_finals set
+            status = '".$status."' ,
+            remarks = '".implode(",",$errors)."'
+            where id=".$row->referral_id
+        ));
+    }
 }
+
+
