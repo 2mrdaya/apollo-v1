@@ -105,13 +105,13 @@
                         <th>@lang('quickadmin.avip.fields.rate-details')</th>
                         <th>@lang('quickadmin.avip.fields.state')</th>
                         <th>@lang('quickadmin.avip.fields.pin-code')</th>
-                        <th>Patient_Match</th>
-                        <th>Avip_Match</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
                         <th>&nbsp;</th>
                         @endif
+                        <th>Patient_Match</th>
+                        <th>Avip_Match</th>
                     </tr>
                 </thead>
             </table>
@@ -149,7 +149,7 @@
                 {data: 'ip_no', name: 'ip_no'},
                 {data: 'uhid', name: 'uhid'},
                 {data: 'bill_date', name: 'bill_date'},
-                {data: 'patient_name', name: 'patient_name'},
+                {data: 'patient_name_org', name: 'patient_name'},
                 {data: 'country', name: 'country'},
                 {data: 'state', name: 'state'},
                 {data: 'city', name: 'city'},

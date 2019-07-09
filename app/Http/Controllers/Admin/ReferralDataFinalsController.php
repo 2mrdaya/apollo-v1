@@ -40,7 +40,7 @@ class ReferralDataFinalsController extends Controller
             $query = DB::select(DB::raw("SELECT referral_data_finals.id as row_id,
                 referral_data_finals.*,
                 ip.*,
-                patient.*,
+                patient.*, patient.patient_name as patient_name_org,
                 message.*,
                 avip.*
                 FROM referral_data_finals
@@ -118,7 +118,8 @@ class ReferralDataFinalsController extends Controller
             $table->rawColumns(['actions','massDelete','approve']);
 
             $table->editColumn('patient_match', function ($row) {
-                similar_text(strtoupper($row->patient_name),strtoupper($row->pateint_name_msg),$percent);
+                similar_text(strtoupper($row->patient_name_org),strtoupper($row->pateint_name_msg),$percent);
+                //var_dump($row->patient_name, $row->pateint_name_msg, $percent);
                 return round($percent,0);
             });
 
