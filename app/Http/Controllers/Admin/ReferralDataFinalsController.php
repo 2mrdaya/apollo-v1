@@ -408,7 +408,7 @@ class ReferralDataFinalsController extends Controller
         }
 
         $search_in_whatsapp = false;
-        if ($row->message == null || ($row->doi_as_per_whats_app && $row->doi_as_per_sw && $row->doi_as_per_sw >= $row->registration_date)) {
+        if ($row->message == null || ($row->doi_as_per_whats_app && $row->doi_as_per_sw && $row->doi_as_per_sw >= $row->registration_date && stripos($row->message, 'Mail') == false)) {
             $search_in_whatsapp = true;
         }
 
