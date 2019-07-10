@@ -7,15 +7,17 @@ def replace_strings(x):
     x = re.sub('\,', ' ', x,flags=re.IGNORECASE)
     x = re.sub('\-', ' ', x,flags=re.IGNORECASE)
     x = re.sub('b\/o', '', x,flags=re.IGNORECASE)
-    x = re.sub('bo', '', x,flags=re.IGNORECASE)
+    x = re.sub('bo ', '', x,flags=re.IGNORECASE)
     x = re.sub('baby of', '', x,flags=re.IGNORECASE)
     x = re.sub('master', '', x,flags=re.IGNORECASE)
     x = re.sub('mast', '', x,flags=re.IGNORECASE)
     x = re.sub('mrs', '', x,flags=re.IGNORECASE)
     x = re.sub('mr', '', x,flags=re.IGNORECASE)
     x = re.sub('ms', '', x,flags=re.IGNORECASE)
-    x = re.sub('dr', '', x,flags=re.IGNORECASE)
     x = re.sub('patient ref', 'ref', x,flags=re.IGNORECASE)
+    x = re.sub('patient to', 'to', x,flags=re.IGNORECASE)
+    x = re.sub('patient from', 'from', x,flags=re.IGNORECASE)
+    x = re.sub('patient by', 'by', x,flags=re.IGNORECASE)
     x = re.sub('afg', '', x,flags=re.IGNORECASE)
     x = re.sub(' +', ' ', x,flags=re.IGNORECASE)
     x = re.sub('to dr', '', x,flags=re.IGNORECASE)
@@ -58,7 +60,7 @@ def find(x, search_values):
         if len(re.findall('\d+',lsname)) :
             lsname = ''
 
-        if fsname.find('ref') >= 0 or fsname == ',':
+        if fsname.find('ref') >= 0 or fsname == 'name' or fsname == ',':
             fsname = midname
             midname = lsname
             lsname = ''

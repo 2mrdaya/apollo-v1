@@ -214,7 +214,7 @@ function processAjaxTables(objTable) {
     }
 
     // Setup - add a text input to each header cell
-    $(objTable).find('thead th input [type=text]').remove();
+    $(objTable).find('thead th input[type=text]').remove();
     $(objTable).find('thead th').each( function () {
         var title = $(this).text().trim();
         if(title != 'Action') {

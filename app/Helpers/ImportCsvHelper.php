@@ -88,20 +88,20 @@ class ImportCsvHelper {
 
     public static function MessageMappingSmsPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
         ));
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
         ));
         return $query;
     }
 
     public static function MessageMappingWhatsAppPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
         ));
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.source = t2.source AND t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
         ));
         return $query;
     }

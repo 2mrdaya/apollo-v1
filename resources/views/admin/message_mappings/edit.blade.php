@@ -168,7 +168,7 @@
             ];
             window.dtDefaultOptions.buttons = [];
             window.dtDefaultOptions.paging = true;
-            window.dtDefaultOptions.searching = false;
+            window.dtDefaultOptions.searching = true;
             window.dtDefaultOptions.order = [[ 9, "desc" ]];
             window.dtDefaultOptions.select = {style: 'single'};
             //$.fn.dataTable.ext.errMode = 'throw';
@@ -226,7 +226,7 @@
             ];
             window.dtDefaultOptions.buttons = [];
             window.dtDefaultOptions.paging = true;
-            window.dtDefaultOptions.searching = false;
+            window.dtDefaultOptions.searching = true;
             window.dtDefaultOptions.order = [[ 18, "desc" ]];
             window.dtDefaultOptions.select = {style: 'single'};
             //$.fn.dataTable.ext.errMode = 'throw';

@@ -317,6 +317,7 @@ class ReferralDataFinalsController extends Controller
         $query = DB::select(DB::raw("SELECT
             referral_data_finals.id as referral_id, referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
             referral_data_finals.dr_name_aic, referral_data_finals.uhid,
+            referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
             ip.id as ip_id, ip.ip_no,
             patient.id as patient_id, patient.uhid, patient.registration_date, patient.patient_name,
             message.id as message_id, message.message, message.channel, message.intimation_date_time,
@@ -326,7 +327,7 @@ class ReferralDataFinalsController extends Controller
             left join ips as ip on ip.ip_no = referral_data_finals.ip_no
             left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
             left join message_mappings as message on message.message = referral_data_finals.msg_desc
-            left join avips as avip on avip.pan_number = referral_data_finals.pan_no
+            left join avips as avip on avip.pan_number = referral_data_finals.pan_no and CHAR_LENGTH(avip.pan_number)>=10
             where referral_data_finals.id=".$id
         ));
 
@@ -348,6 +349,7 @@ class ReferralDataFinalsController extends Controller
         $query = DB::select(DB::raw("SELECT
             referral_data_finals.id as referral_id, referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
             referral_data_finals.dr_name_aic, referral_data_finals.uhid,
+            referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
             ip.id as ip_id, ip.ip_no,
             patient.id as patient_id, patient.uhid, patient.registration_date, patient.patient_name,
             message.id as message_id, message.message, message.channel, message.intimation_date_time,
@@ -357,7 +359,7 @@ class ReferralDataFinalsController extends Controller
             left join ips as ip on ip.ip_no = referral_data_finals.ip_no
             left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
             left join message_mappings as message on message.message = referral_data_finals.msg_desc
-            left join avips as avip on avip.pan_number = referral_data_finals.pan_no
+            left join avips as avip on avip.pan_number = referral_data_finals.pan_no and CHAR_LENGTH(avip.pan_number)>=10
             where referral_data_finals.month='".$month."'"
         ));
 
@@ -405,14 +407,20 @@ class ReferralDataFinalsController extends Controller
             break;
         }
 
+        $search_in_whatsapp = false;
+        if ($row->message == null || ($row->doi_as_per_whats_app && $row->doi_as_per_sw && $row->doi_as_per_sw >= $row->registration_date)) {
+            $search_in_whatsapp = true;
+        }
+
         //match name if message not matched
-        if ($row->message == null && $row->patient_name != '' && $row->patient_name != null) {
+        if ($search_in_whatsapp && $row->patient_name != '' && $row->patient_name != null) {
             $query = DB::select(DB::raw("SELECT
                 message.id, message.message, message.channel, message.intimation_date_time,
                 message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
                 LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
                 FROM message_mappings as message
-                where SOUNDEX(message.patient_name)=SOUNDEX('".$row->patient_name."') order by distance ASC limit 1"
+                where channel = 'WhatsApp' and date(message.intimation_date_time) = date('".$row->doi_as_per_whats_app."')
+                order by distance ASC limit 1"
             ));
 
             foreach ($query as $row_msg) {
@@ -506,6 +514,66 @@ class ReferralDataFinalsController extends Controller
             where id=".$row->referral_id
         ));
     }
+
+    public function process1($row)
+    {
+        //var_dump($row);die;
+        $ctr = 0;
+        $errors = [];
+
+        $search_in_whatsapp = false;
+        if ($row->message == null || ($row->doi_as_per_whats_app && $row->doi_as_per_sw && $row->doi_as_per_sw >= $row->registration_date)) {
+            $search_in_whatsapp = true;
+        }
+
+        //match name if message not matched
+        if ($search_in_whatsapp && $row->patient_name != '' && $row->patient_name != null) {
+            $query = DB::select(DB::raw("SELECT
+                message.id, message.message, message.channel, message.intimation_date_time,
+                message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
+                LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
+                FROM message_mappings as message
+                where channel = 'WhatsApp' and date(message.intimation_date_time) = date('".$row->doi_as_per_whats_app."')
+                order by distance ASC limit 1"
+            ));
+
+            foreach ($query as $row_msg) {
+                $row->message_id = $row_msg->id;
+                $row->message = $row_msg->message;
+                $row->registration_date = $row_msg->intimation_date_time;
+                $row->patient_name_msg = $row_msg->patient_name_msg;
+                $row->referrer_name_msg = $row_msg->referrer_name_msg;
+                break;
+            }
+        }
+
+        //check patient available
+        if($row->registration_date == null) {
+            array_push($errors, 'PatientNotAvailable');
+        }
+
+        //check registration date is priop than message intimation
+        if($row->registration_date && $row->registration_date <= $row->intimation_date_time) {
+            array_push($errors, 'LateIntimation');
+        }
+
+        //check registration date is priop than message intimation
+        if($row->ip_no == null) {
+            array_push($errors, 'NotInIp');
+        }
+
+        //check match percentage
+        similar_text(strtoupper($row->patient_name),strtoupper($row->patient_name_msg),$percent);
+        if($row->patient_name && $row->patient_name_msg && $percent < 70) {
+            array_push($errors, 'MatchPercent<70');
+        }
+
+        //check avip table
+        if($row->name_avip == null && trim($row->name_avip)=='') {
+            array_push($errors, 'AvipNotAvailable');
+        }
+    }
+
 }
 
 
