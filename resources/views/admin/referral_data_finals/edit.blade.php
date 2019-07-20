@@ -25,6 +25,18 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
+                    {!! Form::label('vendor', trans('quickadmin.referral-data-final.fields.vendor').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('vendor', $enum_vendor, old('vendor'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('vendor'))
+                        <p class="help-block">
+                            {{ $errors->first('vendor') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
                     {!! Form::label('msg_desc', trans('quickadmin.referral-data-final.fields.msg-desc').'', ['class' => 'control-label']) !!}
                     {!! Form::text('msg_desc', old('msg_desc'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>

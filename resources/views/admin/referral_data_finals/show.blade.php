@@ -13,6 +13,10 @@
                 <div class="col-md-6">
                     <table class="table table-bordered table-striped">
                         <tr>
+                            <th>@lang('quickadmin.referral-data-final.fields.vendor')</th>
+                            <td field-key='vendor'>{{ $referral_data_final->vendor }}</td>
+                        </tr>
+                        <tr>
                             <th>@lang('quickadmin.referral-data-final.fields.month')</th>
                             <td field-key='month'>{{ $referral_data_final->month }}</td>
                         </tr>

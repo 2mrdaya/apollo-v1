@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class ReferralDataFinal
  *
  * @package App
+ * @property enum $vendor
  * @property string $month
  * @property string $msg_desc
  * @property string $doi_as_per_whats_app
@@ -34,16 +35,18 @@ class ReferralDataFinal extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'ip_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'pan_no', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
+    protected $fillable = ['vendor', 'month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'ip_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'pan_no', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
     protected $hidden = [];
-
-
+    
+    
     public static function boot()
     {
         parent::boot();
 
         ReferralDataFinal::observe(new \App\Observers\UserActionsObserver);
     }
+
+    public static $enum_vendor = ["PPN" => "PPN", "HCF" => "HCF"];
 
     public static $enum_status = ["Ok" => "Ok", "LateIntimation" => "LateIntimation", "Reject" => "Reject", "CarryForward" => "CarryForward", "RepeatAdmission" => "RepeatAdmission", "Other" => "Other"];
 
@@ -160,30 +163,25 @@ class ReferralDataFinal extends Model
     {
         $this->attributes['avip_id'] = $input ? $input : null;
     }
-
+    
     public function ip()
     {
         return $this->belongsTo(Ip::class, 'ip_id')->withTrashed();
     }
-
+    
     public function message()
     {
         return $this->belongsTo(MessageMapping::class, 'message_id')->withTrashed();
     }
-
-    public function msg_desc()
-    {
-        return $this->belongsTo(MessageMapping::class, 'message', 'msg_desc')->withTrashed();
-    }
-
+    
     public function patient()
     {
         return $this->belongsTo(PatientRegistration::class, 'patient_id')->withTrashed();
     }
-
+    
     public function avip()
     {
         return $this->belongsTo(Avip::class, 'avip_id')->withTrashed();
     }
-
+    
 }

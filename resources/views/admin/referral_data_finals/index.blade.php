@@ -36,6 +36,7 @@
                         @endcan
 
                         <th>@lang('quickadmin.referral-data-final.fields.month')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.vendor')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.msg-desc')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.doi-as-per-whats-app')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.doi-as-per-sw')</th>
@@ -131,6 +132,7 @@
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
                 @endif
                 @endcan{data: 'month', name: 'month'},
+                {data: 'vendor', name: 'vendor'},
                 {data: 'msg_desc', name: 'msg_desc'},
                 {data: 'doi_as_per_whats_app', name: 'doi_as_per_whats_app'},
                 {data: 'doi_as_per_sw', name: 'doi_as_per_sw'},

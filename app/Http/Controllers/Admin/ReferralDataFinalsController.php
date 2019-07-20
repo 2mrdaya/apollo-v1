@@ -68,6 +68,9 @@ class ReferralDataFinalsController extends Controller
             $table->editColumn('month', function ($row) {
                 return $row->month ? $row->month : '';
             });
+            $table->editColumn('vendor', function ($row) {
+                return $row->vendor ? $row->vendor : '';
+            });
             $table->editColumn('msg_desc', function ($row) {
                 return $row->msg_desc ? $row->msg_desc : '';
             });
@@ -150,9 +153,10 @@ class ReferralDataFinalsController extends Controller
         $messages = \App\MessageMapping::get()->pluck('source', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         $patients = \App\PatientRegistration::get()->pluck('uhid', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         $avips = \App\Avip::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $enum_vendor = ReferralDataFinal::$enum_vendor;
         $enum_status = ReferralDataFinal::$enum_status;
 
-        return view('admin.referral_data_finals.create', compact('enum_status', 'ips', 'messages', 'patients', 'avips'));
+        return view('admin.referral_data_finals.create', compact('enum_vendor', 'enum_status', 'ips', 'messages', 'patients', 'avips'));
     }
 
     /**
@@ -190,11 +194,12 @@ class ReferralDataFinalsController extends Controller
         //$messages = \App\MessageMapping::get()->pluck('source', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         //$patients = \App\PatientRegistration::get()->pluck('uhid', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         //$avips = \App\Avip::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $enum_vendor = ReferralDataFinal::$enum_vendor;
         $enum_status = ReferralDataFinal::$enum_status;
 
         $referral_data_final = ReferralDataFinal::findOrFail($id);
 
-        return view('admin.referral_data_finals.edit', compact('referral_data_final', 'enum_status'));//, 'ips', 'messages', 'patients', 'avips'));
+        return view('admin.referral_data_finals.edit', compact('referral_data_final', 'enum_vendor', 'enum_status'));//, 'ips', 'messages', 'patients', 'avips'));
     }
 
     /**
