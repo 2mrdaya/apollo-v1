@@ -106,6 +106,13 @@ class ImportCsvHelper {
         return $query;
     }
 
+    public static function PatientRegistrationPostProcess() {
+        $query = DB::select(DB::raw(
+            "DELETE t1 FROM patient_registrations t1, message_mappings t2 WHERE t1.id > t2.id AND t1.uhis =t2.uhis"
+        ));
+        return $query;
+    }
+
     public static function FindNames($module, $message) {
         $process = new Process(['python', '../app/Python/FindString.py', $module, $message]);
         $process->run();

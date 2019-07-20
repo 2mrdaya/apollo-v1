@@ -10,11 +10,11 @@ $(document).ready(function () {
         retrieve: true,
         dom: 'lBfrtip<"actions">',
         columnDefs: [],
-        iDisplayLength: 10,
+        iDisplayLength: 5,
         aaSorting: [],
         stateSave: true,
         stateDuration: 60 * 5,
-        lengthMenu: [[10, 50, 500, 5000], [10, 50, 500, 5000]],
+        lengthMenu: [[5, 10, 50, 500, 5000], [5, 10, 50, 500, 5000]],
         buttons: [
             {
                 extend: 'copy',
@@ -218,7 +218,7 @@ function processAjaxTables(objTable) {
     $(objTable).find('thead th').each( function () {
         var title = $(this).text().trim();
         if(title != 'Action') {
-            $(this).html($(this).html() + '<input type="text" placeholder="Search '+title+'" />');
+            $(this).html($(this).html() + '<input type="text" style="width:100px" placeholder="Search '+title+'" />');
         }
     } );
 
