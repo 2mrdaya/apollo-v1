@@ -23,6 +23,7 @@ def replace_strings(x):
     x = re.sub('to dr', '', x,flags=re.IGNORECASE)
     x = re.sub('under dr', '', x,flags=re.IGNORECASE)
     x = re.sub('in a\/c of', 'by', x,flags=re.IGNORECASE)
+    x = re.sub('in ac of', 'by', x,flags=re.IGNORECASE)
     return x
 
 def find(x, search_values):

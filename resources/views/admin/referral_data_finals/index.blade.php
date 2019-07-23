@@ -140,7 +140,7 @@
                 {data: 'registration_date', name: 'registration_date'},
                 {data: 'area', name: 'area'},
                 {data: 'referral_uhid', name: 'uhid'},
-                {data: 'patient_name', name: 'patient_name'},
+                {data: 'patient_name_org', name: 'patient_name'},
                 {data: 'pateint_name_msg', name: 'pateint_name_msg'},
                 {data: 'dr_name_aic', name: 'dr_name_aic'},
                 {data: 'avip_name_msg', name: 'avip_name_msg'},
