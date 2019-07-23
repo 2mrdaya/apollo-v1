@@ -14,7 +14,7 @@ $(document).ready(function () {
         aaSorting: [],
         stateSave: true,
         stateDuration: 60 * 5,
-        lengthMenu: [[5, 10, 50, 500, 5000], [5, 10, 50, 500, 5000]],
+        lengthMenu: [[5, 10, 50, 500, 5000, 100000], [5, 10, 50, 500, 5000, 100000]],
         buttons: [
             {
                 extend: 'copy',
