@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\UpdateMessageMappingsRequest;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use App\Helpers\ImportCsvHelper;
+use DB;
 
 class MessageMappingsController extends Controller
 {
@@ -268,5 +269,24 @@ class MessageMappingsController extends Controller
         $message_mapping->forceDelete();
 
         return redirect()->route('admin.message_mappings.index');
+    }
+
+
+    public function updateNames()
+    {
+        $entries = MessageMapping::whereNull('uhid_id')->get();
+        $ctr = 0;
+        foreach ($entries as $entry) {
+            $patient_name = ImportCsvHelper::FindNames('find_patient', $entry['message']);
+            $avip_name = ImportCsvHelper::FindNames('find_avip', $entry['message']);
+
+            $patient_name = trim(preg_replace('/\s+/',' ', $patient_name));
+            $avip_name = trim(preg_replace('/\s+/',' ', $avip_name));
+
+            echo($entry['message'].'=='.$patient_name.'->'.$avip_name.'->'.$ctr++.'</BR>');
+
+            $entry->update(['patient_name' => $patient_name, 'referrer_name' => $avip_name]);
+        }
+
     }
 }
