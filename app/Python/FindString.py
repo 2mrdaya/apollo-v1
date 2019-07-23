@@ -2,6 +2,7 @@ import sys
 import re
 
 def replace_strings(x):
+    x = re.sub('dept', '', x,flags=re.IGNORECASE)
     x = re.sub('\.', ' ', x,flags=re.IGNORECASE)
     x = re.sub('\:', ' ', x,flags=re.IGNORECASE)
     x = re.sub('\,', ' ', x,flags=re.IGNORECASE)
