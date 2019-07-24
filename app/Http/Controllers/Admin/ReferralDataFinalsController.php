@@ -216,7 +216,7 @@ class ReferralDataFinalsController extends Controller
         }
         $referral_data_final = ReferralDataFinal::findOrFail($id);
         $referral_data_final->update($request->all());
-
+        $this->processOne($referral_data_final->id);
 
 
         return redirect()->route('admin.referral_data_finals.index');
