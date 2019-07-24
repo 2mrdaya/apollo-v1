@@ -62,9 +62,9 @@ $(document).ready(function () {
                 text: 'Reload',
                 action: function ( e, dt, node, config ) {
                     // Reset Column filtering
-                    $('.datatable thead input').val('').change();
+                    $('.datatable thead input').val('');
                     // Redraw table (and reset main search filter)
-                    $(".datatable").DataTable().search("").draw();
+                    //$(".datatable").DataTable().search("").draw();
                     dt.state.clear();
                     //dt.ajax.reload();
                     window.location.reload();

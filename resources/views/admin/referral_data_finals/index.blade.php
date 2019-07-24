@@ -127,6 +127,76 @@
         @endcan
         $(document).ready(function () {
             window.dtDefaultOptions.ajax = '{!! route('admin.referral_data_finals.index') !!}?show_deleted={{ request('show_deleted') }}';
+            window.dtDefaultOptions.buttons = [
+                {
+                    extend: 'copy',
+                    text: window.copyButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'csv',
+                    text: window.csvButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    text: window.excelButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: window.pdfButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: window.printButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    text: window.colvisButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    text: 'Reload',
+                    action: function ( e, dt, node, config ) {
+                        // Reset Column filtering
+                        $('.dataTable thead input').val('');
+                        // Redraw table (and reset main search filter)
+                        //$(".datatable").DataTable().search("").draw();
+                        dt.state.clear();
+                        //dt.ajax.reload();
+                        window.location.reload();
+                    }
+                },
+                {
+                    text: 'Process',
+                    action: function ( e, dt, node, config ) {
+                        // Reset Column filtering
+                        month = $('.dataTable thead input[placeholder="Search Month"]').val();
+                        //alert("{!! route('admin.referral_data_finals.index') !!}" + month);
+                        if (!month) {
+                            month = window.prompt("Please enter month", month);
+                        }
+                        if(month) {
+                            window.location.href = "{!! route('admin.referral_data_finals.index') !!}_process_month/" + month;
+                        }
+                    }
+                },
+            ];
             window.dtDefaultOptions.columns = [@can('referral_data_final_delete')
                 @if ( request('show_deleted') != 1 )
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
