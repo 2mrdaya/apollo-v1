@@ -256,12 +256,12 @@ function processAjaxTables(objTable) {
         }
         // Apply the search
         table.columns().eq( 0 ).each( function ( colIdx ) {
-            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', delay(function () {
                 table
                     .column( colIdx )
                     .search( this.value )
                     .draw();
-            } );
+            }, 1000));
         } );
     });
 
@@ -271,6 +271,17 @@ function processAjaxTables(objTable) {
     } );
 
     return table;
+}
+
+function delay(callback, ms) {
+    var timer = 0;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        callback.apply(context, args);
+      }, ms || 0);
+    };
 }
 
 $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
