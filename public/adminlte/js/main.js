@@ -259,7 +259,8 @@ function processAjaxTables(objTable) {
         table.columns().eq( 0 ).each( function ( colIdx ) {
             $( 'input[type=text]', table.column( colIdx ).header() ).on( 'keyup change', delay(function (e) {
                 let key = Number(e.key)
-                if (!isNaN(key)) {
+                var inp = String.fromCharCode(e.keyCode);
+                if (/[a-zA-Z0-9-_ \b,@#$%&*!^+=.'":()]/.test(inp)) {
                     table
                     .column( colIdx )
                     .search( this.value )
