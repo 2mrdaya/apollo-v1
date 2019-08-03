@@ -486,7 +486,7 @@ class ReferralDataFinalsController extends Controller
             ));
 
             if(count($query)>1) {
-                array_push($errors, 'MultipleRecords');
+                array_push($errors, 'MultipleBills');
             }
          }
 
@@ -500,7 +500,7 @@ class ReferralDataFinalsController extends Controller
             ));
 
             if(count($query)>1) {
-                array_push($errors, 'MultipleRecordsMsg');
+                array_push($errors, 'MultipleMessage');
             }
         }
 
