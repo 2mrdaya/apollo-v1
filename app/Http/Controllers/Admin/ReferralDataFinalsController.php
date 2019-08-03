@@ -267,6 +267,8 @@ class ReferralDataFinalsController extends Controller
         if (! Gate::allows('referral_data_final_delete')) {
             return abort(401);
         }
+        //var_dump($request->input('ids'));
+        //die;
         if ($request->input('ids')) {
             $entries = ReferralDataFinal::whereIn('id', $request->input('ids'))->get();
 

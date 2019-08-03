@@ -128,6 +128,7 @@ $(document).ready(function () {
     });
 
     $('.mass').click(function () {
+        //alert("inside mass");
         if ($(this).is(":checked")) {
             $('.single').each(function () {
                 if ($(this).is(":checked") == false) {
@@ -256,11 +257,14 @@ function processAjaxTables(objTable) {
         }
         // Apply the search
         table.columns().eq( 0 ).each( function ( colIdx ) {
-            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', delay(function () {
-                table
+            $( 'input[type=text]', table.column( colIdx ).header() ).on( 'keyup', delay(function (e) {
+                let key = Number(e.key)
+                if (!isNaN(key)) {
+                    table
                     .column( colIdx )
                     .search( this.value )
                     .draw();
+                }
             }, 1000));
         } );
     });
