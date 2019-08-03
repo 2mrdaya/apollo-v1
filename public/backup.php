@@ -7,6 +7,6 @@
  
    $backup_file = '/var/www/html/apollo-v1/database/backup/'. $dbname . date("Y-m-d-H-i-s") . '.gz';
    $command = "mysqldump --opt -u $dbuser -p$dbpass ". $dbname ."| gzip > $backup_file";
-   echo $command;   
    system($command);
+   print("Back done with file name --> ". $backup_file);
 ?>
