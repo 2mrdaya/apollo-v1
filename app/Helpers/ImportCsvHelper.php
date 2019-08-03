@@ -87,6 +87,11 @@ class ImportCsvHelper {
         return $row;
     }
 
+    public static function OpdProcess($row) {
+        $row['bill_date'] = Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s');
+        return $row;
+    }
+
     public static function MessageMappingSmsPostProcess() {
         $query = DB::select(DB::raw(
             "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
@@ -109,7 +114,7 @@ class ImportCsvHelper {
 
     public static function PatientRegistrationPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM patient_registrations t1, message_mappings t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid"
+            "DELETE t1 FROM patient_registrations t1, patient_registrations t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid"
         ));
         return $query;
     }
