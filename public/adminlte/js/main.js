@@ -257,7 +257,7 @@ function processAjaxTables(objTable) {
         }
         // Apply the search
         table.columns().eq( 0 ).each( function ( colIdx ) {
-            $( 'input[type=text]', table.column( colIdx ).header() ).on( 'keyup', delay(function (e) {
+            $( 'input[type=text]', table.column( colIdx ).header() ).on( 'keyup change', delay(function (e) {
                 let key = Number(e.key)
                 if (!isNaN(key)) {
                     table

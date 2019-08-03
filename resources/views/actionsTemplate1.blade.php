@@ -1,5 +1,5 @@
 @can($gateKey.'edit')
-    <a href="{{ route($routeKey.'_process_one', $row->row_id) }}" class="btn btn-xs btn-info">Process</a>
+    <a href="{{ route($routeKey.'_process_one', $row->row_id) }}" class="btn btn-xs btn-primary">Process</a>
 @endcan
 @can($gateKey.'view')
     <a href="{{ route($routeKey.'.show', $row->row_id) }}"

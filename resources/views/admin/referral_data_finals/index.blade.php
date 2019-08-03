@@ -171,18 +171,6 @@
                     }
                 },
                 {
-                    text: 'Reload',
-                    action: function ( e, dt, node, config ) {
-                        // Reset Column filtering
-                        $('.dataTable thead input').val('');
-                        // Redraw table (and reset main search filter)
-                        //$(".datatable").DataTable().search("").draw();
-                        dt.state.clear();
-                        //dt.ajax.reload();
-                        window.location.reload();
-                    }
-                },
-                {
                     text: 'Process',
                     action: function ( e, dt, node, config ) {
                         // Reset Column filtering
@@ -194,6 +182,18 @@
                         if(month) {
                             window.location.href = "{!! route('admin.referral_data_finals.index') !!}_process_month/" + month;
                         }
+                    }
+                },
+                {
+                    text: 'Reload',
+                    action: function ( e, dt, node, config ) {
+                        // Reset Column filtering
+                        $('.dataTable thead input').val('');
+                        // Redraw table (and reset main search filter)
+                        //$(".datatable").DataTable().search("").draw();
+                        dt.state.clear();
+                        //dt.ajax.reload();
+                        window.location.reload();
                     }
                 },
             ];
