@@ -83,7 +83,7 @@ class ImportCsvHelper {
 
     public static function IpProcess($row) {
         $row['bill_date'] = Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s');
-        $row['total_consumables'] = $row['total_consumables'] ? (is_numeric($row['total_consumables']) ? $row['total_consumables'] : 0) : 0;
+        $row['total_consumables'] = isset($row['total_consumables']) ? (is_numeric($row['total_consumables']) ? $row['total_consumables'] : 0) : 0;
         return $row;
     }
 
