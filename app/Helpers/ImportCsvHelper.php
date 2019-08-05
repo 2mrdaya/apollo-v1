@@ -133,6 +133,13 @@ class ImportCsvHelper {
         return $query;
     }
 
+    public static function ReferralDataFinalPostProcess() {
+        $query = DB::select(DB::raw(
+            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid AND t1.ip_no =t2.ip_no AND t1.aic_fee =t2.aic_fee"
+        ));
+        return $query;
+    }
+
     public static function FindNames($module, $message) {
         $process = new Process(['python', '../app/Python/FindString.py', $module, $message]);
         $process->run();

@@ -27,14 +27,14 @@ class ReferralDataFinalsController extends Controller
 
 
         if (request()->ajax()) {
-            $template = 'actionsTemplate';
+            $template = 'actionsTemplate1';
             if(request('show_deleted') == 1) {
 
         if (! Gate::allows('referral_data_final_delete')) {
             return abort(401);
         }
 
-                $template = 'restoreTemplate';
+                $template = 'restoreTemplate1';
             }
 
             $query = DB::select(DB::raw("SELECT referral_data_finals.id as row_id,
@@ -53,7 +53,7 @@ class ReferralDataFinalsController extends Controller
             $table = Datatables::of($query);
 
             $table->setRowAttr([
-                'data-entry-id' => '{{$id}}',
+                'data-entry-id' => '{{$row_id}}',
             ]);
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
@@ -63,7 +63,7 @@ class ReferralDataFinalsController extends Controller
                 $gateKey  = 'referral_data_final_';
                 $routeKey = 'admin.referral_data_finals';
 
-                return view('actionsTemplate1', compact('row', 'gateKey', 'routeKey'));
+                return view($template, compact('row', 'gateKey', 'routeKey'));
             });
             $table->editColumn('month', function ($row) {
                 return $row->month ? $row->month : '';
@@ -267,8 +267,6 @@ class ReferralDataFinalsController extends Controller
         if (! Gate::allows('referral_data_final_delete')) {
             return abort(401);
         }
-        //var_dump($request->input('ids'));
-        //die;
         if ($request->input('ids')) {
             $entries = ReferralDataFinal::whereIn('id', $request->input('ids'))->get();
 
@@ -307,6 +305,7 @@ class ReferralDataFinalsController extends Controller
         if (! Gate::allows('referral_data_final_delete')) {
             return abort(401);
         }
+
         $referral_data_final = ReferralDataFinal::onlyTrashed()->findOrFail($id);
         $referral_data_final->forceDelete();
 
