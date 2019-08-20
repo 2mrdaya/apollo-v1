@@ -5,7 +5,7 @@
     <section class="sidebar">
         <ul class="sidebar-menu">
 
-
+             
 
             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/') }}">
@@ -31,7 +31,7 @@
                             <span>@lang('quickadmin.roles.title')</span>
                         </a>
                     </li>@endcan
-
+                    
                     @can('user_access')
                     <li>
                         <a href="{{ route('admin.users.index') }}">
@@ -39,7 +39,7 @@
                             <span>@lang('quickadmin.users.title')</span>
                         </a>
                     </li>@endcan
-
+                    
                     @can('user_action_access')
                     <li>
                         <a href="{{ route('admin.user_actions.index') }}">
@@ -47,7 +47,7 @@
                             <span>@lang('quickadmin.user-actions.title')</span>
                         </a>
                     </li>@endcan
-
+                    
                     @can('system_setting_access')
                     <li>
                         <a href="{{ route('admin.system_settings.index') }}">
@@ -55,18 +55,18 @@
                             <span>@lang('quickadmin.system-settings.title')</span>
                         </a>
                     </li>@endcan
-
+                    
                 </ul>
             </li>@endcan
-
+            
             @can('avip_access')
             <li>
                 <a href="{{ route('admin.avips.index') }}">
                     <i class="fa fa-gears"></i>
-                    <span>Vendor Details</span>
+                    <span>@lang('quickadmin.avip.title')</span>
                 </a>
             </li>@endcan
-
+            
             @can('patient_registration_access')
             <li>
                 <a href="{{ route('admin.patient_registrations.index') }}">
@@ -74,31 +74,7 @@
                     <span>@lang('quickadmin.patient-registration.title')</span>
                 </a>
             </li>@endcan
-
-            {{--@can('sms_import_access')
-            <li>
-                <a href="{{ route('admin.sms_imports.index') }}">
-                    <i class="fa fa-file-text-o"></i>
-                    <span>@lang('quickadmin.sms-import.title')</span>
-                </a>
-            </li>@endcan
-
-            @can('whats_app_import_access')
-            <li>
-                <a href="{{ route('admin.whats_app_imports.index') }}">
-                    <i class="fa fa-file-text-o"></i>
-                    <span>@lang('quickadmin.whats-app-import.title')</span>
-                </a>
-            </li>@endcan
-
-            @can('email_import_access')
-            <li>
-                <a href="{{ route('admin.email_imports.index') }}">
-                    <i class="fa fa-file-text-o"></i>
-                    <span>@lang('quickadmin.email-import.title')</span>
-                </a>
-            </li>@endcan--}}
-
+            
             @can('message_mapping_access')
             <li>
                 <a href="{{ route('admin.message_mappings.index') }}">
@@ -106,15 +82,7 @@
                     <span>@lang('quickadmin.message-mapping.title')</span>
                 </a>
             </li>@endcan
-
-            @can('opd_access')
-            <li>
-                <a href="{{ route('admin.opds.index') }}">
-                    <i class="fa fa-gears"></i>
-                    <span>@lang('quickadmin.opd.title')</span>
-                </a>
-            </li>@endcan
-
+            
             @can('ip_access')
             <li>
                 <a href="{{ route('admin.ips.index') }}">
@@ -122,7 +90,7 @@
                     <span>@lang('quickadmin.ip.title')</span>
                 </a>
             </li>@endcan
-
+            
             @can('referral_data_final_access')
             <li>
                 <a href="{{ route('admin.referral_data_finals.index') }}">
@@ -130,19 +98,19 @@
                     <span>@lang('quickadmin.referral-data-final.title')</span>
                 </a>
             </li>@endcan
-
-            @can('ppn_payment_access')
+            
+            @can('gstimport_access')
             <li>
-                <a href="{{ route('admin.ppn_payments.index') }}">
+                <a href="{{ route('admin.gstimports.index') }}">
                     <i class="fa fa-gears"></i>
-                    <span>@lang('quickadmin.ppn-payments.title')</span>
+                    <span>@lang('quickadmin.gstimport.title')</span>
                 </a>
             </li>@endcan
+            
 
+            
 
-
-
-
+            
 
 
 

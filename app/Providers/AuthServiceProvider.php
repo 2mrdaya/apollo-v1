@@ -108,57 +108,6 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1, 2]);
         });
 
-        // Auth gates for: Sms import
-        Gate::define('sms_import_access', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('sms_import_create', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('sms_import_edit', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('sms_import_view', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('sms_import_delete', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-
-        // Auth gates for: Whats app import
-        Gate::define('whats_app_import_access', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('whats_app_import_create', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('whats_app_import_edit', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('whats_app_import_view', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('whats_app_import_delete', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-
-        // Auth gates for: Email import
-        Gate::define('email_import_access', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('email_import_create', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('email_import_edit', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('email_import_view', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('email_import_delete', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-
         // Auth gates for: Message mapping
         Gate::define('message_mapping_access', function ($user) {
             return in_array($user->role_id, [1, 2]);
@@ -173,23 +122,6 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1, 2]);
         });
         Gate::define('message_mapping_delete', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-
-        // Auth gates for: Opd
-        Gate::define('opd_access', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('opd_create', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('opd_edit', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('opd_view', function ($user) {
-            return in_array($user->role_id, [1, 2]);
-        });
-        Gate::define('opd_delete', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
 
@@ -227,20 +159,20 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1, 2]);
         });
 
-        // Auth gates for: Ppn payments
-        Gate::define('ppn_payment_access', function ($user) {
+        // Auth gates for: Gstimport
+        Gate::define('gstimport_access', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
-        Gate::define('ppn_payment_create', function ($user) {
+        Gate::define('gstimport_create', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
-        Gate::define('ppn_payment_edit', function ($user) {
+        Gate::define('gstimport_edit', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
-        Gate::define('ppn_payment_view', function ($user) {
+        Gate::define('gstimport_view', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
-        Gate::define('ppn_payment_delete', function ($user) {
+        Gate::define('gstimport_delete', function ($user) {
             return in_array($user->role_id, [1, 2]);
         });
 

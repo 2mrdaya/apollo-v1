@@ -30,12 +30,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property decimal $pharmacy_amt
  * @property decimal $total_consumables
  * @property string $bill_to
+ * @property string $admission_date
+ * @property string $discharge_date
 */
 class Ip extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['uhid', 'bill_date', 'ip_no', 'patient_name', 'country', 'state', 'city', 'bill_no', 'customer_name', 'total_service_amount', 'tax_amount', 'total_bill_amount', 'tcs_tax', 'discount_amount', 'doctor_name', 'speciality', 'surgical_package_name', 'total_pharmacy_amount', 'pharmacy_amt', 'total_consumables', 'bill_to'];
+    protected $fillable = ['uhid', 'bill_date', 'ip_no', 'patient_name', 'country', 'state', 'city', 'bill_no', 'customer_name', 'total_service_amount', 'tax_amount', 'total_bill_amount', 'tcs_tax', 'discount_amount', 'doctor_name', 'speciality', 'surgical_package_name', 'total_pharmacy_amount', 'pharmacy_amt', 'total_consumables', 'bill_to', 'admission_date', 'discharge_date'];
     protected $hidden = [];
     
     
@@ -146,6 +148,36 @@ class Ip extends Model
     public function setTotalConsumablesAttribute($input)
     {
         $this->attributes['total_consumables'] = $input ? $input : null;
+    }
+
+    /**
+     * Set attribute to date format
+     * @param $input
+     */
+    public function setAdmissionDateAttribute($input)
+    {
+        if ($input != null && $input != '') {
+            $this->attributes['admission_date'] = Carbon::createFromFormat(config('app.date_format') . ' H:i:s', $input)->format('Y-m-d H:i:s');
+        } else {
+            $this->attributes['admission_date'] = null;
+        }
+    }
+
+    /**
+     * Get attribute from date format
+     * @param $input
+     *
+     * @return string
+     */
+    public function getAdmissionDateAttribute($input)
+    {
+        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format') . ' H:i:s');
+
+        if ($input != $zeroDate && $input != null) {
+            return Carbon::createFromFormat('Y-m-d H:i:s', $input)->format(config('app.date_format') . ' H:i:s');
+        } else {
+            return '';
+        }
     }
     
 }

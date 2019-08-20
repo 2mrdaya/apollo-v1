@@ -263,6 +263,30 @@
                     @endif
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('admission_date', trans('quickadmin.ip.fields.admission-date').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('admission_date', old('admission_date'), ['class' => 'form-control datetime', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('admission_date'))
+                        <p class="help-block">
+                            {{ $errors->first('admission_date') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('discharge_date', trans('quickadmin.ip.fields.discharge-date').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('discharge_date', old('discharge_date'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('discharge_date'))
+                        <p class="help-block">
+                            {{ $errors->first('discharge_date') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
             
         </div>
     </div>
@@ -285,6 +309,12 @@
             $('.date').datetimepicker({
                 format: "{{ config('app.date_format_moment') }}",
                 locale: "{{ App::getLocale() }}",
+            });
+            
+            $('.datetime').datetimepicker({
+                format: "{{ config('app.datetime_format_moment') }}",
+                locale: "{{ App::getLocale() }}",
+                sideBySide: true,
             });
             
         });

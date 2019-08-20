@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('ppn_payments_mass_destroy', ['uses' => 'Admin\PpnPaymentsController@massDestroy', 'as' => 'ppn_payments.mass_destroy']);
     Route::post('ppn_payments_restore/{id}', ['uses' => 'Admin\PpnPaymentsController@restore', 'as' => 'ppn_payments.restore']);
     Route::delete('ppn_payments_perma_del/{id}', ['uses' => 'Admin\PpnPaymentsController@perma_del', 'as' => 'ppn_payments.perma_del']);
+    Route::resource('gstimports', 'Admin\GstimportsController');
+    Route::post('gstimports_mass_destroy', ['uses' => 'Admin\GstimportsController@massDestroy', 'as' => 'gstimports.mass_destroy']);
 
     Route::get('referral_data_finals_process_month/{month}', ['uses' => 'Admin\ReferralDataFinalsController@processMonth', 'as' => 'referral_data_finals_process_month']);
     Route::get('referral_data_finals_process_one/{id}', ['uses' => 'Admin\ReferralDataFinalsController@processOne', 'as' => 'referral_data_finals_process_one']);

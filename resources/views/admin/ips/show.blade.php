@@ -96,9 +96,134 @@
                             <th>@lang('quickadmin.ip.fields.bill-to')</th>
                             <td field-key='bill_to'>{{ $ip->bill_to }}</td>
                         </tr>
+                        <tr>
+                            <th>@lang('quickadmin.ip.fields.admission-date')</th>
+                            <td field-key='admission_date'>{{ $ip->admission_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('quickadmin.ip.fields.discharge-date')</th>
+                            <td field-key='discharge_date'>{{ $ip->discharge_date }}</td>
+                        </tr>
                     </table>
                 </div>
-            </div>
+            </div><!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    
+<li role="presentation" class="active"><a href="#referral_data_final" aria-controls="referral_data_final" role="tab" data-toggle="tab">Final Referral Data Import</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    
+<div role="tabpanel" class="tab-pane active" id="referral_data_final">
+<table class="table table-bordered table-striped {{ count($referral_data_finals) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('quickadmin.referral-data-final.fields.vendor')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.month')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.msg-desc')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.doi-as-per-whats-app')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.doi-as-per-sw')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.area')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.uhid')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.ip-no')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.dr-name-aic')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.fee-percent')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.aic-fee')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.pan-no')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.pateint-name-msg')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.avip-name-msg')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.remarks')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.approve')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.status')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.ip')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.message')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.patient')</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.avip')</th>
+                        @if( request('show_deleted') == 1 )
+                        <th>&nbsp;</th>
+                        @else
+                        <th>&nbsp;</th>
+                        @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($referral_data_finals) > 0)
+            @foreach ($referral_data_finals as $referral_data_final)
+                <tr data-entry-id="{{ $referral_data_final->id }}">
+                    <td field-key='vendor'>{{ $referral_data_final->vendor }}</td>
+                                <td field-key='month'>{{ $referral_data_final->month }}</td>
+                                <td field-key='msg_desc'>{{ $referral_data_final->msg_desc }}</td>
+                                <td field-key='doi_as_per_whats_app'>{{ $referral_data_final->doi_as_per_whats_app }}</td>
+                                <td field-key='doi_as_per_sw'>{{ $referral_data_final->doi_as_per_sw }}</td>
+                                <td field-key='area'>{{ $referral_data_final->area }}</td>
+                                <td field-key='uhid'>{{ $referral_data_final->uhid }}</td>
+                                <td field-key='ip_no'>{{ $referral_data_final->ip_no }}</td>
+                                <td field-key='dr_name_aic'>{{ $referral_data_final->dr_name_aic }}</td>
+                                <td field-key='fee_percent'>{{ $referral_data_final->fee_percent }}</td>
+                                <td field-key='aic_fee'>{{ $referral_data_final->aic_fee }}</td>
+                                <td field-key='pan_no'>{{ $referral_data_final->pan_no }}</td>
+                                <td field-key='pateint_name_msg'>{{ $referral_data_final->pateint_name_msg }}</td>
+                                <td field-key='avip_name_msg'>{{ $referral_data_final->avip_name_msg }}</td>
+                                <td field-key='remarks'>{{ $referral_data_final->remarks }}</td>
+                                <td field-key='approve'>{{ Form::checkbox("approve", 1, $referral_data_final->approve == 1 ? true : false, ["disabled"]) }}</td>
+                                <td field-key='status'>{{ $referral_data_final->status }}</td>
+                                <td field-key='ip'>{{ $referral_data_final->ip->ip_no ?? '' }}</td>
+                                <td field-key='message'>{{ $referral_data_final->message->source ?? '' }}</td>
+                                <td field-key='patient'>{{ $referral_data_final->patient->uhid ?? '' }}</td>
+                                <td field-key='avip'>{{ $referral_data_final->avip->name ?? '' }}</td>
+                                @if( request('show_deleted') == 1 )
+                                <td>
+                                    @can('referral_data_final_delete')
+                                                                        {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("quickadmin.qa_are_you_sure")."');",
+                                        'route' => ['admin.referral_data_finals.restore', $referral_data_final->id])) !!}
+                                    {!! Form::submit(trans('quickadmin.qa_restore'), array('class' => 'btn btn-xs btn-success')) !!}
+                                    {!! Form::close() !!}
+                                @endcan
+                                    @can('referral_data_final_delete')
+                                                                        {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("quickadmin.qa_are_you_sure")."');",
+                                        'route' => ['admin.referral_data_finals.perma_del', $referral_data_final->id])) !!}
+                                    {!! Form::submit(trans('quickadmin.qa_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                @endcan
+                                </td>
+                                @else
+                                <td>
+                                    @can('referral_data_final_view')
+                                    <a href="{{ route('admin.referral_data_finals.show',[$referral_data_final->id]) }}" class="btn btn-xs btn-primary">@lang('quickadmin.qa_view')</a>
+                                    @endcan
+                                    @can('referral_data_final_edit')
+                                    <a href="{{ route('admin.referral_data_finals.edit',[$referral_data_final->id]) }}" class="btn btn-xs btn-info">@lang('quickadmin.qa_edit')</a>
+                                    @endcan
+                                    @can('referral_data_final_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("quickadmin.qa_are_you_sure")."');",
+                                        'route' => ['admin.referral_data_finals.destroy', $referral_data_final->id])) !!}
+                                    {!! Form::submit(trans('quickadmin.qa_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+                                @endif
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="26">@lang('quickadmin.qa_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+</div>
 
             <p>&nbsp;</p>
 
@@ -121,6 +246,12 @@
             $('.date').datetimepicker({
                 format: "{{ config('app.date_format_moment') }}",
                 locale: "{{ App::getLocale() }}",
+            });
+            
+            $('.datetime').datetimepicker({
+                format: "{{ config('app.datetime_format_moment') }}",
+                locale: "{{ App::getLocale() }}",
+                sideBySide: true,
             });
             
         });

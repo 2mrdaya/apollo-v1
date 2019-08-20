@@ -56,6 +56,8 @@
                         <th>@lang('quickadmin.ip.fields.pharmacy-amt')</th>
                         <th>@lang('quickadmin.ip.fields.total-consumables')</th>
                         <th>@lang('quickadmin.ip.fields.bill-to')</th>
+                        <th>@lang('quickadmin.ip.fields.admission-date')</th>
+                        <th>@lang('quickadmin.ip.fields.discharge-date')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -100,6 +102,8 @@
                 {data: 'pharmacy_amt', name: 'pharmacy_amt'},
                 {data: 'total_consumables', name: 'total_consumables'},
                 {data: 'bill_to', name: 'bill_to'},
+                {data: 'admission_date', name: 'admission_date'},
+                {data: 'discharge_date', name: 'discharge_date'},
                 
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];

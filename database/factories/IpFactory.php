@@ -23,5 +23,7 @@ $factory->define(App\Ip::class, function (Faker\Generator $faker) {
         "pharmacy_amt" => $faker->randomNumber(2),
         "total_consumables" => $faker->randomNumber(2),
         "bill_to" => $faker->name,
+        "admission_date" => $faker->date("Y-m-d H:i:s", $max = 'now'),
+        "discharge_date" => $faker->name,
     ];
 });

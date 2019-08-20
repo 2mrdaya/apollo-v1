@@ -24,12 +24,12 @@ class IpsController extends Controller
         }
 
 
-        
+
         if (request()->ajax()) {
             $query = Ip::query();
             $template = 'actionsTemplate';
             if(request('show_deleted') == 1) {
-                
+
         if (! Gate::allows('ip_delete')) {
             return abort(401);
         }
@@ -59,6 +59,8 @@ class IpsController extends Controller
                 'ips.pharmacy_amt',
                 'ips.total_consumables',
                 'ips.bill_to',
+                'ips.admission_date',
+                'ips.discharge_date',
             ]);
             $table = Datatables::of($query);
 
@@ -135,6 +137,12 @@ class IpsController extends Controller
             });
             $table->editColumn('bill_to', function ($row) {
                 return $row->bill_to ? $row->bill_to : '';
+            });
+            $table->editColumn('admission_date', function ($row) {
+                return $row->admission_date ? $row->admission_date : '';
+            });
+            $table->editColumn('discharge_date', function ($row) {
+                return $row->discharge_date ? $row->discharge_date : '';
             });
 
             $table->rawColumns(['actions','massDelete']);
@@ -225,9 +233,11 @@ class IpsController extends Controller
         if (! Gate::allows('ip_view')) {
             return abort(401);
         }
+        $referral_data_finals = \App\ReferralDataFinal::where('ip_id', $id)->get();
+
         $ip = Ip::findOrFail($id);
 
-        return view('admin.ips.show', compact('ip'));
+        return view('admin.ips.show', compact('ip', 'referral_data_finals'));
     }
 
 

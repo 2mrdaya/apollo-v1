@@ -25,6 +25,7 @@ class UpdateIpsRequest extends FormRequest
         return [
             
             'bill_date' => 'nullable|date_format:'.config('app.date_format'),
+            'admission_date' => 'nullable|date_format:'.config('app.date_format').' H:i:s',
         ];
     }
 }
