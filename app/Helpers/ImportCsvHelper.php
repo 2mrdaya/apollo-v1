@@ -77,7 +77,7 @@ class ImportCsvHelper {
 
     public static function PatientRegistrationProcess($row) {
         $row['patient_name'] = trim(preg_replace('/\s+/',' ', $row['patient_name']));
-        $row['registration_date'] = Carbon::createFromFormat(config('app.date_format_patient_registration'), $row['registration_date'])->format('Y-m-d H:i:s');
+        $row['registration_date'] = $row['registration_date'] ? Carbon::createFromFormat(config('app.date_format_patient_registration'), $row['registration_date'])->format('Y-m-d H:i:s') : null;
         return $row;
     }
 

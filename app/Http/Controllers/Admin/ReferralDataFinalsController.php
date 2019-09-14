@@ -44,10 +44,11 @@ class ReferralDataFinalsController extends Controller
                 message.*,
                 avip.*
                 FROM referral_data_finals
-                left join ips as ip on ip.ip_no = referral_data_finals.ip_no
+                left join ips as ip on ip.bill_no = referral_data_finals.bill_no
                 left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid and CHAR_LENGTH(patient.uhid)>=10
                 left join message_mappings as message on message.message = referral_data_finals.msg_desc
-                left join avips as avip on avip.pan_number = referral_data_finals.pan_no and CHAR_LENGTH(avip.pan_number)>=10"
+                left join avips as avip on avip.pan_number = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
+                left join gstimports as gstimports on gstimports.bill_no = referral_data_finals.bill_no"
             ));
 
             $table = Datatables::of($query);
@@ -86,8 +87,8 @@ class ReferralDataFinalsController extends Controller
             $table->editColumn('uhid', function ($row) {
                 return $row->uhid ? $row->uhid : '';
             });
-            $table->editColumn('ip_no', function ($row) {
-                return $row->ip_no ? $row->ip_no : '';
+            $table->editColumn('bill_no', function ($row) {
+                return $row->bill_no ? $row->bill_no : '';
             });
             $table->editColumn('dr_name_aic', function ($row) {
                 return $row->dr_name_aic ? $row->dr_name_aic : '';
@@ -98,11 +99,10 @@ class ReferralDataFinalsController extends Controller
             $table->editColumn('aic_fee', function ($row) {
                 return $row->aic_fee ? $row->aic_fee : '';
             });
-            $table->editColumn('pan_no', function ($row) {
-                return $row->pan_no ? $row->pan_no : '';
+            $table->editColumn('oracle_code', function ($row) {
+                return $row->oracle_code ? $row->oracle_code : '';
             });
             $table->editColumn('pateint_name_msg', function ($row) {
-                //return \Form::text('pateint_name_msg', $row->pateint_name_msg ? $row->pateint_name_msg : '');
                 return $row->pateint_name_msg ? $row->pateint_name_msg : '';
             });
             $table->editColumn('avip_name_msg', function ($row) {
@@ -149,7 +149,7 @@ class ReferralDataFinalsController extends Controller
             return abort(401);
         }
 
-        $ips = \App\Ip::get()->pluck('ip_no', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $ips = \App\Ip::get()->pluck('bill_no', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         $messages = \App\MessageMapping::get()->pluck('source', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         $patients = \App\PatientRegistration::get()->pluck('uhid', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
         $avips = \App\Avip::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
@@ -324,16 +324,16 @@ class ReferralDataFinalsController extends Controller
             referral_data_finals.id as referral_id, referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
             referral_data_finals.dr_name_aic, referral_data_finals.uhid,
             referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
-            ip.id as ip_id, ip.ip_no,
+            ip.id as ip_id, ip.bill_no,
             patient.id as patient_id, patient.uhid, patient.registration_date, patient.patient_name,
             message.id as message_id, message.message, message.channel, message.intimation_date_time,
             message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
             avip.id as avip_id, avip.name as name_avip
             FROM referral_data_finals
-            left join ips as ip on ip.ip_no = referral_data_finals.ip_no
+            left join ips as ip on ip.bill_no = referral_data_finals.bill_no
             left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
             left join message_mappings as message on message.message = referral_data_finals.msg_desc
-            left join avips as avip on avip.pan_number = referral_data_finals.pan_no and CHAR_LENGTH(avip.pan_number)>=10
+            left join avips as avip on avip.pan_number = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
             where referral_data_finals.id=".$id
         ));
 
@@ -356,16 +356,16 @@ class ReferralDataFinalsController extends Controller
             referral_data_finals.id as referral_id, referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
             referral_data_finals.dr_name_aic, referral_data_finals.uhid,
             referral_data_finals.doi_as_per_whats_app, referral_data_finals.doi_as_per_sw,
-            ip.id as ip_id, ip.ip_no,
+            ip.id as ip_id, ip.bill_no,
             patient.id as patient_id, patient.uhid, patient.registration_date, patient.patient_name,
             message.id as message_id, message.message, message.channel, message.intimation_date_time,
             message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
             avip.id as avip_id, avip.name as name_avip
             FROM referral_data_finals
-            left join ips as ip on ip.ip_no = referral_data_finals.ip_no
+            left join ips as ip on ip.bill_no = referral_data_finals.bill_no
             left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
             left join message_mappings as message on message.message = referral_data_finals.msg_desc
-            left join avips as avip on avip.pan_number = referral_data_finals.pan_no and CHAR_LENGTH(avip.pan_number)>=10
+            left join avips as avip on avip.pan_number = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
             where referral_data_finals.month='".$month."'"
         ));
 
@@ -449,8 +449,8 @@ class ReferralDataFinalsController extends Controller
             array_push($errors, 'LateIntimation');
         }
 
-        //check registration date is priop than message intimation
-        if($row->ip_no == null) {
+        //check bill no ip/opd file
+        if($row->bill_no == null) {
             array_push($errors, 'NotInIp');
         }
 
@@ -519,65 +519,6 @@ class ReferralDataFinalsController extends Controller
             remarks = '".implode(",",$errors)."'
             where id=".$row->referral_id
         ));
-    }
-
-    public function process1($row)
-    {
-        //var_dump($row);die;
-        $ctr = 0;
-        $errors = [];
-
-        $search_in_whatsapp = false;
-        if ($row->message == null || ($row->doi_as_per_whats_app && $row->doi_as_per_sw && $row->doi_as_per_sw >= $row->registration_date)) {
-            $search_in_whatsapp = true;
-        }
-
-        //match name if message not matched
-        if ($search_in_whatsapp && $row->patient_name != '' && $row->patient_name != null) {
-            $query = DB::select(DB::raw("SELECT
-                message.id, message.message, message.channel, message.intimation_date_time,
-                message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
-                LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
-                FROM message_mappings as message
-                where channel = 'WhatsApp' and date(message.intimation_date_time) = date('".$row->doi_as_per_whats_app."')
-                order by distance ASC limit 1"
-            ));
-
-            foreach ($query as $row_msg) {
-                $row->message_id = $row_msg->id;
-                $row->message = $row_msg->message;
-                $row->registration_date = $row_msg->intimation_date_time;
-                $row->patient_name_msg = $row_msg->patient_name_msg;
-                $row->referrer_name_msg = $row_msg->referrer_name_msg;
-                break;
-            }
-        }
-
-        //check patient available
-        if($row->registration_date == null) {
-            array_push($errors, 'PatientNotAvailable');
-        }
-
-        //check registration date is priop than message intimation
-        if($row->registration_date && $row->registration_date <= $row->intimation_date_time) {
-            array_push($errors, 'LateIntimation');
-        }
-
-        //check registration date is priop than message intimation
-        if($row->ip_no == null) {
-            array_push($errors, 'NotInIp');
-        }
-
-        //check match percentage
-        similar_text(strtoupper($row->patient_name),strtoupper($row->patient_name_msg),$percent);
-        if($row->patient_name && $row->patient_name_msg && $percent < 70) {
-            array_push($errors, 'MatchPercent<70');
-        }
-
-        //check avip table
-        if($row->name_avip == null && trim($row->name_avip)=='') {
-            array_push($errors, 'AvipNotAvailable');
-        }
     }
 
 }

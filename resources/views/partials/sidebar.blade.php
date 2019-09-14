@@ -107,6 +107,14 @@
                 </a>
             </li>@endcan
             
+            @can('venderpayment_access')
+            <li>
+                <a href="{{ route('admin.venderpayments.index') }}">
+                    <i class="fa fa-gears"></i>
+                    <span>@lang('quickadmin.venderpayment.title')</span>
+                </a>
+            </li>@endcan
+            
 
             
 

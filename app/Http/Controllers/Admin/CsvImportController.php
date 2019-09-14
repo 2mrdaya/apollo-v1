@@ -8,6 +8,7 @@ use SpreadsheetReader;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\ImportCsvHelper;
+use App\Helpers\CommonHelper;
 
 
 
@@ -56,8 +57,17 @@ class CsvImportController extends Controller
         $fillables = $model->getFillable();
 
         $redirect = url()->previous();
+        $modelHeaderConfigCode = $modelName.'ImportHeader';
 
-        return view('csvImport.parse_import', compact('headers', 'fileName', 'fillables', 'hasHeader', 'modelName', 'lines', 'redirect', 'module'));
+        $replaceHeader = CommonHelper::getConfigValue($modelHeaderConfigCode);
+
+        if($replaceHeader) {
+            $replaceHeader = json_decode($replaceHeader, true);
+        }
+
+        //var_dump($replaceHeader, $headers, $fillables);die;
+
+        return view('csvImport.parse_import', compact('headers', 'fileName', 'fillables', 'hasHeader', 'modelName', 'lines', 'redirect', 'module', 'replaceHeader'));
 
     }
 
@@ -84,25 +94,26 @@ class CsvImportController extends Controller
             if ($hasHeader && $key == 0) {
                 continue;
             }
+            if (isset($row[0]) && trim($row[0])!="") {
+                $tmp = [];
+                foreach($fields as $header => $k) {
+                    $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
+                }
 
-            $tmp = [];
-            foreach($fields as $header => $k) {
-                $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
+                if($module) {
+                    $tmp['channel'] = $module;
+                }
+
+                if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
+                    $tmp = ImportCsvHelper::$handlerMethod($tmp);
+                }
+
+                $insert[] = $tmp;
             }
-
-            if($module) {
-                $tmp['channel'] = $module;
-            }
-
-            if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
-                $tmp = ImportCsvHelper::$handlerMethod($tmp);
-            }
-
-            $insert[] = $tmp;
-
         }
 
         $for_insert = array_chunk($insert, 100);
+
         foreach ($for_insert as $insert_item) {
             $model::insert($insert_item);
         }

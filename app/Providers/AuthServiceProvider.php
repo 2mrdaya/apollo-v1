@@ -176,5 +176,13 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1, 2]);
         });
 
+        // Auth gates for: Venderpayment
+        Gate::define('venderpayment_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('venderpayment_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
     }
 }

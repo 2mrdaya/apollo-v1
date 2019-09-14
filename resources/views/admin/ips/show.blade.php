@@ -163,7 +163,7 @@
                                 <td field-key='dr_name_aic'>{{ $referral_data_final->dr_name_aic }}</td>
                                 <td field-key='fee_percent'>{{ $referral_data_final->fee_percent }}</td>
                                 <td field-key='aic_fee'>{{ $referral_data_final->aic_fee }}</td>
-                                <td field-key='pan_no'>{{ $referral_data_final->pan_no }}</td>
+                                <td field-key='oracle_code'>{{ $referral_data_final->oracle_code }}</td>
                                 <td field-key='pateint_name_msg'>{{ $referral_data_final->pateint_name_msg }}</td>
                                 <td field-key='avip_name_msg'>{{ $referral_data_final->avip_name_msg }}</td>
                                 <td field-key='remarks'>{{ $referral_data_final->remarks }}</td>

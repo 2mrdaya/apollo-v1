@@ -41,7 +41,12 @@
                                         <select name="fields[{{ $key }}]">
                                             <option value=''>Please select</option>
                                             @foreach ($fillables as $k => $fillable)
-                                                <option value="{{ $fillable }}"
+                                        <option value="{{ $fillable }}"
+                                        @php $header = strtoupper(preg_replace("/[^a-zA-Z]+/", "", $header)); @endphp
+                                        @if(isset($replaceHeader) && isset($replaceHeader[$header]))
+                                            @php $header = $replaceHeader[$header]; @endphp
+                                        @endif
+                                        <option value="{{ $fillable }}"
                                                         @if (strtolower(preg_replace("/[^a-zA-Z]+/", "", $header)) === strtolower(preg_replace("/[^a-zA-Z]+/", "", $fillable))) selected @endif>{{ $fillable  }}</option>
                                             @endforeach
                                         </select>

@@ -97,12 +97,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('ip_no', trans('quickadmin.referral-data-final.fields.ip-no').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('ip_no', old('ip_no'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('bill_no', trans('quickadmin.referral-data-final.fields.ip-no').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('bill_no', old('bill_no'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('ip_no'))
+                    @if($errors->has('bill_no'))
                         <p class="help-block">
-                            {{ $errors->first('ip_no') }}
+                            {{ $errors->first('bill_no') }}
                         </p>
                     @endif
                 </div>
@@ -145,12 +145,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('pan_no', trans('quickadmin.referral-data-final.fields.pan-no').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('pan_no', old('pan_no'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('oracle_code', trans('quickadmin.referral-data-final.fields.pan-no').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('oracle_code', old('oracle_code'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('pan_no'))
+                    @if($errors->has('oracle_code'))
                         <p class="help-block">
-                            {{ $errors->first('pan_no') }}
+                            {{ $errors->first('oracle_code') }}
                         </p>
                     @endif
                 </div>

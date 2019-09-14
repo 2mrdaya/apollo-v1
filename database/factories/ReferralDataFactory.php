@@ -21,7 +21,7 @@ $factory->define(App\ReferralData::class, function (Faker\Generator $faker) {
         "fee_percent" => $faker->randomNumber(2),
         "treating_consultant" => $faker->name,
         "department" => $faker->name,
-        "pan_no" => $faker->name,
+        "oracle_code" => $faker->name,
         "remarks" => $faker->name,
         "message" => $faker->name,
         "msg_date_time" => $faker->date("Y-m-d H:i:s", $max = 'now'),

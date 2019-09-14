@@ -34,7 +34,7 @@ class Create1559982476ReferralDataFinalsTable extends Migration
                 $table->decimal('fee_percent', 15, 2)->nullable();
                 $table->string('treating_consultant')->nullable();
                 $table->string('department')->nullable();
-                $table->string('pan_no')->nullable();
+                $table->string('oracle_code')->nullable();
                 $table->string('remarks')->nullable();
                 $table->string('message')->nullable();
                 $table->datetime('msg_date_time')->nullable();

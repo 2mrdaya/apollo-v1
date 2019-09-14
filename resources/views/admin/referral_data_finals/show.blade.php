@@ -42,7 +42,7 @@
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.referral-data-final.fields.ip-no')</th>
-                            <td field-key='ip_no'>{{ $referral_data_final->ip_no }}</td>
+                            <td field-key='bill_no'>{{ $referral_data_final->bill_no }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.referral-data-final.fields.dr-name-aic')</th>
@@ -58,7 +58,7 @@
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.referral-data-final.fields.pan-no')</th>
-                            <td field-key='pan_no'>{{ $referral_data_final->pan_no }}</td>
+                            <td field-key='oracle_code'>{{ $referral_data_final->oracle_code }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.referral-data-final.fields.pateint-name-msg')</th>
@@ -82,7 +82,7 @@
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.referral-data-final.fields.ip')</th>
-                            <td field-key='ip'>{{ $referral_data_final->ip->ip_no ?? '' }}</td>
+                            <td field-key='ip'>{{ $referral_data_final->ip->bill_no ?? '' }}</td>
 <td field-key='uhid'>{{ isset($referral_data_final->ip) ? $referral_data_final->ip->uhid : '' }}</td>
 <td field-key='bill_date'>{{ isset($referral_data_final->ip) ? $referral_data_final->ip->bill_date : '' }}</td>
 <td field-key='patient_name'>{{ isset($referral_data_final->ip) ? $referral_data_final->ip->patient_name : '' }}</td>

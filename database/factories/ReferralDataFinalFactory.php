@@ -12,7 +12,7 @@ $factory->define(App\ReferralDataFinal::class, function (Faker\Generator $faker)
         "dr_name_aic" => $faker->name,
         "fee_percent" => $faker->randomNumber(2),
         "aic_fee" => $faker->randomNumber(2),
-        "pan_no" => $faker->name,
+        "oracle_code" => $faker->name,
         "pateint_name_msg" => $faker->name,
         "avip_name_msg" => $faker->name,
         "remarks" => $faker->name,

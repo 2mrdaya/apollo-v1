@@ -16,11 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $doi_as_per_sw
  * @property string $area
  * @property string $uhid
- * @property string $ip_no
+ * @property string $bill_no
  * @property string $dr_name_aic
  * @property decimal $fee_percent
  * @property decimal $aic_fee
- * @property string $pan_no
+ * @property string $oracle_code
  * @property string $pateint_name_msg
  * @property string $avip_name_msg
  * @property string $remarks
@@ -35,7 +35,7 @@ class ReferralDataFinal extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['vendor', 'month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'ip_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'pan_no', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
+    protected $fillable = ['vendor', 'month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'bill_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'oracle_code', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
     protected $hidden = [];
     
     
