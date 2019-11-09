@@ -276,6 +276,10 @@
                 {data: 'approve', name: 'approve'},
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];
+            window.dtDefaultOptions.searchCols = [
+                null,
+                {"search": "Jul-19"}
+            ]
             processAjaxTables();
         });
     </script>

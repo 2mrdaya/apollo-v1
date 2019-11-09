@@ -37,7 +37,7 @@ class ReferralDataFinalsController extends Controller
                 $template = 'restoreTemplate1';
             }
 
-            $query = DB::select(DB::raw("SELECT referral_data_finals.id as row_id,
+            /*$query = DB::select(DB::raw("SELECT referral_data_finals.id as row_id,
                 referral_data_finals.*, referral_data_finals.uhid as referral_uhid,
                 ip.*,
                 patient.*, patient.patient_name as patient_name_org,
@@ -47,9 +47,18 @@ class ReferralDataFinalsController extends Controller
                 left join ips as ip on ip.bill_no = referral_data_finals.bill_no
                 left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid and CHAR_LENGTH(patient.uhid)>=10
                 left join message_mappings as message on message.message = referral_data_finals.msg_desc
-                left join avips as avip on avip.pan_number = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
+                left join avips as avip on avip.oracle_code = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
                 left join gstimports as gstimports on gstimports.bill_no = referral_data_finals.bill_no"
-            ));
+            ));*/
+
+            $filterMonth = request()['columns'][1]['search']['value'];
+
+            if ($filterMonth) {
+                $query = DB::select(DB::raw("SELECT * FROM `view_referral` where month='".$filterMonth."'"));
+            }
+            else {
+                $query = DB::select(DB::raw("SELECT * FROM `view_referral`"));
+            }
 
             $table = Datatables::of($query);
 
@@ -119,6 +128,8 @@ class ReferralDataFinalsController extends Controller
             });
 
             $table->rawColumns(['actions','massDelete','approve']);
+
+            //var_dump("Hi");die;
 
             $table->editColumn('patient_match', function ($row) {
                 similar_text(strtoupper($row->patient_name_org),strtoupper($row->pateint_name_msg),$percent);

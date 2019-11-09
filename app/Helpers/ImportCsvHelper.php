@@ -65,11 +65,11 @@ class ImportCsvHelper {
     }
 
     public static function ReferralDataFinalProcess($row) {
-        $row['doi_as_per_whats_app'] = trim($row['doi_as_per_whats_app']);
-        $row['doi_as_per_sw'] = trim($row['doi_as_per_sw']);
+        $row['doi_as_per_whats_app'] = isset($row['doi_as_per_whats_app']) ? trim($row['doi_as_per_whats_app']) : "";
+        $row['doi_as_per_sw'] = isset($row['doi_as_per_sw']) ? trim($row['doi_as_per_sw']) : "";
         $row['doi_as_per_whats_app'] = $row['doi_as_per_whats_app'] ? Carbon::createFromFormat(config('app.doi_as_per_whats_app'), str_replace(';',':',$row['doi_as_per_whats_app']))->format('Y-m-d H:i:s') : null;
         $row['doi_as_per_sw'] = $row['doi_as_per_sw'] ? Carbon::createFromFormat(config('app.doi_as_per_sw'), str_replace(';',':',$row['doi_as_per_sw']))->format('Y-m-d H:i:s') : null;
-        $row['msg_desc'] = substr(trim($row['msg_desc']),0,500);
+        $row['msg_desc'] = isset($row['msg_desc']) ? substr(trim($row['msg_desc']),0,500) : "";
         $row['fee_percent'] = $row['fee_percent'] ? str_replace('%','',$row['fee_percent']) : 0;
 
         return $row;
@@ -84,6 +84,8 @@ class ImportCsvHelper {
     public static function IpProcess($row) {
         $row['bill_date'] = $row['bill_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s') : null;
         $row['admission_date'] = $row['admission_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['admission_date'])->format('Y-m-d H:i:s') : null;
+        $row['discharge_date'] = $row['discharge_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['discharge_date'])->format('Y-m-d H:i:s') : null;
+        $row['total_pharmacy_amount'] = isset($row['total_pharmacy_amount']) ? (is_numeric($row['total_pharmacy_amount']) ? $row['total_pharmacy_amount'] : 0) : 0;
         $row['total_consumables'] = isset($row['total_consumables']) ? (is_numeric($row['total_consumables']) ? $row['total_consumables'] : 0) : 0;
         return $row;
     }
@@ -136,7 +138,7 @@ class ImportCsvHelper {
 
     public static function ReferralDataFinalPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid AND t1.ip_no =t2.ip_no AND t1.aic_fee =t2.aic_fee"
+            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid AND t1.bill_no =t2.bill_no AND t1.aic_fee =t2.aic_fee"
         ));
         return $query;
     }

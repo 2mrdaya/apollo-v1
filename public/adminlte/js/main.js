@@ -260,6 +260,7 @@ function processAjaxTables(objTable) {
             $( 'input[type=text]', table.column( colIdx ).header() ).on( 'keyup change', delay(function (e) {
                 let key = Number(e.key)
                 var inp = String.fromCharCode(e.keyCode);
+                //if (/[a-zA-Z0-9-_ \b,@#$%&*!^+=.'":()]/.test(inp) || e.keyCode==13) {
                 if (/[a-zA-Z0-9-_ \b,@#$%&*!^+=.'":()]/.test(inp) || e.keyCode==13) {
                     table
                     .column( colIdx )

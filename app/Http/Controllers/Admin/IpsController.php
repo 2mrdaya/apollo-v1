@@ -56,7 +56,6 @@ class IpsController extends Controller
                 'ips.speciality',
                 'ips.surgical_package_name',
                 'ips.total_pharmacy_amount',
-                'ips.pharmacy_amt',
                 'ips.total_consumables',
                 'ips.bill_to',
                 'ips.admission_date',
@@ -129,9 +128,7 @@ class IpsController extends Controller
             $table->editColumn('total_pharmacy_amount', function ($row) {
                 return $row->total_pharmacy_amount ? $row->total_pharmacy_amount : '';
             });
-            $table->editColumn('pharmacy_amt', function ($row) {
-                return $row->pharmacy_amt ? $row->pharmacy_amt : '';
-            });
+
             $table->editColumn('total_consumables', function ($row) {
                 return $row->total_consumables ? $row->total_consumables : '';
             });
