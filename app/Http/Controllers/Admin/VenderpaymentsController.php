@@ -147,7 +147,8 @@ class VenderpaymentsController extends Controller
         FROM view_referral right join (SELECT distinct oracle_code, vendor
         FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.oracle_code = vendors.oracle_code
         and view_referral.month in ($place_holders_range1)
-        group by vendor, name, avip_id, vendors.oracle_code,pan_number order by vendors.vendor,vendors.oracle_code";
+        group by vendor, name, avip_id, vendors.oracle_code,pan_number,account_no, swift_code, iban_number, bank_name, address_1 , ifsc_code
+        order by vendors.vendor,vendors.oracle_code";
 
         $query1 = DB::select(DB::raw($query),array_merge($range,$range1));
 
