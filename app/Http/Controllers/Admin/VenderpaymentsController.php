@@ -33,7 +33,7 @@ class VenderpaymentsController extends Controller
                 sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
                 sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
                 sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
-                FROM view_referral group by month, vendor, name, avip_id, oracle_code, pan_number"
+                FROM view_referral group by month, vendor, name, avip_id, oracle_code, pan_number, account_no, swift_code, iban_number, bank_name, address_1, ifsc_code"
             ));
 
             $table = Datatables::of($query);
