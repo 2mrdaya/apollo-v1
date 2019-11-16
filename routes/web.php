@@ -88,8 +88,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('referral_data_finals_process_one/{id}', ['uses' => 'Admin\ReferralDataFinalsController@processOne', 'as' => 'referral_data_finals_process_one']);
     Route::get('vender_payments_comparision', ['uses' => 'Admin\ReportsController@getQuaterlyComparison', 'as' => 'vender_payments_comparision']);
     Route::get('vender_payments_details', ['uses' => 'Admin\ReportsController@getVendorPayments', 'as' => 'vender_payments_details']);
-
     Route::get('country_payments_comparision', ['uses' => 'Admin\ReportsController@getQuaterlyComparisonCountryWise', 'as' => 'country_payments_comparision']);
+    Route::get('vender_payments_pivot', ['uses' => 'Admin\ReportsController@getMonthlyPivot', 'as' => 'vender_payments_pivot']);
     Route::get('message_mappings_update_names', ['uses' => 'Admin\MessageMappingsController@updateNames', 'as' => 'message_mappings_update_names']);
 
     Route::resource('reports', 'Admin\ReportsController');

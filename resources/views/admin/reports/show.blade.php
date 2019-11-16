@@ -135,6 +135,56 @@
             {!! Form::close() !!}
         </div>
     </div>
+
+    {!! Form::open(array('name' => 'comparision','route' => ['admin.vender_payments_pivot'], 'method' => 'GET')) !!}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Vendor Monthly Pivot Report
+        </div>
+
+        <div class="panel-body table-responsive">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td>
+                                <select id="date_range" name="date_range[]" multiple size="12">
+                                    <option value="Apr-18">Apr-18</option>
+                                    <option value="May-18">May-18</option>
+                                    <option value="Jun-18">Jun-18</option>
+                                    <option value="Jul-18">Jul-18</option>
+                                    <option value="Aug-18">Aug-18</option>
+                                    <option value="Sep-18">Sep-18</option>
+                                    <option value="Oct-18">Oct-18</option>
+                                    <option value="Nov-18">Nov-18</option>
+                                    <option value="Dec-18">Dec-18</option>
+                                    <option value="Jan-19">Jan-19</option>
+                                    <option value="Feb-19">Feb-19</option>
+                                    <option value="Mar-19">Mar-19</option>
+                                    <option value="Apr-19">Apr-19</option>
+                                    <option value="May-19">May-19</option>
+                                    <option value="Jun-19">Jun-19</option>
+                                    <option value="Jul-19">Jul-19</option>
+                                    <option value="Aug-19">Aug-19</option>
+                                    <option value="Sep-19">Sep-19</option>
+                                    <option value="Oct-19">Oct-19</option>
+                                    <option value="Nov-19">Nov-19</option>
+                                    <option value="Dec-19">Dec-19</option>
+                                    <option value="Jan-20">Jan-20</option>
+                                    <option value="Feb-20">Feb-20</option>
+                                    <option value="Mar-20">Mar-20</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <p>&nbsp;</p>
+            {!! Form::submit('Generate Report', ['class' => 'btn btn-danger']) !!}
+            {!! Form::close() !!}
+        </div>
+    </div>
 @stop
 
 

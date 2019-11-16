@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ReportsRequest;
 use Yajra\DataTables\DataTables;
 use Response;
+// import the storage facade
+use Illuminate\Support\Facades\Storage;
 
 class ReportsController extends Controller
 {
@@ -182,7 +184,7 @@ class ReportsController extends Controller
         }
         else {
             $query = "SELECT * FROM view_referral where view_referral.oracle_code='$vendor_code'
-            order by month, vendor, bill_date";
+            order by STR_TO_DATE(concat('01-', trim(month)),'%d-%M-%y'), vendor, bill_date";
         }
 
         $query = DB::select(DB::raw($query),[$vendor_code]);
@@ -222,5 +224,77 @@ class ReportsController extends Controller
                 ->header('Expires','0');
 
         return view('admin.venderpayments.comparison', compact("query"));
+    }
+
+    /**
+     * Display a listing of Venderpayment.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getMonthlyPivot(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+        Storage::delete('file.csv');
+        if (! Gate::allows('venderpayment_access')) {
+            return abort(401);
+        }
+
+        $range = $request->all()['date_range'];
+
+        $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
+
+        $sql = "SELECT distinct oracle_code, vendor, name
+        from view_referral where month in ($place_holders_range)";
+
+        $export_data="Type, Vendor Code, Name";
+
+        for ($i = 0; $i < count($range); $i++) {
+            $export_data.=",".$range[$i].",Patients, Bill Amount, Fee, GST";
+        }
+
+        Storage::disk('local')->append('file.csv', $export_data);
+
+        $query1 = DB::select(DB::raw($sql),array_merge($range));
+
+        for ($i = 0; $i < count($query1); $i++) {
+
+            $export_data=$query1[$i]->vendor.",".$query1[$i]->oracle_code.','.$query1[$i]->name;
+
+            for ($j = 0; $j < count($range); $j++) {
+                $sql = "SELECT count(distinct uhid) as patients,
+                sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
+                sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
+                sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
+                FROM view_referral
+                where month='".$range[$j]."'
+                and oracle_code='".$query1[$i]->oracle_code."'
+                group by oracle_code,pan_number
+                order by oracle_code";
+
+                $query2 = DB::select(DB::raw($sql),[]);
+                if (count($query2) > 0) {
+                    $net_bill_amount = $query2[0]->net_bill_amount ? $query2[0]->net_bill_amount : "0";
+                    $payable_amount = $query2[0]->payable_amount ? $query2[0]->payable_amount : "0";
+                    $gst_amount = $query2[0]->gst_amount ? $query2[0]->gst_amount : "0";
+                    $export_data.=',,'.$query2[0]->patients.',';
+                    $export_data.=$net_bill_amount.",";
+                    $export_data.=$payable_amount.",";
+                    $export_data.=$gst_amount;
+                }
+                else {
+                    $export_data.=',,0,0,0,0';
+                }
+            }
+            Storage::disk('local')->append('file.csv', $export_data);
+            $export_data = "";
+        }
+        $contents = Storage::get('file.csv');
+        return response($contents)
+                ->header('Content-Type','application/csv')
+                ->header('Content-Disposition', 'attachment; filename="download.csv"')
+                ->header('Pragma','no-cache')
+                ->header('Expires','0');
+
+        return view('admin.venderpayments.comparison', compact("query1","query2"));
     }
 }

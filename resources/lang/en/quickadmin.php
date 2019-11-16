@@ -1,26 +1,239 @@
 <?php
 
 return [
-		'user-management' => [		'title' => 'User management',		'fields' => [		],	],
-		'roles' => [		'title' => 'Roles',		'fields' => [			'title' => 'Title',		],	],
-		'users' => [		'title' => 'Users',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'password' => 'Password',			'role' => 'Role',			'remember-token' => 'Remember token',		],	],
-		'test' => [		'title' => 'Test',		'fields' => [		],	],
-		'user-actions' => [		'title' => 'User actions',		'created_at' => 'Time',		'fields' => [			'user' => 'User',			'action' => 'Action',			'action-model' => 'Action model',			'action-id' => 'Action id',		],	],
-		'sms-import' => [		'title' => 'Sms import',		'fields' => [		],	],
-		'patient-registration' => [		'title' => 'Patient Registration Import',		'fields' => [			'uhid' => 'UHID',			'patient-name' => 'Patient Name',			'registration-date' => 'Registration Date',			'city' => 'City',			'country' => 'Country',			'address' => 'Address',			'mobile' => 'Mobile',			'email-id' => 'Email id',			'operator-name' => 'Operator Name',		],	],
-		'opd' => [		'title' => 'OPD Bill Import',		'fields' => [		],	],
-		'ip' => [		'title' => 'IP Bill Import',		'fields' => [			'uhid' => 'UHID',			'bill-date' => 'Bill Date',			'ip-no' => 'IP No',			'patient-name' => 'Patient Name',			'country' => 'Country',			'state' => 'State',			'city' => 'City',			'bill-no' => 'Bill No',			'customer-name' => 'Customer Name',			'total-service-amount' => 'Total Service Amount',			'tax-amount' => 'Tax Amount',			'total-bill-amount' => 'Total Bill Amount',			'tcs-tax' => 'Tcs Tax',			'discount-amount' => 'Discount Amount',			'doctor-name' => 'Doctor Name',			'speciality' => 'Speciality',			'surgical-package-name' => 'Surgical Package Name',			'total-pharmacy-amount' => 'Total Pharmacy Amount',			'pharmacy-amt' => 'Total Pharmacy amount',			'total-consumables' => 'Total Consumables',			'bill-to' => 'Bill To',			'admission-date' => 'Admission Date',			'discharge-date' => 'Discharge Date',		],	],
-		'whatsapp' => [		'title' => 'WhatsApp Import',		'fields' => [		],	],
-		'avip' => [		'title' => 'AVIP Details',		'fields' => [			'name' => 'Name',			'address-1' => 'Address 1',			'address-2' => 'Address 2',			'bank-name' => 'Bank Name',			'bank-address' => 'Bank Address',			'account-no' => 'Account No',			'swift-code' => 'Swift Code',			'iban-number' => 'IBAN Number',			'bank-code' => 'Bank Code',			'correspondence-bank-name' => 'Correspondence Bank Name',			'correspondence-ac-no' => 'Correspondence A/C No',			'corp-swift-code' => 'Corp Swift Code',			'ifsc-code' => 'IFSC Code',			'pan-number' => 'PAN Number',			'oracle-code' => 'Oracle Code',			'rate-details' => 'Rate Details',			'state' => 'State',			'pin-code' => 'PIN Code',		],	],
-		'referral-data' => [		'title' => 'Final Referral Data Import',		'fields' => [		],	],
-		'system-settings' => [		'title' => 'System Settings',		'fields' => [			'code' => 'Code',			'description' => 'Description',			'value' => 'Value',		],	],
-		'message-mapping' => [		'title' => 'Message Mapping',		'fields' => [			'channel' => 'Channel',			'message' => 'Message',			'source' => 'Source (mobile/name/email)',			'patient-name' => 'Patient Name',			'referrer-name' => 'Referrer Name',			'intimation-date-time' => 'Intimation Date Time',			'uhid' => 'UHID',			'avip' => 'AVIP',		],	],
-		'whats-app-import' => [		'title' => 'Whats App Import',		'fields' => [		],	],
-		'email-import' => [		'title' => 'Email Import',		'fields' => [		],	],
-		'referral-data-final' => [		'title' => 'Final Referral Data Import',		'fields' => [			'vendor' => 'Vendor',			'month' => 'Month',			'msg-desc' => 'Message Desc',			'doi-as-per-whats-app' => 'DOI As Per Whats App',			'doi-as-per-sw' => 'Doi as per sw',			'area' => 'Area',			'uhid' => 'UHID',			'ip-no' => 'IP/OP No',			'dr-name-aic' => 'Dr Name AIC',			'fee-percent' => 'Fee %',			'aic-fee' => 'Aic Fee',			'pan-no' => 'Pan No',			'pateint-name-msg' => 'Pateint Name Msg',			'avip-name-msg' => 'Avip Name Msg',			'remarks' => 'Remarks',			'approve' => 'Approve',			'status' => 'Status',			'ip' => 'Ip id',			'message' => 'Message Id',			'patient' => 'Patient Id',			'avip' => 'Avip Id',		],	],
-		'ppn-payments' => [		'title' => 'PPN Payments',		'fields' => [		],	],
-		'gstimport' => [		'title' => 'GST Import',		'fields' => [			'bill-no' => 'Bill No',			'gst-amout' => 'GST Amout',			'booking-month' => 'Booking Month',			'payment-month' => 'Payment Month',		],	],
-		'venderpayment' => [		'title' => 'Vender Payments',		'fields' => [			'name' => 'Name',			'oracle-code' => 'Oracle Code',			'pan' => 'PAN',			'bill-amount' => 'Bill Amount',			'total-pharmacy' => 'Total Pharmacy',			'total-consumables' => 'Total Consumables',			'gst-amount' => 'GST Amount',			'tds-amount' => 'TDS Amount',			'payable-amount' => 'Payable Amount',			'net-bill-amount' => 'Net Bill Amount',			'account-no' => 'Account No',			'ifsc-code' => 'IFSC Code',			'bank-name' => 'Bank Name',			'address' => 'Address',			'iban-number' => 'Iban Number',			'swift-code' => 'Swift Code',		],	],
+
+	'user-management' => [
+		'title' => 'User management',
+		'fields' => [
+		],
+	],
+
+	'roles' => [
+		'title' => 'Roles',
+		'fields' => [
+			'title' => 'Title',
+		],
+	],
+
+	'users' => [
+		'title' => 'Users',
+		'fields' => [
+			'name' => 'Name',
+			'email' => 'Email',
+			'password' => 'Password',
+			'role' => 'Role',
+			'remember-token' => 'Remember token',
+		],
+	],
+
+	'test' => [
+		'title' => 'Test',
+		'fields' => [
+		],
+	],
+
+	'user-actions' => [
+		'title' => 'User actions',
+		'created_at' => 'Time',
+		'fields' => [
+			'user' => 'User',
+			'action' => 'Action',
+			'action-model' => 'Action model',
+			'action-id' => 'Action id',
+		],
+	],
+
+	'sms-import' => [
+		'title' => 'Sms import',
+		'fields' => [
+		],
+	],
+
+	'patient-registration' => [
+		'title' => 'Patient Registration Import',
+		'fields' => [
+			'uhid' => 'UHID',
+			'patient-name' => 'Patient Name',
+			'registration-date' => 'Registration Date',
+			'city' => 'City',
+			'country' => 'Country',
+			'address' => 'Address',
+			'mobile' => 'Mobile',
+			'email-id' => 'Email id',
+			'operator-name' => 'Operator Name',
+		],
+	],
+
+	'opd' => [
+		'title' => 'OPD Bill Import',
+		'fields' => [
+		],
+	],
+
+	'ip' => [
+		'title' => 'IP Bill Import',
+		'fields' => [
+			'uhid' => 'UHID',
+			'bill-date' => 'Bill Date',
+			'ip-no' => 'IP No',
+			'patient-name' => 'Patient Name',
+			'country' => 'Country',
+			'state' => 'State',
+			'city' => 'City',
+			'bill-no' => 'Bill No',
+			'customer-name' => 'Customer Name',
+			'total-service-amount' => 'Total Service Amount',
+			'tax-amount' => 'Tax Amount',
+			'total-bill-amount' => 'Total Bill Amount',
+			'tcs-tax' => 'Tcs Tax',
+			'discount-amount' => 'Discount Amount',
+			'doctor-name' => 'Doctor Name',
+			'speciality' => 'Speciality',
+			'surgical-package-name' => 'Surgical Package Name',
+			'total-pharmacy-amount' => 'Total Pharmacy Amount',
+			'pharmacy-amt' => 'Total Pharmacy amount',
+			'total-consumables' => 'Total Consumables',
+			'bill-to' => 'Bill To',
+			'admission-date' => 'Admission Date',
+			'discharge-date' => 'Discharge Date',
+		],
+	],
+
+	'whatsapp' => [
+		'title' => 'WhatsApp Import',
+		'fields' => [
+		],
+	],
+
+	'avip' => [
+		'title' => 'AVIP Details',
+		'fields' => [
+			'name' => 'Name',
+			'address-1' => 'Address 1',
+			'address-2' => 'Address 2',
+			'bank-name' => 'Bank Name',
+			'bank-address' => 'Bank Address',
+			'account-no' => 'Account No',
+			'swift-code' => 'Swift Code',
+			'iban-number' => 'IBAN Number',
+			'bank-code' => 'Bank Code',
+			'correspondence-bank-name' => 'Correspondence Bank Name',
+			'correspondence-ac-no' => 'Correspondence A/C No',
+			'corp-swift-code' => 'Corp Swift Code',
+			'ifsc-code' => 'IFSC Code',
+			'pan-number' => 'PAN Number',
+			'oracle-code' => 'Oracle Code',
+			'rate-details' => 'Rate Details',
+			'state' => 'State',
+			'pin-code' => 'PIN Code',
+		],
+	],
+
+	'referral-data' => [
+		'title' => 'Final Referral Data Import',
+		'fields' => [
+		],
+	],
+
+	'system-settings' => [
+		'title' => 'System Settings',
+		'fields' => [
+			'code' => 'Code',
+			'description' => 'Description',
+			'value' => 'Value',
+		],
+	],
+
+	'message-mapping' => [
+		'title' => 'Message Mapping',
+		'fields' => [
+			'channel' => 'Channel',
+			'message' => 'Message',
+			'source' => 'Source (mobile/name/email)',
+			'patient-name' => 'Patient Name',
+			'referrer-name' => 'Referrer Name',
+			'intimation-date-time' => 'Intimation Date Time',
+			'uhid' => 'UHID',
+			'avip' => 'AVIP',
+		],
+	],
+
+	'whats-app-import' => [
+		'title' => 'Whats App Import',
+		'fields' => [
+		],
+	],
+
+	'email-import' => [
+		'title' => 'Email Import',
+		'fields' => [
+		],
+	],
+
+	'referral-data-final' => [
+		'title' => 'Final Referral Data Import',
+		'fields' => [
+			'vendor' => 'Vendor',
+			'month' => 'Month',
+			'msg-desc' => 'Message Desc',
+			'doi-as-per-whats-app' => 'DOI As Per Whats App',
+			'doi-as-per-sw' => 'Doi as per sw',
+			'area' => 'Area',
+			'uhid' => 'UHID',
+			'ip-no' => 'IP/OP No',
+			'dr-name-aic' => 'Dr Name AIC',
+			'fee-percent' => 'Fee %',
+			'aic-fee' => 'Aic Fee',
+			'pan-no' => 'Pan No',
+			'pateint-name-msg' => 'Pateint Name Msg',
+			'avip-name-msg' => 'Avip Name Msg',
+			'remarks' => 'Remarks',
+			'approve' => 'Approve',
+			'status' => 'Status',
+			'ip' => 'Ip id',
+			'message' => 'Message Id',
+			'patient' => 'Patient Id',
+			'avip' => 'Avip Id',
+		],
+	],
+
+	'ppn-payments' => [
+		'title' => 'PPN Payments',
+		'fields' => [
+		],
+	],
+
+	'gstimport' => [
+		'title' => 'GST Import',
+		'fields' => [
+			'bill-no' => 'Bill No',
+			'gst-amout' => 'GST Amout',
+			'booking-month' => 'Booking Month',
+			'payment-month' => 'Payment Month',
+		],
+	],
+
+	'venderpayment' => [
+		'title' => 'Vender Payments',
+		'fields' => [
+			'name' => 'Name',
+			'oracle-code' => 'Oracle Code',
+			'pan' => 'PAN',
+			'bill-amount' => 'Bill Amount',
+			'total-pharmacy' => 'Total Pharmacy',
+			'total-consumables' => 'Total Consumables',
+			'gst-amount' => 'GST Amount',
+			'tds-amount' => 'TDS Amount',
+			'payable-amount' => 'Payable Amount',
+			'net-bill-amount' => 'Net Bill Amount',
+			'account-no' => 'Account No',
+			'ifsc-code' => 'IFSC Code',
+			'bank-name' => 'Bank Name',
+			'address' => 'Address',
+			'iban-number' => 'Iban Number',
+			'swift-code' => 'Swift Code',
+		],
+	],
 	'qa_create' => 'Create',
 	'qa_save' => 'Save',
 	'qa_edit' => 'Edit',
@@ -265,5 +478,5 @@ return [
 	'qa_deselect_all' => 'Deselect all',
 	'qa_team-management' => 'Teams',
 	'qa_team-management-singular' => 'Team',
-	'quickadmin_title' => 'Apollo',
+	'quickadmin_title' => 'Referral Tracker',
 ];
