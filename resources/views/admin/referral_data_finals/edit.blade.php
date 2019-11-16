@@ -24,9 +24,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 form-group">
+                <div class="col-xs-12 form-group">{{ $enum_vendor }}
                     {!! Form::label('vendor', trans('quickadmin.referral-data-final.fields.vendor').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('vendor', $enum_vendor, old('vendor'), ['class' => 'form-control select2']) !!}
+
                     <p class="help-block"></p>
                     @if($errors->has('vendor'))
                         <p class="help-block">

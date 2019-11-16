@@ -131,7 +131,7 @@ class ReferralDataFinalsController extends Controller
 
             //var_dump("Hi");die;
 
-            $table->editColumn('patient_match', function ($row) {
+            /*$table->editColumn('patient_match', function ($row) {
                 similar_text(strtoupper($row->patient_name_org),strtoupper($row->pateint_name_msg),$percent);
                 //var_dump($row->patient_name, $row->pateint_name_msg, $percent);
                 return round($percent,0);
@@ -140,7 +140,7 @@ class ReferralDataFinalsController extends Controller
             $table->editColumn('avip_match', function ($row) {
                 similar_text(strtoupper($row->dr_name_aic),strtoupper($row->avip_name_msg),$percent);
                 return round($percent,0);
-            });
+            });*/
 
             //var_dump($table->make(true));die;
             return $table->make(true);

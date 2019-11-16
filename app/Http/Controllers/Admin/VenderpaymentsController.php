@@ -140,7 +140,7 @@ class VenderpaymentsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
         //var_dump($place_holders_range);die;
         $query = "SELECT avip_id as id, vendors.vendor, name, pan_number as pan, vendors.oracle_code,
-        account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code,
+        account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, count(distinct uhid) as patients,
         sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
         sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
         sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
@@ -168,9 +168,11 @@ class VenderpaymentsController extends Controller
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
 
             $export_data.=$query1[$i]->vendor.",".$query1[$i]->oracle_code.','.$query1[$i]->name.',';
+            $export_data.=$query1[$i]->patients.',';
             $export_data.=$net_bill_amount.",";
             $export_data.=$payable_amount.",";
             $export_data.=$gst_amount.",";
+            $export_data.=$query2[$i]->patients.',';
             $export_data.=$net_bill_amount1.",";
             $export_data.=$payable_amount1.",";
             $export_data.=$gst_amount1.",";
