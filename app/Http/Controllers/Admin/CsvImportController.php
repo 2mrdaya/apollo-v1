@@ -100,6 +100,7 @@ class CsvImportController extends Controller
             }
             if (isset($row[0]) && trim($row[0])!="") {
                 $tmp = [];
+                $tmp['status']='Success';
                 /*----Check Unspected Char in column vlaue---*/
                 foreach($fields as $header => $k) {
                     $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
@@ -107,12 +108,11 @@ class CsvImportController extends Controller
 
                 if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
                     $tmp = ImportCsvHelper::$handlerMethod($tmp);
+                    if ($tmp['status']!='Success') {
+                        array_push($errorRowIndexes, $key);
+                    }
                 }
                 $tableData[] = $tmp;
-                if ($tmp['status']!='Success') {
-                    array_push($errorRowIndexes, $key);
-                }
-
             }
         }
         $headerRow=array_keys($fields);
