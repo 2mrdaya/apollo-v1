@@ -2,6 +2,7 @@
 
 @section('content')
     <h3 class="page-title">@lang('Reports')</h3>
+
     {!! Form::open(array('name' => 'comparision','route' => ['admin.vender_payments_comparision'], 'method' => 'GET')) !!}
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -136,7 +137,7 @@
         </div>
     </div>
 
-    {!! Form::open(array('name' => 'comparision','route' => ['admin.vender_payments_pivot'], 'method' => 'GET')) !!}
+    {!! Form::open(array('name' => 'pivot','route' => ['admin.vender_payments_pivot'], 'method' => 'GET')) !!}
     <div class="panel panel-default">
         <div class="panel-heading">
             Vendor Monthly Pivot Report

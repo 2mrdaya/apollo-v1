@@ -79,7 +79,7 @@ class ReportsController extends Controller
             $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
 
-            $export_data.=$query1[$i]->vendor.",".$query1[$i]->oracle_code.','.$query1[$i]->name.',';
+            $export_data.=$query1[$i]->vendor.",".$query1[$i]->oracle_code.',"'.$query1[$i]->name.'",';
             $export_data.=$query1[$i]->patients.',';
             $export_data.=$net_bill_amount.",";
             $export_data.=$payable_amount.",";
@@ -200,11 +200,11 @@ class ReportsController extends Controller
             $payable_amount = $query[$i]->aic_fee ? $query[$i]->aic_fee : "0";
             $gst_amount = $query[$i]->gst_amout ? $query[$i]->gst_amout : "0";
 
-            $export_data.=$query[$i]->month.",";
+            $export_data.=$query[$i]->month_dt.',';
             $export_data.=$query[$i]->vendor.",";
-            $export_data.=$query[$i]->name.",";
+            $export_data.='"'.$query[$i]->name.'",';
             $export_data.=$query[$i]->oracle_code.",";
-            $export_data.=$query[$i]->patient_name_org.",";
+            $export_data.='"'.$query[$i]->patient_name_org.'",';
             $export_data.=$query[$i]->registration_date.",";
             $export_data.=$query[$i]->bill_no.",";
             $export_data.=$query[$i]->bill_date.",";
@@ -258,7 +258,7 @@ class ReportsController extends Controller
 
         for ($i = 0; $i < count($query1); $i++) {
 
-            $export_data=$query1[$i]->vendor.",".$query1[$i]->oracle_code.','.$query1[$i]->name;
+            $export_data=$query1[$i]->vendor.",".$query1[$i]->oracle_code.',"'.$query1[$i]->name.'"';
 
             for ($j = 0; $j < count($range); $j++) {
                 $sql = "SELECT count(distinct uhid) as patients,
