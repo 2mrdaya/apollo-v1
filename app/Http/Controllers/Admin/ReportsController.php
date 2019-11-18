@@ -51,15 +51,15 @@ class ReportsController extends Controller
         $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
 
-        $query = "SELECT avip_id as id, vendors.vendor, name, pan_number as pan, vendors.oracle_code,
+        $query = "SELECT avip_id as id, vendors.vendor, vendors.name, vendors.pan_number as pan, vendors.oracle_code,
         account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, count(distinct uhid) as patients,
         sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
         sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
         sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
-        FROM view_referral right join (SELECT distinct oracle_code, vendor
+        FROM view_referral right join (SELECT distinct oracle_code, vendor, name, pan_number
         FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.oracle_code = vendors.oracle_code
         and view_referral.month in ($place_holders_range1)
-        group by vendor, name, avip_id, vendors.oracle_code,pan_number,account_no, swift_code, iban_number, bank_name, address_1 , ifsc_code
+        group by vendor, name, avip_id, vendors.oracle_code,vendors.pan_number,account_no, swift_code, iban_number, bank_name, address_1 , ifsc_code
         order by vendors.vendor,vendors.oracle_code";
 
         $query1 = DB::select(DB::raw($query),array_merge($range,$range1));

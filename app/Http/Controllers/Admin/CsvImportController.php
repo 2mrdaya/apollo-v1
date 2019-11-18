@@ -101,7 +101,7 @@ class CsvImportController extends Controller
             if (isset($row[0]) && trim($row[0])!="") {
                 $tmp = [];
                 $tmp['status']='Success';
-                /*----Check Unspected Char in column vlaue---*/
+
                 foreach($fields as $header => $k) {
                     $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
                 }

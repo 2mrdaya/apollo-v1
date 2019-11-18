@@ -166,9 +166,6 @@ class ImportCsvHelper {
     }
 
 
-
-
-
     public static function GstimportValidate($row)
     {
         $errorStatus='';
@@ -194,7 +191,7 @@ class ImportCsvHelper {
 
             if(isset($row['booking_month']) && !empty($row['booking_month']))
             {
-                
+
             }
             else{
                 $errorStatus.='Booking  month required';
@@ -202,7 +199,7 @@ class ImportCsvHelper {
 
             if(isset($row['payment_month']) && !empty($row['payment_month']))
             {
-                
+
             }
             else{
                 $errorStatus.='Payment month required';
@@ -214,20 +211,91 @@ class ImportCsvHelper {
             else{
                 $row['status']=$errorStatus;
             }
-            
+
             return $row;
        }
     }
 
-    /*-----Patient Registration Module-----*/
+    public static function ReferralDataFinalValidate($row) {
 
+        $errorStatus='';
+        if(!empty($row))
+        {
+            if(isset($row['doi_as_per_whats_app']) && !empty($row['doi_as_per_whats_app']))
+            {
+                try {
+                    $row['doi_as_per_whats_app'] = Carbon::createFromFormat(config('app.doi_as_per_whats_app'), str_replace(';',':',$row['doi_as_per_whats_app']))->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                    $errorStatus.='problem in doi_as_per_whats_app';
+                }
+            }
+
+            if(isset($row['doi_as_per_sw']) && !empty($row['doi_as_per_sw']))
+            {
+                try {
+                    $row['doi_as_per_sw'] = Carbon::createFromFormat(config('app.doi_as_per_sw'), str_replace(';',':',$row['doi_as_per_sw']))->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                    $errorStatus.='problem in doi_as_per_sw';
+                }
+            }
+
+            if($errorStatus==''){
+                $row['status']='Success';
+            }
+            else{
+                $row['status']=$errorStatus;
+            }
+        }
+
+        return $row;
+    }
+
+    /*-----Patient Registration Module-----*/
     public static function PatientRegistrationValidate($row)
     {
         $errorStatus='Success';
-        $row['status']=$errorStatus;
+
+        if(!empty($row))
+        {
+            if(isset($row['registration_date']) && !empty($row['registration_date']))
+            {
+                try {
+                    $row['registration_date'] = Carbon::createFromFormat(config('app.date_format_patient_registration'), $row['registration_date'])->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                    $errorStatus.='problem in doi_as_per_sw';
+                }
+            }else{
+                $errorStatus.='registration_date should not blank';
+            }
+
+            if(isset($row['uhid']) && !empty($row['uhid']))
+            {
+
+            }else{
+                $errorStatus.='uhid should not blank';
+            }
+
+            if(isset($row['patient_name']) && !empty($row['patient_name']))
+            {
+
+            }else{
+                $errorStatus.='patient_name should not blank';
+            }
+
+            if(isset($row['country']) && !empty($row['country']))
+            {
+
+            }else{
+                $errorStatus.='country should not blank';
+            }
+
+            if($errorStatus==''){
+                $row['status']='Success';
+            }
+            else{
+                $row['status']=$errorStatus;
+            }
+        }
         return $row;
-    
     }
-
-
 }
