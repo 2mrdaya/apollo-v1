@@ -164,4 +164,70 @@ class ImportCsvHelper {
         }
         return $NewStr;
     }
+
+
+
+
+
+    public static function GstimportValidate($row)
+    {
+        $errorStatus='';
+        if(!empty($row))
+        {
+            if(isset($row['bill_no']) && !empty($row['bill_no']))
+            {
+
+            }
+            else{
+                $errorStatus.='Bill no required';
+            }
+
+
+            if(isset($row['gst_amout']) && !empty($row['gst_amout']))
+            {
+                if(!is_numeric($row['gst_amout'])){ $errorStatus.='GST amount should be number';}
+            }
+            else{
+                $errorStatus.='GST amount required\r\n';
+            }
+
+
+            if(isset($row['booking_month']) && !empty($row['booking_month']))
+            {
+                
+            }
+            else{
+                $errorStatus.='Booking  month required';
+            }
+
+            if(isset($row['payment_month']) && !empty($row['payment_month']))
+            {
+                
+            }
+            else{
+                $errorStatus.='Payment month required';
+            }
+
+            if($errorStatus==''){
+                $row['status']='Success';
+            }
+            else{
+                $row['status']=$errorStatus;
+            }
+            
+            return $row;
+       }
+    }
+
+    /*-----Patient Registration Module-----*/
+
+    public static function PatientRegistrationValidate($row)
+    {
+        $errorStatus='Success';
+        $row['status']=$errorStatus;
+        return $row;
+    
+    }
+
+
 }

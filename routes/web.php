@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('reports', 'Admin\ReportsController');
 
     Route::post('csv_parse', 'Admin\CsvImportController@parse')->name('csv_parse');
+    Route::post('validate_csv', 'Admin\CsvImportController@validateCsv')->name('validate_csv');
     Route::post('csv_process', 'Admin\CsvImportController@process')->name('csv_process');
 
 

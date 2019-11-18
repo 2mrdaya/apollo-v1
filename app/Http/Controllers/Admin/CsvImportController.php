@@ -71,7 +71,8 @@ class CsvImportController extends Controller
 
     }
 
-    public function process(Request $request) {
+    public function validateCsv(Request $request)
+    {
 
         $fileName = $request->input('fileName', false);
         $path = storage_path('app/csv_import/' . $fileName);
@@ -84,14 +85,69 @@ class CsvImportController extends Controller
         $modelName = $request->input('modelName', false);
         $model = "App\\" . $modelName;
 
+        $redirect = $request->input('redirect', false);
+        $reader = new SpreadsheetReader($path);
+        $tableData = [];
+        $headerRow=[];
+        $errorRowIndexes = [];
+        $module = $request->input('module', false);
+        $handlerMethod = $modelName.$module.'Validate';
+
+        foreach($reader as $key => $row)
+        {
+            if ($hasHeader && $key == 0) {
+                continue;
+            }
+            if (isset($row[0]) && trim($row[0])!="") {
+                $tmp = [];
+                /*----Check Unspected Char in column vlaue---*/
+                foreach($fields as $header => $k) {
+                    $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
+                }
+
+                if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
+                    $tmp = ImportCsvHelper::$handlerMethod($tmp);
+                }
+                $tableData[] = $tmp;
+                if ($tmp['status']!='Success') {
+                    array_push($errorRowIndexes, $key);
+                }
+
+            }
+        }
+        $headerRow=array_keys($fields);
+
+        $headerRow[]='status';
+
+        return view('csvImport.csv_validate', compact('fields','tableData','headerRow','modelName','module','redirect','fileName','errorRowIndexes'));
+
+    }
+
+
+    public function process(Request $request)
+    {
+
+        $fileName = $request->input('fileName', false);
+        $path = storage_path('app/csv_import/' . $fileName);
+        $hasHeader = $request->input('hasHeader', false);
+
+        $fields = $request->input('field', false);
+        $fields = array_flip(array_filter($fields));
+
+        $modelName = $request->input('modelName', false);
+        $model = "App\\" . $modelName;
+
         $reader = new SpreadsheetReader($path);
         $insert = [];
+
+        $excludeRow = explode(",",$request->input('error'));
 
         $module = $request->input('module', false);
         $handlerMethod = $modelName.$module.'Process';
 
-        foreach($reader as $key => $row) {
-            if ($hasHeader && $key == 0) {
+        foreach($reader as $key => $row)
+        {
+            if ($key == 0 || in_array($key, $excludeRow)) {
                 continue;
             }
             if (isset($row[0]) && trim($row[0])!="") {
@@ -99,15 +155,6 @@ class CsvImportController extends Controller
                 foreach($fields as $header => $k) {
                     $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
                 }
-
-                if($module) {
-                    $tmp['channel'] = $module;
-                }
-
-                if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
-                    $tmp = ImportCsvHelper::$handlerMethod($tmp);
-                }
-
                 $insert[] = $tmp;
             }
         }
@@ -118,11 +165,13 @@ class CsvImportController extends Controller
             $model::insert($insert_item);
         }
 
+
         $rows = count($insert);
         $table = str_plural($modelName);
-        File::delete($path);
+         File::delete($path);
 
-        $handlerMethod = $modelName.$module.'PostProcess';
+
+         $handlerMethod = $modelName.$module.'PostProcess';
         if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
             $deleted_rows = ImportCsvHelper::$handlerMethod();
         }

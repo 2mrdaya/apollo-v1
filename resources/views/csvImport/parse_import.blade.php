@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="panel-body table-responsive">
-                    <form class="form-horizontal" method="POST" action="{{ route('admin.csv_process') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('admin.validate_csv') }}">
                         {{ csrf_field() }}
                         <input type="hidden" name="fileName" value="{{ $fileName }}"/>
                         <input type="hidden" name="hasHeader" value="{{ $hasHeader }}"/>

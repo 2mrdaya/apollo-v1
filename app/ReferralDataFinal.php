@@ -37,8 +37,8 @@ class ReferralDataFinal extends Model
 
     protected $fillable = ['vendor', 'month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'bill_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'oracle_code', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
     protected $hidden = [];
-    
-    
+
+
     public static function boot()
     {
         parent::boot();
@@ -163,25 +163,30 @@ class ReferralDataFinal extends Model
     {
         $this->attributes['avip_id'] = $input ? $input : null;
     }
-    
+
     public function ip()
     {
         return $this->belongsTo(Ip::class, 'ip_id')->withTrashed();
     }
-    
+
     public function message()
     {
         return $this->belongsTo(MessageMapping::class, 'message_id')->withTrashed();
     }
-    
+
     public function patient()
     {
         return $this->belongsTo(PatientRegistration::class, 'patient_id')->withTrashed();
     }
-    
+
     public function avip()
     {
         return $this->belongsTo(Avip::class, 'avip_id')->withTrashed();
     }
-    
+
+    public function getIp()
+    {
+        echo "Hi";die;
+        return \App\Ip::where('bill_no','bill_no')->first();
+    }
 }
