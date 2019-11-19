@@ -27,12 +27,11 @@ class ImportCsvHelper {
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
         $row['referrer_name'] = trim(preg_replace('/\s+/',' ', $row['referrer_name']));
         $row['message'] = substr(trim($row['message']),0,500);
-        //var_dump($row);die();
         return $row;
     }
 
     public static function MessageMappingWhatsAppProcess($row) {
-        //$row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_sms'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
+        $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_whatsapp'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
         $row['patient_name'] = SELF::FindNames('find_patient', $row["message"]);
         $row['patient_name'] = trim(preg_replace('/\s+/',' ', $row['patient_name']));
         $row['referrer_name'] = SELF::FindNames('find_avip', $row["message"]);
@@ -250,7 +249,6 @@ class ImportCsvHelper {
         return $row;
     }
 
-    /*-----Patient Registration Module-----*/
     public static function PatientRegistrationValidate($row)
     {
         $errorStatus='Success';
@@ -287,6 +285,90 @@ class ImportCsvHelper {
 
             }else{
                 $errorStatus.='country should not blank';
+            }
+
+            if($errorStatus==''){
+                $row['status']='Success';
+            }
+            else{
+                $row['status']=$errorStatus;
+            }
+        }
+        return $row;
+    }
+
+    public static function MessageMappingSmsValidate($row)
+    {
+        $errorStatus='Success';
+
+        if(!empty($row))
+        {
+
+            if(isset($row['intimation_date_time']) && !empty($row['intimation_date_time']))
+            {
+                try {
+                    $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_sms'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                    $errorStatus.='problem in doi_as_per_sw';
+                }
+            }else{
+                $errorStatus.='intimation_date_time should not blank';
+            }
+
+            if(isset($row['source']) && !empty($row['source']))
+            {
+
+            }else{
+                $errorStatus.='source should not blank';
+            }
+
+            if(isset($row['message']) && !empty($row['message']))
+            {
+
+            }else{
+                $errorStatus.='message should not blank';
+            }
+
+            if($errorStatus==''){
+                $row['status']='Success';
+            }
+            else{
+                $row['status']=$errorStatus;
+            }
+        }
+        return $row;
+    }
+
+    public static function MessageMappingWhatsAppValidate($row)
+    {
+        $errorStatus='Success';
+
+        if(!empty($row))
+        {
+
+            if(isset($row['intimation_date_time']) && !empty($row['intimation_date_time']))
+            {
+                try {
+                    $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_whatsapp'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                    $errorStatus.='problem in doi_as_per_sw';
+                }
+            }else{
+                $errorStatus.='intimation_date_time should not blank';
+            }
+
+            if(isset($row['source']) && !empty($row['source']))
+            {
+
+            }else{
+                $errorStatus.='source should not blank';
+            }
+
+            if(isset($row['message']) && !empty($row['message']))
+            {
+
+            }else{
+                $errorStatus.='message should not blank';
             }
 
             if($errorStatus==''){
