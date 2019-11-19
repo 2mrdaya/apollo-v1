@@ -82,10 +82,9 @@ class ImportCsvHelper {
     }
 
     public static function IpProcess($row) {
-        //var_dump($row);die;
         $row['bill_date'] = $row['bill_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s') : null;
-        $row['admission_date'] = $row['admission_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['admission_date'])->format('Y-m-d H:i:s') : null;
-        $row['discharge_date'] = $row['discharge_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['discharge_date'])->format('Y-m-d H:i:s') : null;
+        $row['admission_date'] = isset($row['admission_date']) ? ($row['admission_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['admission_date'])->format('Y-m-d H:i:s') : null) : null;
+        $row['discharge_date'] = isset($row['discharge_date']) ? ($row['discharge_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['discharge_date'])->format('Y-m-d H:i:s') : null) : null;
         $row['total_pharmacy_amount'] = isset($row['total_pharmacy_amount']) ? (is_numeric($row['total_pharmacy_amount']) ? $row['total_pharmacy_amount'] : 0) : 0;
         $row['total_consumables'] = isset($row['total_consumables']) ? (is_numeric($row['total_consumables']) ? $row['total_consumables'] : 0) : 0;
         return $row;
