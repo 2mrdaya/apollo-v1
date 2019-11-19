@@ -346,16 +346,16 @@ class ImportCsvHelper {
         if(!empty($row))
         {
 
-            if(isset($row['intimation_date_time']) && !empty($row['intimation_date_time']))
+            /*if(isset($row['intimation_date_time']) && !empty($row['intimation_date_time']))
             {
                 try {
                     $row['intimation_date_time'] = Carbon::createFromFormat(config('app.date_format_whatsapp'), $row['intimation_date_time'])->format('Y-m-d H:i:s');
                 } catch (\Exception $e) {
-                    $errorStatus.='problem in doi_as_per_sw';
+                    $errorStatus.='problem in intimation_date_time';
                 }
             }else{
                 $errorStatus.='intimation_date_time should not blank';
-            }
+            }*/
 
             if(isset($row['source']) && !empty($row['source']))
             {
