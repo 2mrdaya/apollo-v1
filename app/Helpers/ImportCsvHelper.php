@@ -82,6 +82,7 @@ class ImportCsvHelper {
     }
 
     public static function IpProcess($row) {
+        //var_dump($row);die;
         $row['bill_date'] = $row['bill_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['bill_date'])->format('Y-m-d H:i:s') : null;
         $row['admission_date'] = $row['admission_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['admission_date'])->format('Y-m-d H:i:s') : null;
         $row['discharge_date'] = $row['discharge_date'] ? Carbon::createFromFormat(config('app.date_format_bill_date'), $row['discharge_date'])->format('Y-m-d H:i:s') : null;

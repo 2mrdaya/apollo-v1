@@ -18,8 +18,8 @@
                         <input type="hidden" name="module" value="{{ $module }}"/>
                         <input type="hidden" name="redirect" value="{{ $redirect }}"/>
                         <input type="hidden" name="fileName" value="{{ $fileName }}"/>
-                        <input type="hidden" name="error" value="{{ implode(', ', $errorRowIndexes)}}">
-
+                        <input type="hidden" name="error" value="{{ implode(',', $errorRowIndexes)}}">
+                        <input type="hidden" name="fields" value="{{ implode(',', $fields_org)}}"/>
                         <table class="table">
                             @if (isset($headerRow))
                                 <tr>

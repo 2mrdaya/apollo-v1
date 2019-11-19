@@ -79,8 +79,8 @@ class CsvImportController extends Controller
 
         $hasHeader = $request->input('hasHeader', false);
 
-        $fields = $request->input('fields', false);
-        $fields = array_flip(array_filter($fields));
+        $fields_org = $request->input('fields', false);
+        $fields = array_flip(array_filter($fields_org));
 
         $modelName = $request->input('modelName', false);
         $model = "App\\" . $modelName;
@@ -120,21 +120,20 @@ class CsvImportController extends Controller
 
         $headerRow[]='status';
 
-        return view('csvImport.csv_validate', compact('fields','tableData','headerRow','modelName','module','redirect','fileName','errorRowIndexes'));
+        return view('csvImport.csv_validate', compact('fields','tableData','headerRow','modelName','module','redirect','fileName','errorRowIndexes','fields_org'));
 
     }
 
 
-    public function process(Request $request)
-    {
+    public function process(Request $request){
 
         $fileName = $request->input('fileName', false);
         $path = storage_path('app/csv_import/' . $fileName);
         $hasHeader = $request->input('hasHeader', false);
-
-        $fields = $request->input('field', false);
+        //var_dump($request->input('fields', false));
+        $fields = explode(",",$request->input('fields', false));
         $fields = array_flip(array_filter($fields));
-
+        //var_dump($fields);die;
         $modelName = $request->input('modelName', false);
         $model = "App\\" . $modelName;
 
