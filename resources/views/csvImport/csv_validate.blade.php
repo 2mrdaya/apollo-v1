@@ -7,7 +7,7 @@
         <div class='col-md-12'>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    @lang('quickadmin.qa_csvImport')
+                    @lang('Import Error List')
                 </div>
 
                 <div class="panel-body table-responsive">
@@ -26,7 +26,7 @@
                                     @foreach ($headerRow as $field)
                                          @if($field!='status')
                                             <input type="hidden" name="field[]" value="{{ $field }}"/>
-                                        @endif
+                                         @endif
                                         <th>{{ $field }}</th>
                                     @endforeach
                                 </tr>
@@ -43,13 +43,7 @@
                                 @else
                                     <tr>
                                 @endif
-
                                     @foreach ($headerRow as $field)
-
-                                    @if($data['status']!='Success' && $field=='status')
-                                    <input type="hidden" name="error1[]" value="{{ $i }}">
-                                    @endif
-
                                     <td>{{ $data[$field] }}</td>
                                     @endforeach
                                 </tr>

@@ -49,7 +49,7 @@
                         <th>@lang('quickadmin.referral-data-final.fields.dr-name-aic')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.avip-name-msg')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.ip-no')</th>
-                        <th>@lang('quickadmin.referral-data-final.fields.pan-no')</th>
+                        <th>Oracle Code</th>
                         {{--<th>@lang('quickadmin.referral-data-final.fields.ip')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.uhid')</th>--}}
                         <th>@lang('quickadmin.ip.fields.bill-date')</th>

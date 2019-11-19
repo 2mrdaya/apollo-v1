@@ -108,11 +108,12 @@ class CsvImportController extends Controller
 
                 if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
                     $tmp = ImportCsvHelper::$handlerMethod($tmp);
-                    if ($tmp['status']!='Success') {
-                        array_push($errorRowIndexes, $key);
-                    }
                 }
-                $tableData[] = $tmp;
+
+                if ($tmp['status']!='Success') {
+                    array_push($errorRowIndexes, $key);
+                    $tableData[] = $tmp;
+                }
             }
         }
         $headerRow=array_keys($fields);
@@ -150,10 +151,18 @@ class CsvImportController extends Controller
             if ($key == 0 || in_array($key, $excludeRow)) {
                 continue;
             }
+
             if (isset($row[0]) && trim($row[0])!="") {
                 $tmp = [];
                 foreach($fields as $header => $k) {
                     $tmp[$header] = ImportCsvHelper::RemoveBS($row[$k]);
+                }
+                if($module) {
+                    $tmp['channel'] = $module;
+                }
+
+                if(method_exists('App\Helpers\ImportCsvHelper',$handlerMethod)) {
+                    $tmp = ImportCsvHelper::$handlerMethod($tmp);
                 }
                 $insert[] = $tmp;
             }
