@@ -180,24 +180,33 @@ class ReportsController extends Controller
         }
 
         $vendor_code = $request->all()['avip_oracle_code'];
-        $range = $request->all()['date_range'];
 
-        $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
+        if (isset($request->all()['date_range'])) {
+            $range = $request->all()['date_range'];
+            $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
+        }
+        else {
+            $range = 'ALL';
+        }
 
-        if ($vendor_code == 'ALL') {
+        if ($vendor_code == 'ALL' and $range == 'ALL') {
+            $sql = "SELECT * FROM view_referral order by month_dt, vendor, bill_date";
+            $query = DB::select(DB::raw($sql));
+        }
+        else if ($vendor_code == 'ALL') {
             $sql = "SELECT * FROM view_referral where month in ($place_holders_range) order by month_dt, vendor, bill_date";
+            $query = DB::select(DB::raw($sql),array_merge($range));
         }
         else {
             $sql = "SELECT * FROM view_referral where view_referral.oracle_code='$vendor_code'
             order by month_dt, vendor, bill_date";
+            $query = DB::select(DB::raw($sql),[$vendor_code]);
         }
 
         $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
 
         Storage::disk('local')->append('file.csv', $export_data);
         $export_data="";
-
-        $query = DB::select(DB::raw($sql),array_merge($range));
 
         for ($i = 0; $i < count($query); $i++) {
             $total_bill_amount = $query[$i]->total_bill_amount ? $query[$i]->total_bill_amount : "0";
