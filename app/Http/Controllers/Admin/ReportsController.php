@@ -189,8 +189,6 @@ class ReportsController extends Controller
             order by STR_TO_DATE(concat('01-', trim(month)),'%d-%M-%y'), vendor, bill_date";
         }
 
-        $query = DB::select(DB::raw($query),[$vendor_code]);
-
         $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
 
         Storage::disk('local')->append('file.csv', $export_data);
@@ -226,40 +224,34 @@ class ReportsController extends Controller
                 $export_data.="\n";
             }
         }*/
-        $i=1;
-        foreach ($query as $row) {
-            $total_bill_amount = $row->total_bill_amount ? $row->total_bill_amount : "0";
-            $total_consumables = $row->total_consumables ? $row->total_consumables : "0";
-            $total_pharmacy_amount = $row->total_pharmacy_amount ? $row->total_pharmacy_amount : "0";
-            $net_bill_amount = $total_bill_amount - $total_consumables - $total_pharmacy_amount;
-            $payable_amount = $row->aic_fee ? $row->aic_fee : "0";
-            $gst_amount = $row->gst_amout ? $row->gst_amout : "0";
+        DB::table('view_referral')->orderBy('month_dt')->chunk(10000, function($rows){
+            foreach ($rows as $row) {
+                $total_bill_amount = $row->total_bill_amount ? $row->total_bill_amount : "0";
+                $total_consumables = $row->total_consumables ? $row->total_consumables : "0";
+                $total_pharmacy_amount = $row->total_pharmacy_amount ? $row->total_pharmacy_amount : "0";
+                $net_bill_amount = $total_bill_amount - $total_consumables - $total_pharmacy_amount;
+                $payable_amount = $row->aic_fee ? $row->aic_fee : "0";
+                $gst_amount = $row->gst_amout ? $row->gst_amout : "0";
 
-            $export_data.=$row->month_dt.',';
-            $export_data.=$row->vendor.",";
-            $export_data.='"'.$row->name.'",';
-            $export_data.=$row->oracle_code.",";
-            $export_data.='"'.$row->patient_name_org.'",';
-            $export_data.=$row->registration_date.",";
-            $export_data.=$row->bill_no.",";
-            $export_data.=$row->bill_date.",";
-            $export_data.='"'.$row->rate_details.'",';
-            $export_data.=$total_bill_amount.",";
-            $export_data.=$total_consumables.",";
-            $export_data.=$total_pharmacy_amount.",";
-            $export_data.=$net_bill_amount.",";
-            $export_data.=$payable_amount.",";
-            $export_data.=$gst_amount.",";
-            if($i%100==0) {
+                $export_data=$row->month_dt.',';
+                $export_data.=$row->vendor.",";
+                $export_data.='"'.$row->name.'",';
+                $export_data.=$row->oracle_code.",";
+                $export_data.='"'.$row->patient_name_org.'",';
+                $export_data.=$row->registration_date.",";
+                $export_data.=$row->bill_no.",";
+                $export_data.=$row->bill_date.",";
+                $export_data.='"'.$row->rate_details.'",';
+                $export_data.=$total_bill_amount.",";
+                $export_data.=$total_consumables.",";
+                $export_data.=$total_pharmacy_amount.",";
+                $export_data.=$net_bill_amount.",";
+                $export_data.=$payable_amount.",";
+                $export_data.=$gst_amount.",";
                 Storage::disk('local')->append('file.csv', $export_data);
                 $export_data="";
             }
-            else {
-                $export_data.="\n";
-            }
-            $i++;
-        }
-        Storage::disk('local')->append('file.csv', $export_data);
+        });
         $contents = Storage::get('file.csv');
         return response($contents)
                 ->header('Content-Type','application/csv')
