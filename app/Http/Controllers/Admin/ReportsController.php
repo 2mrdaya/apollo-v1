@@ -180,20 +180,26 @@ class ReportsController extends Controller
         }
 
         $vendor_code = $request->all()['avip_oracle_code'];
+        $range = $request->all()['date_range'];
+
+        $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
 
         if ($vendor_code == 'ALL') {
-            $query = "SELECT * FROM view_referral order by month, vendor, bill_date";
+            $sql = "SELECT * FROM view_referral where month in ($place_holders_range) order by month_dt, vendor, bill_date";
         }
         else {
-            $query = "SELECT * FROM view_referral where view_referral.oracle_code='$vendor_code'
-            order by STR_TO_DATE(concat('01-', trim(month)),'%d-%M-%y'), vendor, bill_date";
+            $sql = "SELECT * FROM view_referral where view_referral.oracle_code='$vendor_code'
+            order by month_dt, vendor, bill_date";
         }
 
         $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
 
         Storage::disk('local')->append('file.csv', $export_data);
         $export_data="";
-        /*for ($i = 0; $i < count($query); $i++) {
+
+        $query = DB::select(DB::raw($sql),array_merge($range));
+
+        for ($i = 0; $i < count($query); $i++) {
             $total_bill_amount = $query[$i]->total_bill_amount ? $query[$i]->total_bill_amount : "0";
             $total_consumables = $query[$i]->total_consumables ? $query[$i]->total_consumables : "0";
             $total_pharmacy_amount = $query[$i]->total_pharmacy_amount ? $query[$i]->total_pharmacy_amount : "0";
@@ -201,7 +207,7 @@ class ReportsController extends Controller
             $payable_amount = $query[$i]->aic_fee ? $query[$i]->aic_fee : "0";
             $gst_amount = $query[$i]->gst_amout ? $query[$i]->gst_amout : "0";
 
-            $export_data=$query[$i]->month_dt.',';
+            $export_data.=$query[$i]->month_dt.',';
             $export_data.=$query[$i]->vendor.",";
             $export_data.='"'.$query[$i]->name.'",';
             $export_data.=$query[$i]->oracle_code.",";
@@ -223,8 +229,8 @@ class ReportsController extends Controller
             else {
                 $export_data.="\n";
             }
-        }*/
-        DB::table('view_referral')->orderBy('month_dt')->chunk(10000, function($rows){
+        }
+        /*DB::table('view_referral')->orderBy('month_dt')->chunk(10000, function($rows){
             foreach ($rows as $row) {
                 $total_bill_amount = $row->total_bill_amount ? $row->total_bill_amount : "0";
                 $total_consumables = $row->total_consumables ? $row->total_consumables : "0";
@@ -251,7 +257,7 @@ class ReportsController extends Controller
                 Storage::disk('local')->append('file.csv', $export_data);
                 $export_data="";
             }
-        });
+        });*/
         $contents = Storage::get('file.csv');
         return response($contents)
                 ->header('Content-Type','application/csv')
