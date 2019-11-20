@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 use Response;
 // import the storage facade
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Expr\BinaryOp\Mod;
 
 class ReportsController extends Controller
 {
@@ -172,7 +173,7 @@ class ReportsController extends Controller
      */
     public function getVendorPayments(Request $request)
     {
-
+        Storage::delete('file.csv');
         if (! Gate::allows('venderpayment_access')) {
             return abort(401);
         }
@@ -180,7 +181,7 @@ class ReportsController extends Controller
         $vendor_code = $request->all()['avip_oracle_code'];
 
         if ($vendor_code == 'ALL') {
-            $query = "SELECT * FROM view_referral order by month, vendor, bill_date";
+            $query = "SELECT * FROM view_referral";// order by month, vendor, bill_date";
         }
         else {
             $query = "SELECT * FROM view_referral where view_referral.oracle_code='$vendor_code'
@@ -189,10 +190,11 @@ class ReportsController extends Controller
 
         $query = DB::select(DB::raw($query),[$vendor_code]);
 
-        $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST \n";
+        $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
 
+        Storage::disk('local')->append('file.csv', $export_data);
+        $export_data="";
         for ($i = 0; $i < count($query); $i++) {
-
             $total_bill_amount = $query[$i]->total_bill_amount ? $query[$i]->total_bill_amount : "0";
             $total_consumables = $query[$i]->total_consumables ? $query[$i]->total_consumables : "0";
             $total_pharmacy_amount = $query[$i]->total_pharmacy_amount ? $query[$i]->total_pharmacy_amount : "0";
@@ -215,15 +217,22 @@ class ReportsController extends Controller
             $export_data.=$net_bill_amount.",";
             $export_data.=$payable_amount.",";
             $export_data.=$gst_amount.",";
-            $export_data.="\n";
+            if($i%100==0) {
+                Storage::disk('local')->append('file.csv', $export_data);
+                $export_data="";
+            }
+            else {
+                $export_data.="\n";
+            }
         }
-        return response($export_data)
+        Storage::disk('local')->append('file.csv', $export_data);
+        $contents = Storage::get('file.csv');
+        return response($contents)
                 ->header('Content-Type','application/csv')
                 ->header('Content-Disposition', 'attachment; filename="download.csv"')
                 ->header('Pragma','no-cache')
                 ->header('Expires','0');
-
-        return view('admin.venderpayments.comparison', compact("query"));
+        //return view('admin.venderpayments.comparison', compact("query"));
     }
 
     /**
