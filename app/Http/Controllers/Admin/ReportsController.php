@@ -173,6 +173,7 @@ class ReportsController extends Controller
      */
     public function getVendorPayments(Request $request)
     {
+        ini_set('memory_limit', '-1');
         Storage::delete('file.csv');
         if (! Gate::allows('venderpayment_access')) {
             return abort(401);
