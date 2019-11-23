@@ -37,27 +37,27 @@
 
                         <th>@lang('quickadmin.referral-data-final.fields.month')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.vendor')</th>
+                        <th>Oracle Code</th>
+                        <th>Vendor Name</th>
+                        <th>Bill No</th>
+                        <th>@lang('quickadmin.referral-data-final.fields.uhid')</th>
+                        <th>@lang('quickadmin.ip.fields.bill-date')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.msg-desc')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.doi-as-per-whats-app')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.doi-as-per-sw')</th>
                         <th>@lang('quickadmin.message-mapping.fields.intimation-date-time')</th>
                         <th>@lang('quickadmin.patient-registration.fields.registration-date')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.area')</th>
-                        <th>@lang('quickadmin.referral-data-final.fields.uhid')</th>
                         <th>@lang('quickadmin.patient-registration.fields.patient-name')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.pateint-name-msg')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.dr-name-aic')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.avip-name-msg')</th>
-                        <th>@lang('quickadmin.referral-data-final.fields.ip-no')</th>
-                        <th>Oracle Code</th>
                         {{--<th>@lang('quickadmin.referral-data-final.fields.ip')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.uhid')</th>--}}
-                        <th>@lang('quickadmin.ip.fields.bill-date')</th>
                         {{--<th>@lang('quickadmin.ip.fields.patient-name')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.country')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.state')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.city')</th>--}}
-                        <th>@lang('quickadmin.ip.fields.bill-no')</th>
                         {{--<th>@lang('quickadmin.ip.fields.customer-name')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.total-service-amount')</th>--}}
                         {{--<th>@lang('quickadmin.ip.fields.tax-amount')</th>--}}
@@ -85,7 +85,6 @@
                         {{--<th>@lang('quickadmin.patient-registration.fields.mobile')</th>
                         <th>@lang('quickadmin.patient-registration.fields.email-id')</th>
                         <th>@lang('quickadmin.patient-registration.fields.operator-name')</th>--}}
-                        <th>@lang('quickadmin.referral-data-final.fields.avip')</th>
                         <th>@lang('quickadmin.avip.fields.address-1')</th>
                         {{--<th>@lang('quickadmin.avip.fields.address-2')</th>
                         <th>@lang('quickadmin.avip.fields.bank-name')</th>
@@ -203,19 +202,20 @@
                 @endif
                 @endcan{data: 'month', name: 'month'},
                 {data: 'vendor', name: 'vendor'},
+                {data: 'oracle_code', name: 'oracle_code'},
+                {data: 'avip.name', name: 'avip.name'},
+                {data: 'bill_no', name: 'bill_no'},
+                {data: 'uhid', name: 'uhid'},
                 {data: 'msg_desc', name: 'msg_desc'},
                 {data: 'doi_as_per_whats_app', name: 'doi_as_per_whats_app'},
                 {data: 'doi_as_per_sw', name: 'doi_as_per_sw'},
                 {data: 'intimation_date_time', name: 'intimation_date_time'},
                 {data: 'patient.registration_date', name: 'patient.registration_date'},
                 {data: 'area', name: 'area'},
-                {data: 'referral_uhid', name: 'uhid'},
                 {data: 'patient.patient_name', name: 'patient.patient_name'},
                 {data: 'pateint_name_msg', name: 'pateint_name_msg'},
                 {data: 'dr_name_aic', name: 'dr_name_aic'},
                 {data: 'avip_name_msg', name: 'avip_name_msg'},
-                {data: 'bill_no', name: 'bill_no'},
-                {data: 'oracle_code', name: 'oracle_code'},
                 //{data: 'bill_no', name: 'bill_no'},
                 //{data: 'uhid', name: 'uhid'},
                 {data: 'ip.bill_date', name: 'ip.bill_date'},
@@ -223,7 +223,6 @@
                 //{data: 'country', name: 'country'},
                 //{data: 'state', name: 'state'},
                 //{data: 'city', name: 'city'},
-                {data: 'bill_no', name: 'bill_no'},
                 //{data: 'customer_name', name: 'customer_name'},
                 //{data: 'total_service_amount', name: 'total_service_amount'},
                 //{data: 'tax_amount', name: 'tax_amount'},
@@ -251,7 +250,6 @@
                 //{data: 'mobile', name: 'mobile'},
                 //{data: 'email_id', name: 'email_id'},
                 //{data: 'operator_name', name: 'operator_name'},
-                {data: 'avip.name', name: 'avip.name'},
                 {data: 'avip.address_1', name: 'avip.address_1'},
                 //{data: 'address_2', name: 'address_2'},
                 //{data: 'bank_name', name: 'bank_name'},

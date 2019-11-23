@@ -8,7 +8,7 @@
         <a href="{{ route('admin.avips.create') }}" class="btn btn-success">@lang('quickadmin.qa_add_new')</a>
         <a href="#" class="btn btn-warning" style="margin-left:5px;" data-toggle="modal" data-target="#myModal">@lang('quickadmin.qa_csvImport')</a>
         @include('csvImport.modal', ['model' => 'Avip'])
-        
+
     </p>
     @endcan
 
@@ -34,8 +34,9 @@
                         @can('avip_delete')
                             @if ( request('show_deleted') != 1 )<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>@endif
                         @endcan
-
+                        <th>@lang('quickadmin.avip.fields.oracle-code')</th>
                         <th>@lang('quickadmin.avip.fields.name')</th>
+                        <th>@lang('quickadmin.avip.fields.pan-number')</th>
                         <th>@lang('quickadmin.avip.fields.address-1')</th>
                         <th>@lang('quickadmin.avip.fields.address-2')</th>
                         <th>@lang('quickadmin.avip.fields.bank-name')</th>
@@ -48,8 +49,6 @@
                         <th>@lang('quickadmin.avip.fields.correspondence-ac-no')</th>
                         <th>@lang('quickadmin.avip.fields.corp-swift-code')</th>
                         <th>@lang('quickadmin.avip.fields.ifsc-code')</th>
-                        <th>@lang('quickadmin.avip.fields.pan-number')</th>
-                        <th>@lang('quickadmin.avip.fields.oracle-code')</th>
                         <th>@lang('quickadmin.avip.fields.rate-details')</th>
                         <th>@lang('quickadmin.avip.fields.state')</th>
                         <th>@lang('quickadmin.avip.fields.pin-code')</th>
@@ -65,7 +64,7 @@
     </div>
 @stop
 
-@section('javascript') 
+@section('javascript')
     <script>
         @can('avip_delete')
             @if ( request('show_deleted') != 1 ) window.route_mass_crud_entries_destroy = '{{ route('admin.avips.mass_destroy') }}'; @endif
@@ -76,7 +75,9 @@
                 @if ( request('show_deleted') != 1 )
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
                 @endif
-                @endcan{data: 'name', name: 'name'},
+                @endcan
+                {data: 'oracle_code', name: 'oracle_code'},
+                {data: 'name', name: 'name'},
                 {data: 'address_1', name: 'address_1'},
                 {data: 'address_2', name: 'address_2'},
                 {data: 'bank_name', name: 'bank_name'},
@@ -90,11 +91,10 @@
                 {data: 'corp_swift_code', name: 'corp_swift_code'},
                 {data: 'ifsc_code', name: 'ifsc_code'},
                 {data: 'pan_number', name: 'pan_number'},
-                {data: 'oracle_code', name: 'oracle_code'},
                 {data: 'rate_details', name: 'rate_details'},
                 {data: 'state', name: 'state'},
                 {data: 'pin_code', name: 'pin_code'},
-                
+
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];
             processAjaxTables();
