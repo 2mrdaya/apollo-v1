@@ -167,6 +167,72 @@ class ReportsController extends Controller
     }
 
     /**
+     * Display a listing of Speciality Payments .
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getQuaterlyComparisonSpecialityWise(Request $request)
+    {
+
+        if (! Gate::allows('venderpayment_access')) {
+            return abort(401);
+        }
+
+        $range1 = $request->all()['date_range1'];
+        $range2 = $request->all()['date_range2'];
+
+        $range = array_merge($range1, $range2);
+
+        $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
+        $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
+
+        $query = "SELECT vendors.speciality, count(distinct uhid) as patients,
+        sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
+        sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
+        sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
+        FROM view_referral right join (SELECT distinct speciality
+        FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.speciality = vendors.speciality
+        and view_referral.month in ($place_holders_range1)
+        group by vendors.speciality order by vendors.speciality";
+
+        $query1 = DB::select(DB::raw($query),array_merge($range,$range1));
+
+        $place_holders_range1 = implode( ',', array_fill( 0, count($range2), '?' ) );
+        $query2 = DB::select(DB::raw($query),array_merge($range,$range2));
+
+        $export_data="Speciality, Patients, Bill Amount, Fee, GST, Patients, Bill Amount, Fee, GST \n";
+
+        for ($i = 0; $i < count($query1); $i++) {
+
+            $net_bill_amount = $query1[$i]->net_bill_amount ? $query1[$i]->net_bill_amount : "0";
+            $payable_amount = $query1[$i]->payable_amount ? $query1[$i]->payable_amount : "0";
+            $gst_amount = $query1[$i]->gst_amount ? $query1[$i]->gst_amount : "0";
+
+            $net_bill_amount1 = $query2[$i]->net_bill_amount ? $query2[$i]->net_bill_amount : "0";
+            $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
+            $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
+
+            $export_data.="'".$query1[$i]->speciality."',";
+            $export_data.=$query1[$i]->patients.',';
+            $export_data.=$net_bill_amount.",";
+            $export_data.=$payable_amount.",";
+            $export_data.=$gst_amount.",";
+            $export_data.=$query2[$i]->patients.',';
+            $export_data.=$net_bill_amount1.",";
+            $export_data.=$payable_amount1.",";
+            $export_data.=$gst_amount1.",";
+            $export_data.="\n";
+        }
+        return response($export_data)
+                ->header('Content-Type','application/csv')
+                ->header('Content-Disposition', 'attachment; filename="download.csv"')
+                ->header('Pragma','no-cache')
+                ->header('Expires','0');
+
+        return view('admin.venderpayments.comparison', compact("query1","query2"));
+    }
+
+    /**
      * Display a listing of Vender Payment.
      *
      * @return \Illuminate\Http\Response
@@ -328,7 +394,7 @@ class ReportsController extends Controller
     }
 
     /**
-     * Display a listing of Venderpayment.
+     * Display a listing of Monthly Vender Payment.
      *
      * @return \Illuminate\Http\Response
      */
