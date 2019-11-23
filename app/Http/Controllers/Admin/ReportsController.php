@@ -212,7 +212,7 @@ class ReportsController extends Controller
             $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
 
-            $export_data.="'".$query1[$i]->speciality."',";
+            $export_data.='"'.$query1[$i]->speciality.'",';
             $export_data.=$query1[$i]->patients.',';
             $export_data.=$net_bill_amount.",";
             $export_data.=$payable_amount.",";
