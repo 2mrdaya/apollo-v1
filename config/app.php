@@ -86,7 +86,7 @@ return [
     'datetime_format_moment' => 'YYYY-MM-DD HH:mm:ss',
     'date_format_sms' => 'd-m-Y, H:i:s',
     'date_format_whatsapp' => 'm/d/Y h:i:s A',
-    'date_format_patient_registration' => 'm/d/Y h:i:s A',
+    'date_format_patient_registration' => 'm/d/Y h:i',
     'date_format_admission' => 'd/m/y H:i',
     'date_format_intimation' => 'm/d/Y h:iA',
     'date_format_registration' => 'm/d/y h:i A',
