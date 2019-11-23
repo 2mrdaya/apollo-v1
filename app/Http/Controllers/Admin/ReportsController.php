@@ -197,10 +197,15 @@ class ReportsController extends Controller
             $sql = "SELECT * FROM view_referral where month in ($place_holders_range) order by month_dt, vendor, bill_date";
             $query = DB::select(DB::raw($sql),array_merge($range));
         }
-        else {
+        else if ($range == 'ALL'){
             $sql = "SELECT * FROM view_referral where view_referral.oracle_code='$vendor_code'
             order by month_dt, vendor, bill_date";
             $query = DB::select(DB::raw($sql),[$vendor_code]);
+        }
+        else {
+            $sql = "SELECT * FROM view_referral where month in ($place_holders_range) and view_referral.oracle_code='$vendor_code'
+            order by month_dt, vendor, bill_date";
+            $query = DB::select(DB::raw($sql),array_merge($range,[$vendor_code]));
         }
         $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
 
