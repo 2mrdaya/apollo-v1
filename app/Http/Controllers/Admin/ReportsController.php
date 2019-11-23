@@ -326,4 +326,74 @@ class ReportsController extends Controller
 
         return view('admin.venderpayments.comparison', compact("query1","query2"));
     }
+
+    /**
+     * Display a listing of Venderpayment.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getMonthlyPayments(Request $request)
+    {
+        //ini_set('memory_limit', '-1');
+        Storage::delete('file.csv');
+        if (! Gate::allows('venderpayment_access')) {
+            return abort(401);
+        }
+
+        $month = $request->all()['month'];
+
+        $sql = "SELECT avip_id as id, month_dt, vendor, name, pan_number, oracle_code,
+            account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, country, count(distinct uhid) as patients,
+            sum(total_bill_amount) as total_bill_amount, sum(total_pharmacy_amount) as total_pharmacy_amount,
+            sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
+            sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
+            FROM view_referral where month = '$month' group by month_dt, vendor, name, avip_id, oracle_code, pan_number, account_no, swift_code, iban_number, bank_name, address_1, ifsc_code, country";
+
+        $query = DB::select(DB::raw($sql),[$month]);
+
+        $export_data="Month, Type, Vendor Code, Name, Pan, Account, Swift Code, IBAN, Bank Name, Bank Address, IFSC, Country, Patients, Total Bill Amount, Consumable, Pharmacy, Net Bill, GST, Fee";
+
+        Storage::disk('local')->append('file.csv', $export_data);
+        $export_data="";
+
+        for ($i = 0; $i < count($query); $i++) {
+            $total_bill_amount = $query[$i]->total_bill_amount ? $query[$i]->total_bill_amount : "0";
+            $total_consumables = $query[$i]->total_consumables ? $query[$i]->total_consumables : "0";
+            $total_pharmacy_amount = $query[$i]->total_pharmacy_amount ? $query[$i]->total_pharmacy_amount : "0";
+            $net_bill_amount = $total_bill_amount - $total_consumables - $total_pharmacy_amount;
+            $payable_amount = $query[$i]->payable_amount ? $query[$i]->payable_amount : "0";
+            $gst_amount = $query[$i]->gst_amount ? $query[$i]->gst_amount : "0";
+
+            $export_data.=$query[$i]->month_dt.',';
+            $export_data.=$query[$i]->vendor.",";
+            $export_data.=$query[$i]->oracle_code.",";
+            $export_data.='"'.$query[$i]->name.'",';
+            $export_data.='"'.$query[$i]->pan_number.'",';
+            $export_data.='"'.$query[$i]->account_no.'",';
+            $export_data.='"'.$query[$i]->swift_code.'",';
+            $export_data.='"'.$query[$i]->iban_number.'",';
+            $export_data.='"'.$query[$i]->bank_name.'",';
+            $export_data.='"'.$query[$i]->address.'",';
+            $export_data.='"'.$query[$i]->ifsc_code.'",';
+            $export_data.='"'.$query[$i]->country.'",';
+            $export_data.=$query[$i]->patients.",";
+            $export_data.=$total_bill_amount.",";
+            $export_data.=$total_consumables.",";
+            $export_data.=$total_pharmacy_amount.",";
+            $export_data.=$net_bill_amount.",";
+            $export_data.=$payable_amount.",";
+            $export_data.=$gst_amount.",";
+            Storage::disk('local')->append('file.csv', $export_data);
+            $export_data="";
+        }
+
+        $contents = Storage::get('file.csv');
+        return response($contents)
+                ->header('Content-Type','application/csv')
+                ->header('Content-Disposition', 'attachment; filename="download.csv"')
+                ->header('Pragma','no-cache')
+                ->header('Expires','0');
+
+        return view('admin.venderpayments.comparison', compact("query1","query2"));
+    }
 }
