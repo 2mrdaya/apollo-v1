@@ -35,7 +35,7 @@ class ReferralDataFinal extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['vendor', 'month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'bill_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'oracle_code', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id'];
+    protected $fillable = ['vendor', 'month', 'msg_desc', 'doi_as_per_whats_app', 'doi_as_per_sw', 'area', 'uhid', 'bill_no', 'dr_name_aic', 'fee_percent', 'aic_fee', 'oracle_code', 'pateint_name_msg', 'avip_name_msg', 'remarks', 'approve', 'status', 'ip_id', 'message_id', 'patient_id', 'avip_id','paid_month','bonus'];
     protected $hidden = [];
 
 
@@ -48,7 +48,7 @@ class ReferralDataFinal extends Model
 
     public static $enum_vendor = ["PPN" => "PPN", "HCF" => "HCF"];
 
-    public static $enum_status = ["Ok" => "Ok", "LateIntimation" => "LateIntimation", "Reject" => "Reject", "CarryForward" => "CarryForward", "RepeatAdmission" => "RepeatAdmission", "Other" => "Other"];
+    public static $enum_status = ["Ok" => "Ok", "LateIntimation" => "LateIntimation", "Reject" => "Reject", "CarryForward" => "CarryForward", "RepeatAdmission" => "RepeatAdmission", "Due" => "Due", "Other" => "Other"];
 
     /**
      * Set attribute to date format

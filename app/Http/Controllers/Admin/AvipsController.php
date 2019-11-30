@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Avip;
+use App\ReferralDataFinal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAvipsRequest;
 use App\Http\Requests\Admin\UpdateAvipsRequest;
+use Illuminate\Support\Facades\App;
 use Yajra\DataTables\DataTables;
+
 
 class AvipsController extends Controller
 {
@@ -344,6 +347,9 @@ class AvipsController extends Controller
         $avip = Avip::findOrFail($id);
         $avip->update($request->all());
 
+        $oracle_code_old = $request->all()['oracle_code_old'];
+        $oracle_code_new = $request->all()['oracle_code'];
+
         $messageMappings           = $avip->message_mappings;
         $currentMessageMappingData = [];
         foreach ($request->input('message_mappings', []) as $index => $data) {
@@ -362,8 +368,8 @@ class AvipsController extends Controller
             }
         }
 
-
-        return redirect()->route('admin.avips.index');
+        $ReferralDataFinal = ReferralDataFinal::where('oracle_code',$oracle_code_old)->update(['oracle_code' => $oracle_code_new]);
+        return redirect()->route('admin.avips.index')->with('message', $ReferralDataFinal.' rows updated referral data');
     }
 
 

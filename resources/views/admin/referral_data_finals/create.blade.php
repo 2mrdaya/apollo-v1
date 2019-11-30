@@ -8,7 +8,7 @@
         <div class="panel-heading">
             @lang('quickadmin.qa_create')
         </div>
-        
+
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12 form-group">
@@ -30,6 +30,18 @@
                     @if($errors->has('month'))
                         <p class="help-block">
                             {{ $errors->first('month') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('paid_month', 'Paid Month', ['class' => 'control-label']) !!}
+                    {!! Form::text('paid_month', old('paid_month'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('paid_month'))
+                        <p class="help-block">
+                            {{ $errors->first('paid_month') }}
                         </p>
                     @endif
                 </div>
@@ -138,6 +150,18 @@
                     @if($errors->has('aic_fee'))
                         <p class="help-block">
                             {{ $errors->first('aic_fee') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('bonus', 'Bonus', ['class' => 'control-label']) !!}
+                    {!! Form::text('bonus', old('bonus'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('bonus'))
+                        <p class="help-block">
+                            {{ $errors->first('bonus') }}
                         </p>
                     @endif
                 </div>
@@ -263,7 +287,7 @@
                     @endif
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -281,14 +305,14 @@
             moment.updateLocale('{{ App::getLocale() }}', {
                 week: { dow: 1 } // Monday is the first day of the week
             });
-            
+
             $('.datetime').datetimepicker({
                 format: "{{ config('app.datetime_format_moment') }}",
                 locale: "{{ App::getLocale() }}",
                 sideBySide: true,
             });
-            
+
         });
     </script>
-            
+
 @stop

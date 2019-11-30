@@ -98,7 +98,7 @@ class ImportCsvHelper {
             "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
         ));
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.id > t2.id AND t1.message = t2.message AND t1.intimation_date_time = t2.intimation_date_time"
         ));
         return $query;
     }
@@ -108,35 +108,37 @@ class ImportCsvHelper {
             "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.intimation_date_time > t2.intimation_date_time AND t1.message =t2.message"
         ));
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.id > t2.id AND t1.message =t2.message AND t1.intimation_date_time = t2.intimation_date_time"
+            "DELETE t1 FROM message_mappings t1, message_mappings t2 WHERE t1.id > t2.id AND t1.message = t2.message AND t1.intimation_date_time = t2.intimation_date_time"
         ));
         return $query;
     }
 
     public static function PatientRegistrationPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM patient_registrations t1, patient_registrations t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid"
+            "DELETE t1 FROM patient_registrations t1, patient_registrations t2 WHERE t1.id > t2.id AND t1.uhid = t2.uhid"
         ));
         return $query;
     }
 
     public static function IpPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM ips t1, ips t2 WHERE t1.id > t2.id AND t1.bill_no =t2.bill_no"
+            "DELETE t1 FROM ips t1, ips t2 WHERE t1.id > t2.id AND t1.bill_no = t2.bill_no"
         ));
         return $query;
     }
 
     public static function OpdPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM opds t1, opds t2 WHERE t1.id > t2.id AND t1.bill_no =t2.bill_no AND t1.bill_amount =t2.bill_amount"
+            "DELETE t1 FROM opds t1, opds t2 WHERE t1.id > t2.id AND t1.bill_no = t2.bill_no AND t1.bill_amount =t2.bill_amount"
         ));
         return $query;
     }
 
     public static function ReferralDataFinalPostProcess() {
+        $month_cur = Carbon::now()->format('M-y');
+        $month_pre = Carbon::now()->subMonth()->format('M-y');
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id > t2.id AND t1.uhid =t2.uhid AND t1.bill_no =t2.bill_no AND t1.aic_fee =t2.aic_fee"
+            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id < t2.id AND t1.bill_no = t2.bill_no AND month in ('".$month_cur."','".$month_pre."')"
         ));
         return $query;
     }
@@ -219,6 +221,25 @@ class ImportCsvHelper {
         $errorStatus='';
         if(!empty($row))
         {
+            if(isset($row['vendor']) && !empty($row['vendor']))
+            {
+                $row['vendor'] = strtoupper($row['vendor']);
+                if($row['vendor']!='PPN' && $row['vendor']!='HCF') {
+                    $errorStatus.='vendor should be PPN or HCF';
+                }
+            }
+            else {
+                $errorStatus.='vendor should not be blank';
+            }
+
+            if(isset($row['month']) && !empty($row['month']) && strlen($row['month'])==6)
+            {
+                $row['month'] = ucfirst($row['month']);
+            }
+            else {
+                $errorStatus.='please enter a valid month i.e MMM-YY';
+            }
+
             if(isset($row['doi_as_per_whats_app']) && !empty($row['doi_as_per_whats_app']))
             {
                 try {
@@ -276,7 +297,7 @@ class ImportCsvHelper {
             {
 
             }else{
-                $errorStatus.='patient_name should not blank';
+                $errorStatus.='patient name should not blank';
             }
 
             if(isset($row['country']) && !empty($row['country']))

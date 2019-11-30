@@ -78,6 +78,7 @@
                 @endcan
                 {data: 'oracle_code', name: 'oracle_code'},
                 {data: 'name', name: 'name'},
+                {data: 'pan_number', name: 'pan_number'},
                 {data: 'address_1', name: 'address_1'},
                 {data: 'address_2', name: 'address_2'},
                 {data: 'bank_name', name: 'bank_name'},
@@ -90,11 +91,9 @@
                 {data: 'correspondence_ac_no', name: 'correspondence_ac_no'},
                 {data: 'corp_swift_code', name: 'corp_swift_code'},
                 {data: 'ifsc_code', name: 'ifsc_code'},
-                {data: 'pan_number', name: 'pan_number'},
                 {data: 'rate_details', name: 'rate_details'},
                 {data: 'state', name: 'state'},
                 {data: 'pin_code', name: 'pin_code'},
-
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];
             processAjaxTables();

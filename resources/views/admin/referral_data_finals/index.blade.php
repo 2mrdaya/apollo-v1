@@ -36,6 +36,7 @@
                         @endcan
 
                         <th>@lang('quickadmin.referral-data-final.fields.month')</th>
+                        <th>Paid Month</th>
                         <th>@lang('quickadmin.referral-data-final.fields.vendor')</th>
                         <th>Oracle Code</th>
                         <th>Vendor Name</th>
@@ -72,6 +73,7 @@
                         <th>@lang('quickadmin.ip.fields.total-consumables')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.fee-percent')</th>
                         <th>@lang('quickadmin.referral-data-final.fields.aic-fee')</th>
+                        <th>Bonus</th>
                         <th>@lang('quickadmin.ip.fields.bill-to')</th>
                         {{--<th>@lang('quickadmin.referral-data-final.fields.message')</th>--}}
                         <th>@lang('quickadmin.message-mapping.fields.channel')</th>
@@ -200,7 +202,9 @@
                 @if ( request('show_deleted') != 1 )
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
                 @endif
-                @endcan{data: 'month', name: 'month'},
+                @endcan
+                {data: 'month', name: 'month'},
+                {data: 'paid_month', name: 'paid_month'},
                 {data: 'vendor', name: 'vendor'},
                 {data: 'oracle_code', name: 'oracle_code'},
                 {data: 'avip.name', name: 'avip.name'},
@@ -237,6 +241,7 @@
                 {data: 'ip.total_consumables', name: 'ip.total_consumables'},
                 {data: 'fee_percent', name: 'fee_percent'},
                 {data: 'aic_fee', name: 'aic_fee'},
+                {data: 'bonus', name: 'bonus'},
                 {data: 'bill_to', name: 'bill_to'},
                 //{data: 'source', name: 'source'},
                 {data: 'channel', name: 'channel'},

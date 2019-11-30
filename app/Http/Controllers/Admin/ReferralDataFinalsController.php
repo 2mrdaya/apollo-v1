@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreReferralDataFinalsRequest;
 use App\Http\Requests\Admin\UpdateReferralDataFinalsRequest;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class ReferralDataFinalsController extends Controller
 {
@@ -23,8 +24,6 @@ class ReferralDataFinalsController extends Controller
         if (! Gate::allows('referral_data_final_access')) {
             return abort(401);
         }
-
-
 
         if (request()->ajax()) {
             $query = ReferralDataFinal::query();
@@ -67,6 +66,8 @@ class ReferralDataFinalsController extends Controller
                 'message_id',
                 'patient_id',
                 'avip_id',
+                'paid_month',
+                'bonus',
             ]);
             $table = Datatables::of($query);
 
@@ -85,6 +86,9 @@ class ReferralDataFinalsController extends Controller
             });
             $table->editColumn('month', function ($row) {
                 return $row->month ? $row->month : '';
+            });
+            $table->editColumn('paid_month', function ($row) {
+                return $row->paid_month ? $row->paid_month : '';
             });
             $table->editColumn('vendor', function ($row) {
                 return $row->vendor ? $row->vendor : '';
@@ -115,6 +119,9 @@ class ReferralDataFinalsController extends Controller
             });
             $table->editColumn('aic_fee', function ($row) {
                 return $row->aic_fee ? $row->aic_fee : '';
+            });
+            $table->editColumn('bonus', function ($row) {
+                return $row->bonus ? $row->bonus : '';
             });
             $table->editColumn('oracle_code', function ($row) {
                 return $row->oracle_code ? $row->oracle_code : '';
@@ -352,7 +359,7 @@ class ReferralDataFinalsController extends Controller
             left join ips as ip on ip.bill_no = referral_data_finals.bill_no
             left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
             left join message_mappings as message on message.message = referral_data_finals.msg_desc
-            left join avips as avip on avip.pan_number = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
+            left join avips as avip on avip.oracle_code = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=2
             where referral_data_finals.id=".$id
         ));
 
@@ -384,7 +391,7 @@ class ReferralDataFinalsController extends Controller
             left join ips as ip on ip.bill_no = referral_data_finals.bill_no
             left join patient_registrations as patient on patient.uhid = referral_data_finals.uhid
             left join message_mappings as message on message.message = referral_data_finals.msg_desc
-            left join avips as avip on avip.pan_number = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=6
+            left join avips as avip on avip.oracle_code = referral_data_finals.oracle_code and CHAR_LENGTH(avip.oracle_code)>=2
             where referral_data_finals.month='".$month."'"
         ));
 

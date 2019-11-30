@@ -14,17 +14,17 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-2">
                     <div style="font-weight: bolder; font-size:14">
-                    Vendor Wise<input type="radio" checked name="wise" value="{{route('admin.vender_payments_comparision')}}">
+                    Vendor Wise <input type="radio" checked name="wise" value="{{route('admin.vender_payments_comparision')}}">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div style="font-weight: bolder; font-size:14">
-                        Country Wise<input type="radio" name="wise" value="{{route('admin.country_payments_comparision')}}">
+                        Country Wise <input type="radio" name="wise" value="{{route('admin.country_payments_comparision')}}">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div style="font-weight: bolder; font-size:14">
-                        Speciality Wise<input type="radio" name="wise" value="{{route('admin.speciality_payments_comparision')}}">
+                        Speciality Wise <input type="radio" name="wise" value="{{route('admin.speciality_payments_comparision')}}">
                     </div>
                 </div>
             </div>

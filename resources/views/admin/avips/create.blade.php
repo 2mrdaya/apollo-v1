@@ -8,8 +8,20 @@
         <div class="panel-heading">
             @lang('quickadmin.qa_create')
         </div>
-        
+
         <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('oracle_code', trans('quickadmin.avip.fields.oracle-code').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('oracle_code', old('oracle_code'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('oracle_code'))
+                        <p class="help-block">
+                            {{ $errors->first('oracle_code') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('name', trans('quickadmin.avip.fields.name').'*', ['class' => 'control-label']) !!}
@@ -180,18 +192,6 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('oracle_code', trans('quickadmin.avip.fields.oracle-code').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('oracle_code', old('oracle_code'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('oracle_code'))
-                        <p class="help-block">
-                            {{ $errors->first('oracle_code') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
                     {!! Form::label('rate_details', trans('quickadmin.avip.fields.rate-details').'', ['class' => 'control-label']) !!}
                     {!! Form::text('rate_details', old('rate_details'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
@@ -226,7 +226,7 @@
                     @endif
                 </div>
             </div>
-            
+
         </div>
     </div>
     <div class="panel panel-default">
@@ -241,7 +241,7 @@
                         <th>@lang('quickadmin.message-mapping.fields.source')</th>
                         <th>@lang('quickadmin.message-mapping.fields.patient-name')</th>
                         <th>@lang('quickadmin.message-mapping.fields.referrer-name')</th>
-                        
+
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -269,7 +269,7 @@
                 [
                     'index' => '_INDEX_',
                 ])
-               </script > 
+               </script >
 
             <script>
         $('.add-new').click(function () {
