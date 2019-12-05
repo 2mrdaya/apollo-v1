@@ -44,19 +44,19 @@ class ReferralDataFinalsController extends Controller
             $filterMonth = request()['columns'][1]['search']['value'];
 
             $query->select([
-                'referral_data_finals.id as row_id',
+                'id as row_id',
                 'vendor',
                 'month',
                 'msg_desc',
                 'doi_as_per_whats_app',
                 'doi_as_per_sw',
                 'area',
-                'referral_data_finals.uhid',
-                'referral_data_finals.bill_no',
+                'uhid',
+                'bill_no',
                 'dr_name_aic',
                 'fee_percent',
                 'aic_fee',
-                'referral_data_finals.oracle_code',
+                'oracle_code',
                 'pateint_name_msg',
                 'avip_name_msg',
                 'remarks',
@@ -147,13 +147,12 @@ class ReferralDataFinalsController extends Controller
             //var_dump("Hi");die;
 
             $table->editColumn('patient_match', function ($row) {
-                similar_text(strtoupper($row->patient_name_org),strtoupper($row->pateint_name_msg),$percent);
-                //var_dump($row->patient_name, $row->pateint_name_msg, $percent);
+                similar_text(strtoupper($row->patient->patient_name),strtoupper($row->pateint_name_msg),$percent);
                 return round($percent,0);
             });
 
             $table->editColumn('avip_match', function ($row) {
-                similar_text(strtoupper($row->dr_name_aic),strtoupper($row->avip_name_msg),$percent);
+                similar_text(strtoupper($row->avip->name),strtoupper($row->avip_name_msg),$percent);
                 return round($percent,0);
             });
 
@@ -410,9 +409,39 @@ class ReferralDataFinalsController extends Controller
      */
     public function process($row)
     {
-        //var_dump($row);die;
 
         $errors = [];
+        //var_dump($row);//die;
+        $patient_id = isset($row->patient_id) ? $row->patient_id : 0;
+        $avip_id = isset($row->avip_id) ? $row->avip_id : 0;
+        $message_id = isset($row->message_id) ? $row->message_id : 0;
+        $ip_id = isset($row->ip_id) ? $row->ip_id : 0;
+
+        //update referral_data_finals table
+        if ($patient_id) {
+            $query = DB::select(DB::raw("UPDATE referral_data_finals set
+                patient_id = ".$patient_id."
+                where id=".$row->referral_id
+            ));
+        }
+        if ($avip_id) {
+            $query = DB::select(DB::raw("UPDATE referral_data_finals set
+                avip_id = ".$avip_id."
+                where id=".$row->referral_id
+            ));
+        }
+        if ($message_id) {
+            $query = DB::select(DB::raw("UPDATE referral_data_finals set
+                message_id = ".$message_id."
+                where id=".$row->referral_id
+            ));
+        }
+        if ($ip_id) {
+            $query = DB::select(DB::raw("UPDATE referral_data_finals set
+                ip_id = ".$ip_id."
+                where id=".$row->referral_id
+            ));
+        }
 
         //find message by uhid
         $query = DB::select(DB::raw("SELECT

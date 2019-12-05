@@ -138,7 +138,7 @@ class ImportCsvHelper {
         $month_cur = Carbon::now()->format('M-y');
         $month_pre = Carbon::now()->subMonth()->format('M-y');
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id < t2.id AND t1.bill_no = t2.bill_no AND month in ('".$month_cur."','".$month_pre."')"
+            "DELETE t1 FROM referral_data_finals t1, referral_data_finals t2 WHERE t1.id < t2.id AND t1.bill_no = t2.bill_no AND t1.month in ('".$month_cur."','".$month_pre."')"
         ));
         return $query;
     }
@@ -164,7 +164,6 @@ class ImportCsvHelper {
         }
         return $NewStr;
     }
-
 
     public static function GstimportValidate($row)
     {
