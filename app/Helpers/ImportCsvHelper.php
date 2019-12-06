@@ -233,6 +233,14 @@ class ImportCsvHelper {
 
             if(isset($row['month']) && !empty($row['month']) && strlen($row['month'])==6)
             {
+                //die('01-'.$row['month']);
+
+                try {
+                    $date = Carbon::createFromFormat('d-M-y', '01-'.$row['month']);
+                } catch (\Exception $e) {
+                    $errorStatus.='please enter a valid month i.e MMM-YY ';
+                }
+
                 $row['month'] = ucfirst($row['month']);
             }
             else {
