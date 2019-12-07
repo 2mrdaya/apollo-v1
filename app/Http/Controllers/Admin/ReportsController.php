@@ -53,7 +53,7 @@ class ReportsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
 
         $query = "SELECT avip_id as id, vendors.vendor, vendors.name, vendors.pan_number as pan, vendors.oracle_code,
-        account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, count(distinct uhid) as patients,
+        account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, count(distinct ip_no) as patients,
         sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
         sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
         sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
@@ -120,7 +120,7 @@ class ReportsController extends Controller
         $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
 
-        $query = "SELECT vendors.country, count(distinct uhid) as patients,
+        $query = "SELECT vendors.country, count(distinct ip_no) as patients,
         sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
         sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
         sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
@@ -186,7 +186,7 @@ class ReportsController extends Controller
         $place_holders_range = implode( ',', array_fill( 0, count($range), '?' ) );
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
 
-        $query = "SELECT vendors.speciality, count(distinct uhid) as patients,
+        $query = "SELECT vendors.speciality, count(distinct ip_no) as patients,
         sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
         sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
         sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
@@ -273,7 +273,7 @@ class ReportsController extends Controller
             order by month_dt, vendor, bill_date";
             $query = DB::select(DB::raw($sql),array_merge($range,[$vendor_code]));
         }
-        $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
+        $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, IP No, Bill Date, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST";
 
         Storage::disk('local')->append('file.csv', $export_data);
         $export_data="";
@@ -294,6 +294,7 @@ class ReportsController extends Controller
             $export_data.='"'.$query[$i]->patient_name_org.'",';
             $export_data.=$query[$i]->registration_date.",";
             $export_data.=$query[$i]->bill_no.",";
+            $export_data.=$query[$i]->ip_no.",";
             $export_data.=$query[$i]->bill_date.",";
             $export_data.='"'.$query[$i]->rate_details.'",';
             $export_data.=$total_bill_amount.",";
@@ -356,7 +357,7 @@ class ReportsController extends Controller
             $export_data=$query1[$i]->vendor.",".$query1[$i]->oracle_code.',"'.$query1[$i]->name.'"';
 
             for ($j = 0; $j < count($range); $j++) {
-                $sql = "SELECT count(distinct uhid) as patients,
+                $sql = "SELECT count(distinct ip_no) as patients,
                 sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
                 sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
                 sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
@@ -409,7 +410,7 @@ class ReportsController extends Controller
         $month = $request->all()['month'];
 
         $sql = "SELECT avip_id as id, month_dt, vendor, name, pan_number, oracle_code,
-            account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, country, count(distinct uhid) as patients,
+            account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, country, count(distinct ip_no) as patients,
             sum(ifnull(total_bill_amount,0)) as total_bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy_amount,
             sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
             sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
