@@ -54,9 +54,9 @@ class ReportsController extends Controller
 
         $query = "SELECT avip_id as id, vendors.vendor, vendors.name, vendors.pan_number as pan, vendors.oracle_code,
         account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, count(distinct uhid) as patients,
-        sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
-        sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
-        sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
+        sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
+        sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
+        sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
         FROM view_referral right join (SELECT distinct oracle_code, vendor, name, pan_number
         FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.oracle_code = vendors.oracle_code
         and view_referral.month in ($place_holders_range1)
@@ -121,11 +121,11 @@ class ReportsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
 
         $query = "SELECT vendors.country, count(distinct uhid) as patients,
-        sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
-        sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
-        sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
-        FROM view_referral right join (SELECT distinct country
-        FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.country = vendors.country
+        sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
+        sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
+        sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
+        FROM view_referral right join (SELECT distinct ifnull(country,'OTHER') as country
+        FROM view_referral where month in ($place_holders_range)) as vendors on ifnull(view_referral.country,'OTHER') = vendors.country
         and view_referral.month in ($place_holders_range1)
         group by vendors.country order by vendors.country";
 
@@ -187,11 +187,11 @@ class ReportsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range1), '?' ) );
 
         $query = "SELECT vendors.speciality, count(distinct uhid) as patients,
-        sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
-        sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
-        sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
-        FROM view_referral right join (SELECT distinct speciality
-        FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.speciality = vendors.speciality
+        sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
+        sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
+        sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
+        FROM view_referral right join (SELECT distinct IFNULL(speciality,'OTHER') as speciality
+        FROM view_referral where month in ($place_holders_range)) as vendors on IFNULL(view_referral.speciality, 'OTHER') = vendors.speciality
         and view_referral.month in ($place_holders_range1)
         group by vendors.speciality order by vendors.speciality";
 
@@ -357,9 +357,9 @@ class ReportsController extends Controller
 
             for ($j = 0; $j < count($range); $j++) {
                 $sql = "SELECT count(distinct uhid) as patients,
-                sum(total_bill_amount) as bill_amount, sum(total_pharmacy_amount) as total_pharmacy,
-                sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
-                sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
+                sum(ifnull(total_bill_amount,0)) as bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy,
+                sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
+                sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
                 FROM view_referral
                 where month='".$range[$j]."'
                 and oracle_code='".$query1[$i]->oracle_code."'
@@ -410,9 +410,9 @@ class ReportsController extends Controller
 
         $sql = "SELECT avip_id as id, month_dt, vendor, name, pan_number, oracle_code,
             account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, country, count(distinct uhid) as patients,
-            sum(total_bill_amount) as total_bill_amount, sum(total_pharmacy_amount) as total_pharmacy_amount,
-            sum(total_consumables) as total_consumables, sum(gst_amout) as gst_amount, sum(0) as tds_amount ,
-            sum(aic_fee) as payable_amount, sum(total_bill_amount-total_pharmacy_amount-total_consumables) as net_bill_amount
+            sum(ifnull(total_bill_amount,0)) as total_bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy_amount,
+            sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
+            sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
             FROM view_referral where month = '$month' group by month_dt, vendor, name, avip_id, oracle_code, pan_number, account_no, swift_code, iban_number, bank_name, address_1, ifsc_code, country";
 
         $query = DB::select(DB::raw($sql),[$month]);
