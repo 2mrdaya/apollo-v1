@@ -58,7 +58,7 @@ class ReportsController extends Controller
         sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
         sum(ifnull(aic_fee,0)) as payable_amount, sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount
         FROM view_referral right join (SELECT distinct oracle_code, vendor, name, pan_number
-        FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.oracle_code = vendors.oracle_code
+        FROM view_referral where month in ($place_holders_range)) as vendors on view_referral.oracle_code = vendors.oracle_code and view_referral.vendor = vendors.vendor
         and view_referral.month in ($place_holders_range1)
         group by vendor, name, avip_id, vendors.oracle_code,vendors.pan_number,account_no, swift_code, iban_number, bank_name, address_1 , ifsc_code
         order by vendors.vendor,vendors.oracle_code";
