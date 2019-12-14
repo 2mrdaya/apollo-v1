@@ -27,6 +27,11 @@
                         Speciality Wise <input type="radio" name="wise" value="{{route('admin.speciality_payments_comparision')}}">
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <div style="font-weight: bolder; font-size:14">
+                        Doctor Wise <input type="radio" name="wise" value="{{route('admin.doctor_payments_comparision')}}">
+                    </div>
+                </div>
             </div>
             <div class="row"></div>
             <div class="row">
