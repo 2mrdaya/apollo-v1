@@ -239,7 +239,7 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
+            {{--<div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('ip_id', trans('quickadmin.referral-data-final.fields.ip').'', ['class' => 'control-label']) !!}
                     {!! Form::select('ip_id', $ips, old('ip_id'), ['class' => 'form-control select2']) !!}
@@ -286,7 +286,7 @@
                         </p>
                     @endif
                 </div>
-            </div>
+            </div>--}}
 
         </div>
     </div>
