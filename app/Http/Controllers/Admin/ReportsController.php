@@ -300,7 +300,7 @@ class ReportsController extends Controller
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
             $bonus_amount1 = $query2[$i]->bonus ? $query2[$i]->bonus : "0";
 
-            $export_data.='"'.$query1[$i]->speciality.'",';
+            $export_data.='"'.$query1[$i]->doctor_name.'",';
             $export_data.=$query1[$i]->patients.',';
             $export_data.=$net_bill_amount.",";
             $export_data.=$payable_amount.",";

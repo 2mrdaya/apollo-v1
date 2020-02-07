@@ -122,14 +122,15 @@ class ImportCsvHelper {
 
     public static function IpPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM ips t1, ips t2 WHERE t1.id > t2.id AND t1.bill_no = t2.bill_no"
+            "DELETE t1 FROM ips t1, ips t2 WHERE t1.id < t2.id AND t1.bill_no = t2.bill_no"
         ));
         return $query;
     }
 
-    public static function OpdPostProcess() {
+
+    public static function GstImportPostProcess() {
         $query = DB::select(DB::raw(
-            "DELETE t1 FROM opds t1, opds t2 WHERE t1.id > t2.id AND t1.bill_no = t2.bill_no AND t1.bill_amount =t2.bill_amount"
+            "DELETE t1 FROM gstimports t1, gstimports t2 WHERE t1.id < t2.id AND t1.bill_no = t2.bill_no"
         ));
         return $query;
     }
