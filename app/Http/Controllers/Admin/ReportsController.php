@@ -363,7 +363,7 @@ class ReportsController extends Controller
             order by month_dt, vendor, bill_date";
             $query = DB::select(DB::raw($sql),array_merge($range,[$vendor_code]));
         }
-        $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Registration Date, Bill No, IP No, Bill Date, Speciality, Doctor, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST, Bonus, Net Fee";
+        $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Country, Registration Date, Bill No, IP No, Bill Date, Speciality, Doctor, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST, Bonus, Net Fee";
 
         Storage::disk('local')->append('file.csv', $export_data);
         $export_data="";
@@ -383,6 +383,7 @@ class ReportsController extends Controller
             $export_data.='"'.$query[$i]->name.'",';
             $export_data.=$query[$i]->oracle_code.",";
             $export_data.='"'.$query[$i]->patient_name_org.'",';
+            $export_data.='"'.$query[$i]->country.'",';
             $export_data.=$query[$i]->registration_date.",";
             $export_data.=$query[$i]->bill_no.",";
             $export_data.=$query[$i]->ip_no.",";
