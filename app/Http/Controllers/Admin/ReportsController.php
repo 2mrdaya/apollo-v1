@@ -399,7 +399,7 @@ class ReportsController extends Controller
             $export_data.=$gst_amount.",";
             $export_data.=$bonus_amount.",";
             $export_data.=$payable_amount+$gst_amount+$bonus_amount.",";
-            if($ctr%500==0) {
+            if($ctr%200==0) {
                 Storage::disk('local')->append('file.csv', $export_data);
                 $export_data="";
             }
