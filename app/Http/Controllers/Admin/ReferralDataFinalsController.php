@@ -481,14 +481,15 @@ class ReferralDataFinalsController extends Controller
 
         //match name if message not matched
         if ($search_in_whatsapp && $row->patient_name != '' && $row->patient_name != null) {
-            $query = DB::select(DB::raw("SELECT
-                message.id, message.message, message.channel, message.intimation_date_time,
-                message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
-                LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
-                FROM message_mappings as message
-                where channel = 'WhatsApp' and date(message.intimation_date_time) = date('".$row->doi_as_per_whats_app."')
-                order by distance ASC limit 1"
-            ));
+            $qry_string = "SELECT
+            message.id, message.message, message.channel, message.intimation_date_time,
+            message.patient_name as patient_name_msg, message.referrer_name as referrer_name_msg,
+            LEVENSHTEIN('".$row->patient_name."', message.patient_name) as distance
+            FROM message_mappings as message
+            where channel = 'WhatsApp' and date(message.intimation_date_time) = date('".$row->doi_as_per_whats_app."')
+            order by distance ASC limit 1";
+
+            $query = DB::select(DB::raw($qry_string));
 
             foreach ($query as $row_msg) {
                 $row->message_id = $row_msg->id;

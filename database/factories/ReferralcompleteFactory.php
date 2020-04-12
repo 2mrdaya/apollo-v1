@@ -1,0 +1,36 @@
+<?php
+
+$factory->define(App\Referralcomplete::class, function (Faker\Generator $faker) {
+    return [
+        "vendor" => collect(["PPN","HCF",])->random(),
+        "month" => $faker->name,
+        "msg_desc" => $faker->name,
+        "doi_as_per_whats_app" => $faker->date("Y-m-d H:i:s", $max = 'now'),
+        "doi_as_per_sw" => $faker->date("Y-m-d H:i:s", $max = 'now'),
+        "area" => $faker->name,
+        "uhid" => $faker->name,
+        "oracle_code" => $faker->name,
+        "ip_no" => $faker->name,
+        "bill_no" => $faker->name,
+        "dr_name_aic" => $faker->name,
+        "pan_no" => $faker->name,
+        "admission_date" => $faker->date("Y-m-d H:i:s", $max = 'now'),
+        "discharge_date" => $faker->date("Y-m-d H:i:s", $max = 'now'),
+        "registration_date" => $faker->date("Y-m-d H:i:s", $max = 'now'),
+        "patient_name" => $faker->name,
+        "company" => $faker->name,
+        "country" => $faker->name,
+        "treating_consultant" => $faker->name,
+        "specialty" => $faker->name,
+        "bill_to" => $faker->name,
+        "bill_amount" => $faker->randomNumber(2),
+        "pharmacy" => $faker->randomNumber(2),
+        "consumable" => $faker->randomNumber(2),
+        "bonus_percent" => $faker->randomNumber(2),
+        "bonus" => $faker->randomNumber(2),
+        "gst" => $faker->randomNumber(2),
+        "fee_percent" => $faker->randomNumber(2),
+        "aic_fee" => $faker->randomNumber(2),
+        "remarks" => $faker->name,
+    ];
+});

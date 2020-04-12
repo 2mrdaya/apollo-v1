@@ -55,7 +55,6 @@
                             <span>@lang('quickadmin.system-settings.title')</span>
                         </a>
                     </li>@endcan
-
                 </ul>
             </li>@endcan
 
@@ -115,6 +114,14 @@
                 </a>
             </li>@endcan
 
+            @can('referralcomplete_access')
+            <li>
+                <a href="{{ route('admin.referralcompletes.index') }}">
+                    <i class="fa fa-gears"></i>
+                    <span>@lang('quickadmin.referralcomplete.title')</span>
+                </a>
+            </li>@endcan
+
             @can('venderpayment_access')
             <li>
                 <a href="{{ route('admin.reports.index') }}">
@@ -122,6 +129,13 @@
                     <span>@lang('Reports')</span>
                 </a>
             </li>@endcan
+
+
+
+
+
+
+
 
             <li class="{{ $request->segment(1) == 'change_password' ? 'active' : '' }}">
                 <a href="{{ route('auth.change_password') }}">

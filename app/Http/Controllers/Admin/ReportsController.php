@@ -65,38 +65,71 @@ class ReportsController extends Controller
         group by vendor, name, avip_id, vendors.oracle_code,vendors.pan_number,account_no, swift_code, iban_number, bank_name, address_1 , ifsc_code
         order by vendors.vendor,vendors.oracle_code";
 
+
         $query1 = DB::select(DB::raw($query),array_merge($range,$range1));
 
         $place_holders_range1 = implode( ',', array_fill( 0, count($range2), '?' ) );
         $query2 = DB::select(DB::raw($query),array_merge($range,$range2));
 
-        $export_data="Type, Vendor Code, Name, Patients, Bill Amount, Fee, GST, Bonus, Patients, Bill Amount, Fee, GST, Bonus \n";
+        $export_data=",\n";
+        $export_data.=",,,".$range1[0].' to '.$range1[count($range1)-1].",,,,,,,".$range2[0].' to '.$range2[count($range2)-1]." \n";
+        $export_data.="Type, Vendor Code, Name, Patients, Bill Amount, Net Fee, GST, Bonus, , Vendor Code, Patients, Bill Amount, Net Fee, GST, Bonus \n";
+
+        $patient_count_sum = 0;
+        $payable_amount_sum = 0;
+        $gst_amount_sum = 0;
+        $bonus_amount_sum = 0;
+        $bill_amount_sum = 0;
+
+        $patient_count_sum1 = 0;
+        $payable_amount_sum1 = 0;
+        $gst_amount_sum1 = 0;
+        $bonus_amount_sum1 = 0;
+        $bill_amount_sum1 = 0;
 
         for ($i = 0; $i < count($query1); $i++) {
 
-            $net_bill_amount = $query1[$i]->net_bill_amount ? $query1[$i]->net_bill_amount : "0";
+            $bill_amount = $query1[$i]->bill_amount ? $query1[$i]->bill_amount : "0";
             $payable_amount = $query1[$i]->payable_amount ? $query1[$i]->payable_amount : "0";
             $gst_amount = $query1[$i]->gst_amount ? $query1[$i]->gst_amount : "0";
             $bonus_amount = $query1[$i]->bonus ? $query1[$i]->bonus : "0";
 
-            $net_bill_amount1 = $query2[$i]->net_bill_amount ? $query2[$i]->net_bill_amount : "0";
+            $bill_amount1 = $query2[$i]->bill_amount ? $query2[$i]->bill_amount : "0";
             $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
             $bonus_amount1 = $query2[$i]->bonus ? $query2[$i]->bonus : "0";
 
+            $patient_count_sum = $patient_count_sum + $query1[$i]->patients;
+            $payable_amount_sum = $payable_amount_sum + $payable_amount;
+            $gst_amount_sum = $gst_amount_sum + $gst_amount;
+            $bonus_amount_sum = $bonus_amount_sum + $bonus_amount;
+            $bill_amount_sum = $bill_amount_sum + $bill_amount;
+
+            $patient_count_sum1 = $patient_count_sum1 + $query2[$i]->patients;
+            $payable_amount_sum1 = $payable_amount_sum1 + $payable_amount1;
+            $gst_amount_sum1 = $gst_amount_sum1 + $gst_amount1;
+            $bonus_amount_sum1 = $bonus_amount_sum1 + $bonus_amount1;
+            $bill_amount_sum1 = $bill_amount_sum1 + $bill_amount1;
+
             $export_data.=$query1[$i]->vendor.",".$query1[$i]->oracle_code.',"'.$query1[$i]->name.'",';
             $export_data.=$query1[$i]->patients.',';
-            $export_data.=$net_bill_amount.",";
+            $export_data.=$bill_amount.",";
             $export_data.=$payable_amount.",";
             $export_data.=$gst_amount.",";
             $export_data.=$bonus_amount.",";
+            $export_data.=",";
+            $export_data.=$query2[$i]->oracle_code.',';
             $export_data.=$query2[$i]->patients.',';
-            $export_data.=$net_bill_amount1.",";
+            $export_data.=$bill_amount1.",";
             $export_data.=$payable_amount1.",";
             $export_data.=$gst_amount1.",";
             $export_data.=$bonus_amount1.",";
             $export_data.="\n";
         }
+
+        $export_data.=',,,'.$patient_count_sum.','.$bill_amount_sum.','.$payable_amount_sum.','.$gst_amount_sum.','.$bonus_amount_sum.',';
+        $export_data.=',,'.$patient_count_sum1.','.$bill_amount_sum1.','.$payable_amount_sum1.','.$gst_amount_sum1.','.$bonus_amount_sum1;
+
         return response($export_data)
                 ->header('Content-Type','application/csv')
                 ->header('Content-Disposition', 'attachment; filename="download.csv"')
@@ -142,33 +175,65 @@ class ReportsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range2), '?' ) );
         $query2 = DB::select(DB::raw($query),array_merge($range,$range2));
 
-        $export_data="country, Patients, Bill Amount, Fee, GST, Bonus, Patients, Bill Amount, Fee, GST, Bonus \n";
+        $export_data=",\n";
+        $export_data.=",".$range1[0].' to '.$range1[count($range1)-1].",,,,,,,".$range2[0].' to '.$range2[count($range2)-1]." \n";
+        $export_data.="Country, Patients, Bill Amount, Net Fee, GST, Bonus, , Country, Patients, Bill Amount, Net Fee, GST, Bonus \n";
+
+        $patient_count_sum = 0;
+        $payable_amount_sum = 0;
+        $gst_amount_sum = 0;
+        $bonus_amount_sum = 0;
+        $bill_amount_sum = 0;
+
+        $patient_count_sum1 = 0;
+        $payable_amount_sum1 = 0;
+        $gst_amount_sum1 = 0;
+        $bonus_amount_sum1 = 0;
+        $bill_amount_sum1 = 0;
 
         for ($i = 0; $i < count($query1); $i++) {
 
-            $net_bill_amount = $query1[$i]->net_bill_amount ? $query1[$i]->net_bill_amount : "0";
+            $bill_amount = $query1[$i]->bill_amount ? $query1[$i]->bill_amount : "0";
             $payable_amount = $query1[$i]->payable_amount ? $query1[$i]->payable_amount : "0";
             $gst_amount = $query1[$i]->gst_amount ? $query1[$i]->gst_amount : "0";
             $bonus_amount = $query1[$i]->bonus ? $query1[$i]->bonus : "0";
 
-            $net_bill_amount1 = $query2[$i]->net_bill_amount ? $query2[$i]->net_bill_amount : "0";
+            $bill_amount1 = $query2[$i]->bill_amount ? $query2[$i]->bill_amount : "0";
             $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
             $bonus_amount1 = $query2[$i]->bonus ? $query2[$i]->bonus : "0";
 
+            $patient_count_sum = $patient_count_sum + $query1[$i]->patients;
+            $payable_amount_sum = $payable_amount_sum + $payable_amount;
+            $gst_amount_sum = $gst_amount_sum + $gst_amount;
+            $bonus_amount_sum = $bonus_amount_sum + $bonus_amount;
+            $bill_amount_sum = $bill_amount_sum + $bill_amount;
+
+            $patient_count_sum1 = $patient_count_sum1 + $query2[$i]->patients;
+            $payable_amount_sum1 = $payable_amount_sum1 + $payable_amount1;
+            $gst_amount_sum1 = $gst_amount_sum1 + $gst_amount1;
+            $bonus_amount_sum1 = $bonus_amount_sum1 + $bonus_amount1;
+            $bill_amount_sum1 = $bill_amount_sum1 + $bill_amount1;
+
             $export_data.=$query1[$i]->country.",";
             $export_data.=$query1[$i]->patients.',';
-            $export_data.=$net_bill_amount.",";
+            $export_data.=$bill_amount.",";
             $export_data.=$payable_amount.",";
             $export_data.=$gst_amount.",";
             $export_data.=$bonus_amount.",";
+            $export_data.=',';
+            $export_data.=$query2[$i]->country.",";
             $export_data.=$query2[$i]->patients.',';
-            $export_data.=$net_bill_amount1.",";
+            $export_data.=$bill_amount1.",";
             $export_data.=$payable_amount1.",";
             $export_data.=$gst_amount1.",";
             $export_data.=$bonus_amount1.",";
             $export_data.="\n";
         }
+
+        $export_data.=','.$patient_count_sum.','.$bill_amount_sum.','.$payable_amount_sum.','.$gst_amount_sum.','.$bonus_amount_sum.',';
+        $export_data.=',,'.$patient_count_sum1.','.$bill_amount_sum1.','.$payable_amount_sum1.','.$gst_amount_sum1.','.$bonus_amount_sum1;
+
         return response($export_data)
                 ->header('Content-Type','application/csv')
                 ->header('Content-Disposition', 'attachment; filename="download.csv"')
@@ -214,33 +279,66 @@ class ReportsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range2), '?' ) );
         $query2 = DB::select(DB::raw($query),array_merge($range,$range2));
 
-        $export_data="Speciality, Patients, Bill Amount, Fee, GST, Bonus, Patients, Bill Amount, Fee, GST, Bonus \n";
+        $export_data=",\n";
+        $export_data.=",".$range1[0].' to '.$range1[count($range1)-1].",,,,,,,".$range2[0].' to '.$range2[count($range2)-1]." \n";
+        $export_data.="Country, Patients, Bill Amount, Net Fee, GST, Bonus, , Country, Patients, Bill Amount, Net Fee, GST, Bonus \n";
+
+        $patient_count_sum = 0;
+        $payable_amount_sum = 0;
+        $gst_amount_sum = 0;
+        $bonus_amount_sum = 0;
+        $bill_amount_sum = 0;
+
+        $patient_count_sum1 = 0;
+        $payable_amount_sum1 = 0;
+        $gst_amount_sum1 = 0;
+        $bonus_amount_sum1 = 0;
+        $bill_amount_sum1 = 0;
 
         for ($i = 0; $i < count($query1); $i++) {
 
-            $net_bill_amount = $query1[$i]->net_bill_amount ? $query1[$i]->net_bill_amount : "0";
+            $bill_amount = $query1[$i]->bill_amount ? $query1[$i]->bill_amount : "0";
             $payable_amount = $query1[$i]->payable_amount ? $query1[$i]->payable_amount : "0";
             $gst_amount = $query1[$i]->gst_amount ? $query1[$i]->gst_amount : "0";
             $bonus_amount = $query1[$i]->bonus ? $query1[$i]->bonus : "0";
 
-            $net_bill_amount1 = $query2[$i]->net_bill_amount ? $query2[$i]->net_bill_amount : "0";
+            $bill_amount1 = $query2[$i]->bill_amount ? $query2[$i]->bill_amount : "0";
             $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
             $bonus_amount1 = $query2[$i]->bonus ? $query2[$i]->bonus : "0";
 
+            $patient_count_sum = $patient_count_sum + $query1[$i]->patients;
+            $payable_amount_sum = $payable_amount_sum + $payable_amount;
+            $gst_amount_sum = $gst_amount_sum + $gst_amount;
+            $bonus_amount_sum = $bonus_amount_sum + $bonus_amount;
+            $bill_amount_sum = $bill_amount_sum + $bill_amount;
+
+            $patient_count_sum1 = $patient_count_sum1 + $query2[$i]->patients;
+            $payable_amount_sum1 = $payable_amount_sum1 + $payable_amount1;
+            $gst_amount_sum1 = $gst_amount_sum1 + $gst_amount1;
+            $bonus_amount_sum1 = $bonus_amount_sum1 + $bonus_amount1;
+            $bill_amount_sum1 = $bill_amount_sum1 + $bill_amount1;
+
             $export_data.='"'.$query1[$i]->speciality.'",';
             $export_data.=$query1[$i]->patients.',';
-            $export_data.=$net_bill_amount.",";
+            $export_data.=$bill_amount.",";
             $export_data.=$payable_amount.",";
             $export_data.=$gst_amount.",";
             $export_data.=$bonus_amount.",";
+            $export_data.=',';
+            $export_data.='"'.$query2[$i]->speciality.'",';
             $export_data.=$query2[$i]->patients.',';
-            $export_data.=$net_bill_amount1.",";
+            $export_data.=$bill_amount1.",";
             $export_data.=$payable_amount1.",";
             $export_data.=$gst_amount1.",";
             $export_data.=$bonus_amount1.",";
             $export_data.="\n";
         }
+
+        $export_data.=','.$patient_count_sum.','.$bill_amount_sum.','.$payable_amount_sum.','.$gst_amount_sum.','.$bonus_amount_sum.',';
+        $export_data.=',,'.$patient_count_sum1.','.$bill_amount_sum1.','.$payable_amount_sum1.','.$gst_amount_sum1.','.$bonus_amount_sum1;
+
+
         return response($export_data)
                 ->header('Content-Type','application/csv')
                 ->header('Content-Disposition', 'attachment; filename="download.csv"')
@@ -286,33 +384,65 @@ class ReportsController extends Controller
         $place_holders_range1 = implode( ',', array_fill( 0, count($range2), '?' ) );
         $query2 = DB::select(DB::raw($query),array_merge($range,$range2));
 
-        $export_data="Doctor, Patients, Bill Amount, Fee, GST, Bonus, Patients, Bill Amount, Fee, GST, Bonus \n";
+        $export_data=",\n";
+        $export_data.=",".$range1[0].' to '.$range1[count($range1)-1].",,,,,,,".$range2[0].' to '.$range2[count($range2)-1]." \n";
+        $export_data.="Country, Patients, Bill Amount, Net Fee, GST, Bonus, , Country, Patients, Bill Amount, Net Fee, GST, Bonus \n";
+
+        $patient_count_sum = 0;
+        $payable_amount_sum = 0;
+        $gst_amount_sum = 0;
+        $bonus_amount_sum = 0;
+        $bill_amount_sum = 0;
+
+        $patient_count_sum1 = 0;
+        $payable_amount_sum1 = 0;
+        $gst_amount_sum1 = 0;
+        $bonus_amount_sum1 = 0;
+        $bill_amount_sum1 = 0;
 
         for ($i = 0; $i < count($query1); $i++) {
 
-            $net_bill_amount = $query1[$i]->net_bill_amount ? $query1[$i]->net_bill_amount : "0";
+            $bill_amount = $query1[$i]->bill_amount ? $query1[$i]->bill_amount : "0";
             $payable_amount = $query1[$i]->payable_amount ? $query1[$i]->payable_amount : "0";
             $gst_amount = $query1[$i]->gst_amount ? $query1[$i]->gst_amount : "0";
             $bonus_amount = $query1[$i]->bonus ? $query1[$i]->bonus : "0";
 
-            $net_bill_amount1 = $query2[$i]->net_bill_amount ? $query2[$i]->net_bill_amount : "0";
+            $bill_amount1 = $query2[$i]->bill_amount ? $query2[$i]->bill_amount : "0";
             $payable_amount1 = $query2[$i]->payable_amount ? $query2[$i]->payable_amount : "0";
             $gst_amount1 = $query2[$i]->gst_amount ? $query2[$i]->gst_amount : "0";
             $bonus_amount1 = $query2[$i]->bonus ? $query2[$i]->bonus : "0";
 
+            $patient_count_sum = $patient_count_sum + $query1[$i]->patients;
+            $payable_amount_sum = $payable_amount_sum + $payable_amount;
+            $gst_amount_sum = $gst_amount_sum + $gst_amount;
+            $bonus_amount_sum = $bonus_amount_sum + $bonus_amount;
+            $bill_amount_sum = $bill_amount_sum + $bill_amount;
+
+            $patient_count_sum1 = $patient_count_sum1 + $query2[$i]->patients;
+            $payable_amount_sum1 = $payable_amount_sum1 + $payable_amount1;
+            $gst_amount_sum1 = $gst_amount_sum1 + $gst_amount1;
+            $bonus_amount_sum1 = $bonus_amount_sum1 + $bonus_amount1;
+            $bill_amount_sum1 = $bill_amount_sum1 + $bill_amount1;
+
             $export_data.='"'.$query1[$i]->doctor_name.'",';
             $export_data.=$query1[$i]->patients.',';
-            $export_data.=$net_bill_amount.",";
+            $export_data.=$bill_amount.",";
             $export_data.=$payable_amount.",";
             $export_data.=$gst_amount.",";
             $export_data.=$bonus_amount.",";
+            $export_data.=',';
+            $export_data.='"'.$query1[$i]->doctor_name.'",';
             $export_data.=$query2[$i]->patients.',';
-            $export_data.=$net_bill_amount1.",";
+            $export_data.=$bill_amount1.",";
             $export_data.=$payable_amount1.",";
             $export_data.=$gst_amount1.",";
             $export_data.=$bonus_amount1.",";
             $export_data.="\n";
         }
+
+        $export_data.=','.$patient_count_sum.','.$bill_amount_sum.','.$payable_amount_sum.','.$gst_amount_sum.','.$bonus_amount_sum.',';
+        $export_data.=',,'.$patient_count_sum1.','.$bill_amount_sum1.','.$payable_amount_sum1.','.$gst_amount_sum1.','.$bonus_amount_sum1;
+
         return response($export_data)
                 ->header('Content-Type','application/csv')
                 ->header('Content-Disposition', 'attachment; filename="download.csv"')
@@ -329,7 +459,8 @@ class ReportsController extends Controller
      */
     public function getVendorPayments(Request $request)
     {
-        //ini_set('memory_limit', '-1');
+        gc_collect_cycles();
+        ini_set('memory_limit', '-1');
         Storage::delete('file.csv');
         if (! Gate::allows('venderpayment_access')) {
             return abort(401);
@@ -364,8 +495,9 @@ class ReportsController extends Controller
             $query = DB::select(DB::raw($sql),array_merge($range,[$vendor_code]));
         }
         $export_data="Month, Type, Vendor, Oracle Code, Patient Name, Country, Registration Date, Bill No, IP No, Bill Date, Speciality, Doctor, Rates, Bill Amount, Consumable, Pharmacy, Net Bill, Fee, GST, Bonus, Net Fee";
-
-        Storage::disk('local')->append('file.csv', $export_data);
+        $hFile = fopen(Storage::disk('local')->path('file.csv'), 'a');
+        //Storage::disk('local')->append('file.csv', $export_data);
+        fwrite($hFile, $export_data . "\n");
         $export_data="";
 
         $ctr=1;
@@ -399,17 +531,18 @@ class ReportsController extends Controller
             $export_data.=$gst_amount.",";
             $export_data.=$bonus_amount.",";
             $export_data.=$payable_amount+$gst_amount+$bonus_amount.",";
-            if($ctr%200==0) {
-                Storage::disk('local')->append('file.csv', $export_data);
-                clearstatcache();
-                $export_data="";
+            if($ctr%100==0) {
+                //Storage::disk('local')->append('file.csv', $export_data);
+                fwrite($hFile, $export_data . "\n");
+                $export_data=NULL;
             }
             else {
                 $export_data.="\n";
             }
             $ctr++;
         }
-        Storage::disk('local')->append('file.csv', $export_data);
+        //Storage::disk('local')->append('file.csv', $export_data);
+        fwrite($hFile, $export_data . "\n");
         $contents = Storage::get('file.csv');
         return response($contents)
                 ->header('Content-Type','application/csv')
@@ -512,13 +645,13 @@ class ReportsController extends Controller
         $month = $request->all()['month'];
 
         $sql = "SELECT avip_id as id, month_dt, vendor, name, pan_number, oracle_code,
-            account_no, swift_code, iban_number, bank_name, address_1 as address, ifsc_code, country, count(distinct ip_no) as patients,
+            account_no, swift_code, iban_number, bank_name, ifsc_code, count(distinct ip_no) as patients,
             sum(ifnull(total_bill_amount,0)) as total_bill_amount, sum(ifnull(total_pharmacy_amount,0)) as total_pharmacy_amount,
             sum(ifnull(total_consumables,0)) as total_consumables, sum(ifnull(gst_amout,0)) as gst_amount, sum(0) as tds_amount ,
             sum(ifnull(aic_fee,0)) + sum(ifnull(gst_amout,0)) + sum(ifnull(bonus,0)) as payable_amount,
             sum(ifnull(total_bill_amount-total_pharmacy_amount-total_consumables,0)) as net_bill_amount,
             sum(ifnull(bonus,0)) as bonus
-            FROM view_referral where month = '$month' group by month_dt, vendor, name, avip_id, oracle_code, pan_number, account_no, swift_code, iban_number, bank_name, address_1, ifsc_code, country";
+            FROM view_referral where month = '$month' group by month_dt, vendor, name, avip_id, oracle_code, pan_number, account_no, swift_code, iban_number, bank_name, ifsc_code";
 
         $query = DB::select(DB::raw($sql),[$month]);
 
@@ -545,9 +678,7 @@ class ReportsController extends Controller
             $export_data.='"'.$query[$i]->swift_code.'",';
             $export_data.='"'.$query[$i]->iban_number.'",';
             $export_data.='"'.$query[$i]->bank_name.'",';
-            $export_data.='"'.$query[$i]->address.'",';
             $export_data.='"'.$query[$i]->ifsc_code.'",';
-            $export_data.='"'.$query[$i]->country.'",';
             $export_data.=$query[$i]->patients.",";
             $export_data.=$total_bill_amount.",";
             $export_data.=$total_consumables.",";
@@ -568,5 +699,6 @@ class ReportsController extends Controller
                 ->header('Expires','0');
 
         return view('admin.venderpayments.comparison', compact("query1","query2"));
+
     }
 }

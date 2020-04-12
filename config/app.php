@@ -1,5 +1,5 @@
 <?php
-ini_set('memory_limit', '1024M');
+
 return [
 
     /*
@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Referral Tracker',
+    'name' => 'Apollo',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,15 +84,6 @@ return [
     'date_format_moment' => 'YYYY-MM-DD',
     'time_format_moment' => 'HH:mm:ss',
     'datetime_format_moment' => 'YYYY-MM-DD HH:mm:ss',
-    'date_format_sms' => 'd-m-Y, H:i:s',
-    'date_format_whatsapp' => 'm/d/Y h:i:s A',
-    'date_format_patient_registration' => 'm/d/Y H:i',
-    'date_format_admission' => 'd/m/y H:i',
-    'date_format_intimation' => 'm/d/Y h:iA',
-    'date_format_registration' => 'm/d/y h:i A',
-    'date_format_bill_date' => 'm/d/Y h:i:s A',
-    'doi_as_per_sw' => 'd-m-Y, H:i:s',
-    'doi_as_per_whats_app' => 'm/d/Y h:iA',
 
     /*
     |--------------------------------------------------------------------------
@@ -192,7 +183,7 @@ return [
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-
+        
 
         /*
          * Application Service Providers...
@@ -254,9 +245,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
+        
     ],
 
-
+    
 
 ];

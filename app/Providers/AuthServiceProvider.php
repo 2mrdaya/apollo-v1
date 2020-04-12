@@ -184,5 +184,90 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1, 2]);
         });
 
+        // Auth gates for: Bonus payment
+        Gate::define('bonus_payment_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_payment_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_payment_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_payment_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_payment_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
+        // Auth gates for: Bonus
+        Gate::define('bonus_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('bonus_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
+        // Auth gates for: Fee master
+        Gate::define('fee_master_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('fee_master_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('fee_master_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('fee_master_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('fee_master_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
+        // Auth gates for: Package fee
+        Gate::define('package_fee_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('package_fee_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('package_fee_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('package_fee_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('package_fee_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
+        // Auth gates for: Referralcomplete
+        Gate::define('referralcomplete_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('referralcomplete_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('referralcomplete_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('referralcomplete_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('referralcomplete_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
     }
 }
